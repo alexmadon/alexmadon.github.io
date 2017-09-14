@@ -1,0 +1,173 @@
+---
+layout: post
+title: breaking text into words
+date: '2010-02-08T09:43:00.001-08:00'
+author: atpic
+tags: scala 
+modified_time: '2010-02-09T06:41:34.260-08:00'
+blogger_id: tag:blogger.com,1999:blog-6398118045441905973.post-8119755073383720974
+blogger_orig_url: http://tuxscala.blogspot.com/2010/02/breaking-text-into-words.html
+---
+
+<pre>
+scala> import java.text.BreakIterator
+import java.text.BreakIterator
+
+scala> BreakIterator.getAvailableLocales() 
+res0: Array[java.util.Locale] = Array(ja_JP, es_PE, en, ja_JP_JP, es_PA, sr_BA, mk, 
+es_GT, ar_AE, no_NO, sq_AL, bg, ar_IQ, ar_YE, hu, pt_PT, el_CY, ar_QA, mk_MK, sv, 
+de_CH, en_US, fi_FI, is, cs, en_MT, sl_SI, sk_SK, it, tr_TR, zh, th, ar_SA, no, 
+en_GB, sr_CS, lt, ro, en_NZ, no_NO_NY, lt_LT, es_NI, nl, ga_IE, fr_BE, es_ES, ar_LB, 
+ko, fr_CA, et_EE, ar_KW, sr_RS, es_US, es_MX, ar_SD, in_...
+scala>
+
+
+scala> val text="""She stopped. She said, "Hello there," and then went on."""
+text: java.lang.String = She stopped. She said, "Hello there," and then went on.
+
+scala> import java.util.Locale
+import java.util.Locale
+
+scala> val currentLocale = new Locale ("en","US")
+currentLocale: java.util.Locale = en_US
+
+scala> val wordIterator = BreakIterator.getWordInstance(currentLocale)
+wordIterator: java.text.BreakIterator = [checksum=0x5e8990c]
+
+scala> wordIterator.setText(text)
+
+scala> val start = wordIterator.first()
+start: Int = 0
+
+scala> val end = wordIterator.next()
+end: Int = 3
+
+
+</pre>
+
+http://forums.sun.com/thread.jspa?threadID=5393065
+http://java.sun.com/docs/books/tutorial/i18n/text/word.html
+http://java.sun.com/javase/6/docs/api/java/text/BreakIterator.html
+
+
+<h4>A simple java-like scala code</h4>
+
+<pre>
+
+
+object extract{
+  def Words(target:String, wordIterator:BreakIterator) {
+    
+    wordIterator.setText(target);
+    var start = wordIterator.first();
+    var end = wordIterator.next();
+    
+    while (end != BreakIterator.DONE) {
+      var word = target.substring(start,end);
+      if (Character.isLetterOrDigit(word.charAt(0))) {
+ System.out.println(word);
+      }
+      start = end;
+      end = wordIterator.next();
+    }
+  }
+}
+
+
+scala> extract.Words(text,wordIterator)
+She
+stopped
+She
+said
+Hello
+there
+and
+then
+went
+on
+</pre>
+
+<h4>A more scala like example</h4>
+
+From the scala mailing list:
+"The difficulty with this code is that Java has a lot of non-Iterator iterators.  BreakIterator is a prime example of that.  My preferred method in these cases is to first wrap the offending Java class into a Scala Iterator.  Then, I solve the problem I'm faced with using the Scala iterator.
+
+Now, this doesn't actually make your solution any shorter or prettier, but it *does* remove the offending ugliness into a well-encapsulated module." (Rex Kerr)
+
+<pre>
+class Example(text:String,lang:String,country:String) {
+ import java.text.BreakIterator
+ import java.util.Locale
+ val currentLocale = new Locale (lang,country)
+ val wordIterator = BreakIterator.getWordInstance(currentLocale)
+
+ class BreakIt(target: String, bi: BreakIterator) extends Iterator[String] {
+   bi.setText(target)
+   private var start = bi.first
+   private var end = bi.next
+   def hasNext = end != BreakIterator.DONE
+   def next = {
+     val result = target.substring(start,end)
+     start = end
+     end = bi.next
+     result
+   }
+ }
+
+ object Extract {
+   def words(target: String, wordIterator: BreakIterator) {
+     (new BreakIt(target,wordIterator)).foreach(word => {
+       if (word(0) isLetterOrDigit) println(word)
+     })
+   }
+ }
+
+ def test = Extract.words(text,wordIterator)
+}
+
+
+*** ENGLISH ***
+
+scala> val text="""She stopped. She said, "Hello there," and then went on."""
+text: java.lang.String = She stopped. She said, "Hello there," and then went on.
+
+scala> val exEnglish=new Example(text,"en","US")
+exEnglish: Example = Example@10469e8
+
+scala> exEnglish.test
+She
+stopped
+She
+said
+Hello
+there
+and
+then
+went
+on
+
+*** JAPANESE ***
+scala> val jpText="イチゴを食べます。"
+jpText: java.lang.String = イチゴを食べます。
+
+scala> val exJapanese=new Example(jpText,"jp","JP")
+exJapanese: Example = Example@45484a
+
+scala> exJapanese.test
+イチゴ
+を
+食
+べます
+
+*** CHINESE ****
+see bug <a href=http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4095325>http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4095325</a>
+scala> val jpText="利用我们收集的信息为用户提供有价值的产品和服务。"
+jpText: java.lang.String = 利用我们收集的信息为用户提供有价值的产品和服务
+
+scala> val exChinese=new Example(jpText,"zh","CN")
+exJapanese: Example = Example@971d55
+
+scala> exChinese.test
+利用我们收集的信息为用户提供有价值的产品和服务
+
+</pre>

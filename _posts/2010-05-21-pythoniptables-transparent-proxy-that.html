@@ -1,0 +1,102 @@
+---
+layout: post
+title: python/iptables 'transparent' proxy that modify http headr
+date: '2010-05-21T12:31:00.000-07:00'
+author: atpic
+tags: python 
+modified_time: '2010-05-21T12:33:36.417-07:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-2934282977939882205
+blogger_orig_url: http://tuxpython.blogspot.com/2010/05/pythoniptables-transparent-proxy-that.html
+---
+
+inspired by Security Power Tools
+
+chapter 6.5
+6.5 Packet Mangling with Netfilter
+
+There ia also a nice paragraph about scapy
+
+
+<pre>
+#! /usr/bin/env python
+import struct,os,sys
+from select import select
+from socket import *
+import string
+SO_ORIGINAL_DST = 80
+PORT=8888
+SUBST = string.maketrans("oOeEiIlLtTgGbBsS","0033111177968855")
+
+
+def transform_server_pkts(l):
+    # return l.translate(SUBST)
+    return l
+
+
+def transform_client_pkts(l):
+    return l.replace("Cookie:","X-okie:")
+
+def do_child(t,client_ip,client_port):
+    # Child: relay the connection
+    pid = os.getpid()
+    # Get original destination
+    sockaddr_in = t.getsockopt(SOL_IP, SO_ORIGINAL_DST, 16)
+    server_port,server_ip = struct.unpack("!2xH4s8x", sockaddr_in)
+    server_ip = inet_ntoa(server_ip)
+    print >>sys.stderr, "[%5i] Got CNX [%s:%i]=>[%s:%i]" % (pid, client_ip, client_port, server_ip,server_port)
+    try:
+        s = socket( )
+        s.connect((server_ip,server_port)) # connect to the server
+
+        # now monitor receive events on both sockets in a loop:
+        while 1:
+            rcv,_,_ = select([s,t],[],[]) # we only monitor received events
+            for sk in rcv:
+                l = sk.recv(4096)
+                if not l:
+                    raise Exception("Connection closed by a peer")
+                if sk == s: # received from the server
+                    # l = l.translate(SUBST)
+                    l=transform_server_pkts(l)
+                    t.send(l)
+                    # pass
+                if sk == t: # received from the client
+                    l=transform_client_pkts(l)
+                    s.send(l)
+                # (s,t)[sk==s].send(l) # act as a proxy sending 'l' to the other socket
+
+    except Exception,msg:
+        print >>sys.stderr, "[%5i] %s" % (pid,msg)
+        pass
+    s.close( )
+    t.close( )
+    print >>sys.stderr, "[%5i] Closing" % pid
+
+
+
+
+s = socket( )
+s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+s.bind(("",PORT))
+s.listen(5)
+print >>sys.stderr, "Listening on port %i" % PORT
+while 1:
+    print >>sys.stderr, "main loop"
+    t,(client_ip,client_port) = s.accept( )
+    child_pid=os.fork()
+    if child_pid == 0:
+        do_child(t,client_ip,client_port)
+    t.close()
+s.close()
+
+
+
+
+# launch this script as 'madon2' !
+
+# to non local addresses:
+# iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to 8888
+
+# to local adresses:
+# iptables -t nat -I OUTPUT -m owner ! --uid-owner madon2 -p tcp --dport 80 -j REDIRECT --to 8888
+</pre>

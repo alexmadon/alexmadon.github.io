@@ -1,0 +1,18 @@
+---
+layout: post
+title: avconv audio convert
+date: '2013-07-23T03:16:00.001-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2013-07-23T03:16:50.388-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-3254756228737675168
+blogger_orig_url: http://tuxunix.blogspot.com/2013/07/avconv-audio-convert.html
+---
+
+avconv -i INPUT -map 0 -c:v libx264 -c:a copy OUTPUT<br />
+<br />
+avconv -i the_croods.mp4 -map 0 -c:v copy -c:a libmp3lame the_croods_mp3.mp4<br />
+<br />
+to have audio and video in sync:<br />
+<br />
+avconv -i the_croods.mp4 -map 0 -c:v copy -c:a libmp3lame -async 1 the_croods_mp3.mp4<br />

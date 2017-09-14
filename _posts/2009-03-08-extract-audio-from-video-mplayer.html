@@ -1,0 +1,34 @@
+---
+layout: post
+title: extract audio from video mplayer -dumpaudio
+date: '2009-03-08T10:05:00.000-07:00'
+author: atpic
+tags: unix 
+modified_time: '2009-03-08T11:30:38.792-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-3281648216883998605
+blogger_orig_url: http://tuxunix.blogspot.com/2009/03/extract-audio-from-video-mplayer.html
+---
+
+Extracting sound from a video, and save it as Mp3
+
+ffmpeg -i source_video.avi -vn -ar 44100 -ac 2 -ab 192 -f mp3 sound.mp3
+
+
+==============
+How to Convert a Flash Video File (.flv) to MP4 with FFMpeg
+convert a FLV to a MP4
+
+ ffmpeg -i votretoasttoreadorsongdmitrihvorostovsky__oqen57tva1s___youtube_.flv  -ar 22050 votretoasttoreadorsongdmitrihvorostovsky.mp4
+
+This basically says "Using ffmpeg, take the file FILE_NAME.flv, change the sample rate (this is the -ar 22050 part, and it makes a world of difference to the audio quality), and output a file called NEW_FILE_NAME in the mp4 format."
+
+============
+
+
+
+You can easily extract audio from video files such as avi, mpg, even flv! into mp3 
+uses either mplayer or ffmpeg. You can even record online stream into mp3, such as stream from radio cast.
+
+Lets begin with mplayer. To extract audio from video files, use -dumpaudio option and specified the output filename with -dumpfile
+
+mplayer -dumpaudio nodame_theme.flv -dumpfile nodame_theme.mp3

@@ -1,0 +1,39 @@
+---
+layout: post
+title: Flash FLV
+date: '2008-10-17T13:48:00.000-07:00'
+author: atpic
+tags: unix 
+modified_time: '2008-10-18T03:30:13.314-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-5887747028012437220
+blogger_orig_url: http://tuxunix.blogspot.com/2008/10/flvtool2-uv-20051210-w50s.html
+---
+
+Metadata:
+
+flvtool2 -Uv 20051210-w50s.flv 
+flvtool2 -P 20051210-w50s.flv
+
+or yamdi
+
+
+Encoding:
+
+
+ffmpeg -i better_MVI_5850.AVI -ar 22050 better_MVI_5850.flv
+
+
+ffmpeg -i MVI_5850.AVI -s 640x480 -b 2000000  -ar 22050 MVI_5850_640x480.flv
+
+
+Stream:
+
+http://people.apache.org/~pquerna/modules/mod_flvx.c
+
+
+Play:
+
+flvscrubber http://www.topfstedt.de/weblog/?page_id=208
+flowplayer http://sourceforge.net/projects/flowplayer/
+http://www.jeroenwijering.com/?item=JW_FLV_Player
+http://as3flvplayer.sourceforge.net/

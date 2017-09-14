@@ -1,0 +1,35 @@
+---
+layout: post
+title: utf8 and unicode
+date: '2010-02-06T02:43:00.000-08:00'
+author: atpic
+tags: scala 
+modified_time: '2010-02-06T02:56:10.855-08:00'
+blogger_id: tag:blogger.com,1999:blog-6398118045441905973.post-8128845883114759547
+blogger_orig_url: http://tuxscala.blogspot.com/2010/02/utf8.html
+---
+
+<pre>
+scala> val b="言語ツール"
+b: java.lang.String = 言語ツール
+
+scala> System.getProperty("file.encoding")  
+res2: java.lang.String = utf-8
+
+scala> print("\u8704")
+蜄
+scala> "%04X".format('ä'.toInt)
+res4: String = 00E4
+
+scala> val a='\u03B8'
+a: Char = θ
+
+scala> val a='θ'
+a: Char = θ
+
+scala> val b="Cet été-là"
+b: java.lang.String = Cet été-là
+
+
+
+</pre>

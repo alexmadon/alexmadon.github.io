@@ -1,0 +1,48 @@
+---
+layout: post
+title: virtualbox
+date: '2009-07-08T04:21:00.001-07:00'
+author: atpic
+tags: unix 
+modified_time: '2009-07-08T04:24:25.379-07:00'
+thumbnail: http://3.bp.blogspot.com/_6S0CHj_woAY/SlSBd1sdlaI/AAAAAAAAACs/_IlAB2g6tI0/s72-c/network_virtualbox.png
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-7451625312063733823
+blogger_orig_url: http://tuxunix.blogspot.com/2009/07/virtualbox_08.html
+---
+
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_6S0CHj_woAY/SlSBd1sdlaI/AAAAAAAAACs/_IlAB2g6tI0/s1600-h/network_virtualbox.png"><img style="float:left; margin:0 10px 10px 0;cursor:pointer; cursor:hand;width: 320px; height: 170px;" src="http://3.bp.blogspot.com/_6S0CHj_woAY/SlSBd1sdlaI/AAAAAAAAACs/_IlAB2g6tI0/s320/network_virtualbox.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5356048206480119202" /></a>
+virtualbox
+
+
+
+<pre>
+tunctl -u madon -t vbox0
+tunctl -u madon -t vbox1
+tunctl -u madon -t vbox2
+
+ip link set up dev vbox0
+ip link set up dev vbox1
+ip link set up dev vbox2
+
+# create a bridge
+brctl addbr br0
+
+
+brctl addif br0 vbox0
+brctl addif br0 vbox1
+brctl addif br0 vbox2
+brctl show
+
+ip link set up dev br0
+ip addr add 10.69.69.1/24 dev br0
+ip route add 10.69.69.0/24 dev br0
+ip route show
+
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+virtualnet="10.69.69.0/24"
+
+iptables -t nat -A POSTROUTING -s $virtualnet -j MASQUERADE
+
+
+</pre>

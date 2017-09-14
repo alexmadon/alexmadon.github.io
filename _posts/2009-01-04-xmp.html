@@ -1,0 +1,103 @@
+---
+layout: post
+title: xmp
+date: '2009-01-04T09:10:00.000-08:00'
+author: atpic
+tags: python 
+modified_time: '2009-01-04T09:41:50.057-08:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-4451021949052455331
+blogger_orig_url: http://tuxpython.blogspot.com/2009/01/xmp.html
+---
+
+http://code.google.com/p/python-xmp-toolkit/
+
+print:
+
+exiv2 -p x samples/sig05-002a.tif
+
+
+exiv2 -p x samples/sig05-002a.tif
+Xmp.tiff.PlanarConfiguration                 XmpText     1  1
+Xmp.tiff.Compression                         XmpText     1  1
+Xmp.tiff.ResolutionUnit                      XmpText     1  inch
+Xmp.tiff.YResolution                         XmpText     5  300
+Xmp.tiff.XResolution                         XmpText     5  300
+Xmp.tiff.SamplesPerPixel                     XmpText     1  3
+Xmp.tiff.PhotometricInterpretation           XmpText     1  2
+Xmp.tiff.ImageLength                         XmpText     4  2700
+Xmp.tiff.ImageWidth                          XmpText     4  2700
+Xmp.tiff.Orientation                         XmpText     1  top, left
+Xmp.tiff.NativeDigest                        XmpText   134  256,257,258,259,262,274,277,284,530,531,282,283,296,301,318,319,529,532,306,270,271,272,305,315,33432;5CD4C78DD55A18D02A5D7F749A7B80C4
+Xmp.tiff.BitsPerSample                       XmpSeq      3  8, 8, 8
+Xmp.xmp.CreatorTool                          XmpText    29  Adobe Photoshop CS2 Macintosh
+Xmp.xmp.ModifyDate                           XmpText    25  2007-08-28T17:41:21-07:00
+Xmp.xmp.foo                                  XmpText     1  1
+Xmp.xmp.SliderValue                          XmpText     1  0
+Xmp.xmp.MetadataDate                         XmpText    25  2008-04-10T10:17:15-07:00
+Xmp.xmp.CreateDate                           XmpText    25  2005-11-18T09:49:26-08:00
+
+
+
+save to a xmp file:
+
+exiv2 -e X sig05-002a.tif
+
+
+
+
+more  sig05-002a.xmp
+&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="XMP Core 4.1.1-Exiv2">
+ &lt;rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  &lt;rdf:Description rdf:about=""
+    xmlns:tiff="http://ns.adobe.com/tiff/1.0/"
+    xmlns:xap="http://ns.adobe.com/xap/1.0/"
+    xmlns:xapMM="http://ns.adobe.com/xap/1.0/mm/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:exif="http://ns.adobe.com/exif/1.0/"
+    xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/"
+    xmlns:avm="http://www.communicatingastronomy.org/avm/1.0/"
+    xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/"
+    xmlns:illustrator="http://ns.adobe.com/illustrator/1.0/"
+    xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/"
+    xmlns:xapRights="http://ns.adobe.com/xap/1.0/rights/"
+   tiff:SamplesPerPixel="3"
+   tiff:NativeDigest="256,257,258,259,262,274,277,284,530,531,282,283,296,301,318,319,529,532,306,270,271,272,305,315,33432;5CD4C78DD55A18D02
+A5D7F749A7B80C4"
+   tiff:ImageWidth="978"
+   tiff:ImageLength="839"
+   tiff:Compression="5"
+   tiff:PhotometricInterpretation="2"
+   tiff:Orientation="1"
+   tiff:SamplesPerPixe="3"
+   tiff:PlanarConfiguration="1"
+   tiff:XResolution="300/1"
+   tiff:YResolution="300/1"
+   tiff:ResolutionUnit="2"
+   tiff:DateTime="2007-08-28T17:41:21"
+   tiff:Software="Adobe Photoshop CS2 Macintosh"
+   xap:CreatorTool="Adobe Photoshop CS2 Macintosh"
+   xap:ModifyDate="2007-08-28T17:41:21-07:00"
+   xap:foo="1"
+   xap:SliderValue="0"
+   xap:MetadataDate="2008-04-10T10:17:15-07:00"
+   xap:CreateDate="2005-11-18T09:49:26-08:00"
+   xapMM:InstanceID="uuid:553DFCD9571F11DCA41DAD3DC3FD194D"
+   xapMM:DocumentID="adobe:docid:photoshop:9b89b7b4-d064-11d9-9f55-8b6c55130657"
+   dc:format="image/tiff"
+
+
+
+
+
+
+
+from libxmp import *
+XMPFiles.initialize()
+xmpfile = XMPFiles()
+xmpfile.open_file( 'samples/sig05-002a.tif', files.XMP_OPEN_READ )
+xmp = xmpfile.get_xmp()
+print xmp
+print xmp.serialize_to_str(use_compact_format=True, omit_packet_wrapper=True)
+xmpfile.close_file()
+XMPFiles.terminate()

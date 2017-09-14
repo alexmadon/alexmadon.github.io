@@ -1,0 +1,54 @@
+---
+layout: post
+title: python pg (postgresql)
+date: '2008-08-14T02:43:00.001-07:00'
+author: atpic
+tags: python 
+modified_time: '2008-08-14T02:45:24.164-07:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-1094375450938107037
+blogger_orig_url: http://tuxpython.blogspot.com/2008/08/python-connection-importing-module-pg.html
+---
+
+<h2>The Python connection<a name="auto10"></a></h2>
+Importing the module <code>pg</code> into a Python program gives us the same
+access to the postmaster server that we have with psql.
+
+Let's play with the pg module in the interactive mode.  The first thing we
+must do in our program is to establish a connection to a database. Here is an
+example. (<code>&gt;&gt;&gt;</code> is Python's prompt)
+<pre>&gt;&gt;&gt; import pg
+
+&gt;&gt;&gt; conn = pg.connect(dbname="school", host="localhost", user="postgres")</pre>
+Remember that the postmaster server is running on our local machine with
+the <code>-i localhost</code> switch. If your situation is different then you
+would specify the actual computer in the <code>host</code> parameter.
+
+With a database connection we can perform querys just like with psql.  Let's
+do one.
+<pre>&gt;&gt;&gt; result = conn.query("select * from course")
+&gt;&gt;&gt; print result
+number|name                |credits|teacherid
+------+--------------------+-------+---------
+   101|Algebra I           |      5|     1003
+   201|Algebra II          |      5|     1002
+   150|World History       |      2|     1001
+   301|Calculus            |      5|     1002
+   314|Computer Programming|      4|     1001
+   204|Spanish II          |      3|     1003
+(6 rows)</pre>
+Now, this is nice but we will want to manipulate the results of the query, not
+just print them in this somewhat hokey table format. Happily,
+<code>result</code> is an object with attributes and methods that let us access
+the data as Python values. In fact its <code>__str__</code> method produces the
+output above. One of the most useful methods is
+
+<code>dictresult</code> which returns a list of dictionaries. Each dictionary
+represents a row.
+<pre>&gt;&gt;&gt; print result.dictresult()
+[{'number': 101, 'name': 'Algebra I', 'credits': 5, 'teacherid': 1003},
+{'number': 201, 'name': 'Algebra II', 'credits': 5, 'teacherid': 1002},
+{'number': 150, 'name': 'World History', 'credits': 2, 'teacherid': 1001},
+{'number': 301, 'name': 'Calculus', 'credits': 5, 'teacherid': 1002},
+{'number': 314, 'name': 'Computer Programming','credits': 4, 'teacherid': 1001},
+{'number': 204, 'name': 'Spanish II', 'credits': 3, 'teacherid': 1003}]
+&gt;&gt;&gt;</pre>

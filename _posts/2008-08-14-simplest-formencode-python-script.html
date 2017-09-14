@@ -1,0 +1,34 @@
+---
+layout: post
+title: simplest formencode python script
+date: '2008-08-14T02:44:00.001-07:00'
+author: atpic
+tags: python 
+modified_time: '2008-08-14T02:49:01.800-07:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-590525034714950630
+blogger_orig_url: http://tuxpython.blogspot.com/2008/08/simplest-formencode-python-script.html
+---
+
+<pre>import formencode
+
+class UserForm(formencode.Schema):
+    username=formencode.validators.PlainText(not_empty=True)
+    age=formencode.validators.Int(not_empty=True)
+    email=formencode.validators.Email()
+    
+def TestInput(InputDict):
+    schema=UserForm()
+    print "====TESTING===="
+    try:
+        form_data = schema.to_python(InputDict)
+        print "OK:"
+        print str(form_data)
+    except formencode.Invalid, error:
+        print "Error:"
+        print "errorvalue %s" % error.value
+        print str(error.error_dict)
+        print error
+        
+TestInput({'username':'99.23','age':'102'})
+TestInput({'username':'bob','age':'102'})
+</pre>

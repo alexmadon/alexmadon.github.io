@@ -1,0 +1,37 @@
+---
+layout: post
+title: hard sub forced subtitles with avconv
+date: '2012-11-23T16:25:00.003-08:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2012-11-23T16:50:23.921-08:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-8735937950627459860
+blogger_orig_url: http://tuxunix.blogspot.com/2012/11/hard-sub-forced-subtitles-with-avconv.html
+---
+
+avconv does not seem to support hard sub yet, so here is what I do, in three steps:<br />
+<br />
+<br />
+avconv -i tuhhe_dekha.webm  -vb 3000k tuhhe_dekha.avi<br />
+<br />
+mencoder tuhhe_dekha.avi  -sub  tuhhe_dekha3.srt -o OUTPUT.avi -oac copy -ovc lavc -lavcopts vbitrate=3000<br />
+<br />
+avconv -i OUTPUT.avi -strict experimental tuhhe_dekha.mp4<br />
+<br />
+<br />
+or with Chinese fonts:<br />
+<br />
+root@acer:/etc#  locale-gen<br />
+Generating locales (this might take a while)...<br />
+  ar_MA.UTF-8... done<br />
+  en_GB.UTF-8... done<br />
+  en_US.UTF-8... done<br />
+  ja_JP.UTF-8... done<br />
+  zh_CN.UTF-8... done<br />
+Generation complete.<br />
+<br />
+export LC_CTYPE=zh_CN.UTF-8<br />
+<br />
+avconv -i tuhhe_dekha.webm  -vb 3000k tuhhe_dekha.avi<br />
+mencoder tuhhe_dekha.avi -utf8 -font /usr/share/fonts/truetype/unifont/unifont.ttf -sub  tuhhe_dekha3.srt -o OUTPUT.avi -oac copy -ovc lavc -lavcopts vbitrate=3000<br />
+avconv -i OUTPUT.avi -strict experimental tuhhe_dekha.mp4<br />

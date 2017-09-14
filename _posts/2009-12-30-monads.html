@@ -1,0 +1,43 @@
+---
+layout: post
+title: monads
+date: '2009-12-30T02:04:00.000-08:00'
+author: atpic
+tags: scala 
+modified_time: '2009-12-30T07:15:06.470-08:00'
+blogger_id: tag:blogger.com,1999:blog-6398118045441905973.post-2602401032270828175
+blogger_orig_url: http://tuxscala.blogspot.com/2009/12/monads.html
+---
+
+What is a collection?
+<br>
+MonadicDesignPatternsForTheWeb.pdf
+<br>
+The fact is these are just two syntaxes for one
+underlying language for denoting collections
+<br>
+In maths:
+<pre>
+{ x in D | C1(x), C2(x), ..., Cn(x) }
+</pre>
+
+In SQL:
+<pre>
+select x from D where C1(x) and ... and Cn(x)
+</pre>
+
+In scala
+<pre>
+for( x <- D if C1(x) && ... && Cn( x ) ) yield x
+</pre>
+
+
+Example:
+<pre>
+scala> for (i <- List.range(1,10)) yield i*2 
+res7: List[Int] = List(2, 4, 6, 8, 10, 12, 14, 16, 18)
+</pre>
+
+http://james-iry.blogspot.com/2007/09/monads-are-elephants-part-1.html
+<br>
+A higher order function is a function that takes a function as a parameter or returns a function as a result. <b>Monads are containers which have several higher order functions defined.</b> Or, since we're talking about Scala, monads have several higher order methods. One such method is <b>map</b>.

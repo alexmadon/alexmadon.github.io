@@ -1,0 +1,41 @@
+---
+layout: post
+title: canon powershot video compression
+date: '2008-10-16T09:08:00.000-07:00'
+author: atpic
+tags: unix 
+modified_time: '2008-10-16T09:09:40.275-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-6593143650520549125
+blogger_orig_url: http://tuxunix.blogspot.com/2008/10/canon-powershot-video-compression.html
+---
+
+Use the script below to re-encode your Canon Powershot videos.
+
+
+<pre>
+# $1 is a video file name or dvd://
+# $2 is the output file
+# for file in *AVI; do bash 0make1 $file better_$file; done
+
+mencoder  $1 \
+-passlogfile totoa1.log \
+-o /dev/null \
+-oac copy \
+-ovc lavc \
+-lavcopts vcodec=mpeg4:vbitrate=863:vhq:turbo:vpass=1 \
+-vf scale=640:-2 
+
+
+#-endpos 8:00 \
+
+mencoder $1 \
+-passlogfile totoa1.log \
+-o $2 \
+-oac copy \
+-ovc lavc \
+-lavcopts vcodec=mpeg4:vbitrate=863:vhq:vpass=2 \
+-vf scale=640:-2 
+
+
+#-endpos 8:00 \
+</pre>

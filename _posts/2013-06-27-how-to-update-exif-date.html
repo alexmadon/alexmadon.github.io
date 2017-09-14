@@ -1,0 +1,23 @@
+---
+layout: post
+title: how to update the exif date?
+date: '2013-06-27T14:14:00.003-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2013-06-27T14:14:47.774-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-5976396001433790865
+blogger_orig_url: http://tuxunix.blogspot.com/2013/06/how-to-update-exif-date.html
+---
+
+exiftool<br />
+<br />
+This utility has more options than jhead and is very comprehensive, as noted at the official site. There is a graphical frontend for exiftool in development, but it is in the early stages at the moment, but looks promising.<br />
+<br />
+The date and time shifting options, and which formats can be used are quite extensive, as detailed here in this useful pdf. As with jhead, you can decide to change time and date, or just date. This example changes both date and time:<br />
+<br />
+<pre>exiftool -AllDates="2012:03:14 12:25:00" *.jpg
+</pre>The example above just sets a particular value for the date and times of the pictures; if you wanted to just shift them all by a certain time index, such as the three years forward, you could use:<br />
+<pre>exiftool -AllDates+="3:0:0 0" *.jpg
+</pre>The shifting feature can be very useful if, as has happened to you, your pictures are all suddenly marked 2009, even though they were taken in 2012. Make sure you use a plus or minus sign before the equals (as in -AllDates-= or -AllDates+=), depending on what you want to achieve when you assign your required time index, or the resulting EXIF data will not be as expected.<br />
+<br />
+Exiftool will create a backup of the original before editing the EXIF data.

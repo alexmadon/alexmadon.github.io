@@ -1,0 +1,86 @@
+---
+layout: post
+title: raster to vector with potrace
+date: '2013-11-07T06:11:00.003-08:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2013-11-07T06:11:39.874-08:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-4735012294965820681
+blogger_orig_url: http://tuxunix.blogspot.com/2013/11/raster-to-vector-with-potrace.html
+---
+
+http://commons.wikimedia.org/wiki/Commons:Ancient_Chinese_characters:Linux_tutorialsession=""<br />
+token=""<br />
+user=""<br />
+userid=""<br />
+<br />
+char=`basename $PWD`<br />
+<br />
+for file in *gif<br />
+do<br />
+<br />
+    echo "----------------------"<br />
+    gifbase=`basename $file .gif` <br />
+    width=`identify -format '%w' $gifbase.gif`<br />
+    height=`identify -format '%h' $gifbase.gif`<br />
+    echo "size $width x $height"<br />
+    if [ "$width" -gt "$height" ] <br />
+    then<br />
+        max=$width<br />
+    else<br />
+        max=$height<br />
+    fi<br />
+    echo "Max is $max"<br />
+    # convert the GIF to a squared centered BMP image <br />
+    # which side is the largest of the width and height of the GIF<br />
+    convert \( -size $max\x$max xc:white \) \<br />
+        \( -filter lanczos -size x$max $gifbase.gif \) \<br />
+        -gravity center -composite +repage $gifbase.bmp<br />
+            <br />
+    potrace -s $gifbase.bmp<br />
+    rm $gifbase.bmp<br />
+    <br />
+    <br />
+    case "$gifbase" in<br />
+        j*) echo "oracle"<br />
+            description="{{ "{{" }}ACClicense|$char|oracle|oracle|$gifbase|}}"<br />
+            filen="oracle"<br />
+            ;;<br />
+        s*) echo "seal"<br />
+            description="{{ "{{" }}ACClicense|$char|seal|seal|$gifbase||}}"<br />
+            filen="seal"<br />
+            ;;<br />
+        L*) echo "bigseal"<br />
+            description="{{ "{{" }}ACClicense|$char|bigseal|Great seal|$gifbase||}}"<br />
+            filen="bigseal"<br />
+            ;;<br />
+        b*) echo "bronze"<br />
+            description="{{ "{{" }}ACClicense|$char|bronze|bronze|$gifbase|}}"<br />
+            filen="bronze"<br />
+            ;;<br />
+    esac<br />
+    echo $description<br />
+    rm -f $char-$filen.svg<br />
+    ln -s $gifbase.svg $char-$filen.svg<br />
+    # repost: wpIgnoreWarning wpForReUpload=1<br />
+    curl -v \<br />
+        -L \<br />
+        -H "Cookie: commonswikiToken=$token; commonswikiUserName=$user; commonswikiUserID=$userid; commonswiki_session=$session" \<br />
+        -F "wpUploadFile=@$char-$filen.svg;type=image/svg+xml" \<br />
+        --form-string "wpSourceType=file" \<br />
+        --form-string "wpDestFile=$char-$filen.svg" \<br />
+        --form-string "wpUploadDescription=$description" \<br />
+        --form-string "wpIgnoreWarning=true" \<br />
+        --form-string "wpUpload=Upload file" \<br />
+        --form-string "wpDestFileWarningAck=" \<br />
+        --form-string "wpForReUpload=1" \<br />
+        -H "User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.22) Gecko/20090605 Iceape/1.1.17 (Debian-1.1.17-1)" \<br />
+        -H "Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5" \<br />
+        -H "Accept-Language: en-us,en;q=0.5" \<br />
+        -H "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7" \<br />
+        -H "Keep-Alive: 300" \<br />
+        -H "Expect: " \<br />
+        "http://commons.wikimedia.org/wiki/Special:Upload"<br />
+<br />
+    <br />
+done

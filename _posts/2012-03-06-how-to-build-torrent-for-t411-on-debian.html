@@ -1,0 +1,19 @@
+---
+layout: post
+title: how to build a torrent for t411 on debian linux?
+date: '2012-03-06T13:34:00.001-08:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2016-09-09T07:13:19.897-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-4081363441236820314
+blogger_orig_url: http://tuxunix.blogspot.com/2012/03/how-to-build-torrent-for-t411-on-debian.html
+---
+
+buildtorrent -a http://tracker.t411.me:56969/ my_film_dir my_film_dir.torrent   mediainfo *avi &gt; file.NFO<br />
+<br />
+<br />
+<br />
+check connectivity to tracker:<br />
+<br />
+nc -vv -zu t411.download 80<br />
+Connection to t411.download 80 port [udp/http] succeeded!<br />

@@ -1,0 +1,55 @@
+---
+layout: post
+title: acer aspire one with slow disk? linux
+date: '2012-11-11T14:58:00.002-08:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2012-11-11T14:58:36.841-08:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-6022960127333545595
+blogger_orig_url: http://tuxunix.blogspot.com/2012/11/acer-aspire-one-with-slkow-disk-linux.html
+---
+
+https://bbs.archlinux.org/viewtopic.php?id=113516<br />
+<br />
+you can reduce clicking and spindowns with<br />
+<br />
+hdparm -B 255 /dev/sdX<br />
+<br />
+if your hdd supports SMART. Also see 'man hdparm'.<br />
+<br />
+also mount options:<br />
+<br />
+noatime,commit=60<br />
+<br />
+http://www.tummy.com/Community/Articles/isolating-heavy-load/<br />
+<br />
+iotop<br />
+and<br />
+<br />
+Vmstat<br />
+<br />
+Next I will often run "vmstat 1", which prints out statistics every second on the system utilization. The first line is the average since the system was last booted:<br />
+<br />
+denver-database:~ # vmstat 1<br />
+procs ---------memory---------- --swap-- --io--- -system-- -----cpu-----<br />
+r  b swpd   free   buff  cache  si  so  bi  bo   in   cs  us sy id wa st<br />
+0  0  116 158096 259308 3083748   0   0  47  39   30   58 11  8 76  5  0<br />
+2  0  116 158220 259308 3083748   0   0   0   0 1706 4899 22 14 64  0  0<br />
+1  0  116 158220 259308 3083748   0   0   0 276 1435 1490  4  2 93  0  0<br />
+0  0  116 158220 259308 3083748   0   0   0   0 1502 1569  5  3 92  0  0<br />
+0  0  116 158220 259308 3083748   0   0   0 892 1394 1529  2  1 97  0  0<br />
+1  0  116 158592 259308 3083748   0   0   0 216 1702 1825  8  7 84  1  0<br />
+0  0  116 158344 259308 3083748   0   0   0 368 1465 1461  8  7 84  0  0<br />
+0  0  116 158344 259308 3083748   0   0   0 940 1992 2115  2  2 95  0  0<br />
+0  0  116 158344 259308 3083748   0   0   0 240 1906 1982  6  7 87  0  0<br />
+<br />
+The first thing I'll look at here is the "wa" column; the mount of CPU time spent waiting. If this is high you almost certainly have something hitting the disc hard.<br />
+<br />
+If the "wa" is high, the next thing I'd look at is the "swap" columns "si" and "so". If these are much above 0 on a regular basis, it probably means you're out of memory and the system is swapping. Since RAM is around a million times faster than a hard drive (10ns instead of 10ms), swapping much can cause the system to really grind to a halt. Note however that some swapping, particularly swapping out, is normal.<br />
+<br />
+Next I'd look at the "id" column under "cpu" for the amount of idle CPU time. If this is around 0, it means the CPU is heavily used. If it is, the "sy" and "us" columns tell us how much time is being used by the kernel and user-space processes.<br />
+<br />
+If CPU "sy" time is high, this can often indicate that there are some large directories (say a user's "spam" mail directory) with hundreds of thousand or millions of entries, or other large directory trees. Another common cause of high "sy" CPU time is the system firewall: iptables. There are other causes of course but these seem to be the primary ones.<br />
+<br />
+If CPU "us" is high, that's easy to track down with "top". <br />
+<br />

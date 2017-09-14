@@ -1,0 +1,35 @@
+---
+layout: post
+title: maki
+date: '2008-12-24T08:18:00.000-08:00'
+author: atpic
+tags: python 
+modified_time: '2008-12-24T08:22:04.147-08:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-9024450935376198990
+blogger_orig_url: http://tuxpython.blogspot.com/2008/12/maki.html
+---
+
+httpd.conf
+==========
+AddHandler python-program .py
+PythonHandler spb.mod_pythonMakiHandler
+Action maki /maki.py
+
+&lt;VirtualHost 127.0.0.1:80>
+   ServerName maki.foo
+   DocumentRoot /maki
+   &lt;Directory "/">
+    AddHandler maki .xml
+    Options Indexes
+   &lt;/Directory>
+&lt;/VirtualHost>
+
+
+
+INSTALL.py
+===========
+
+MAKI_DIR="/makistore"
+DOC_DIR="/maki"
+WEB_USER="nobody"
+MODULE_DIR="/usr/lib/python2.5"

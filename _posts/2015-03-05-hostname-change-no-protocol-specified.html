@@ -1,0 +1,33 @@
+---
+layout: post
+title: hostname change No protocol specified Cannot open display ":0.0"
+date: '2015-03-05T05:33:00.001-08:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2015-03-05T05:33:27.135-08:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-5882181047743124910
+blogger_orig_url: http://tuxunix.blogspot.com/2015/03/hostname-change-no-protocol-specified.html
+---
+
+su -<br />
+emacs <br />
+<br />
+fails with:<br />
+<br />
+No protocol specified <br />
+Cannot open display ":0.0"<br />
+<br />
+<br />
+<br />
+or<br />
+<br />
+<br />
+<br />
+<br />
+Invalid MIT-MAGIC-COOKIE-1 keyCannot open display ":0.0"<br />
+<br />
+<br />
+solution:<br />
+<br />
+<br />
+root@madona:~# cp /home/madon/.Xauthority /root<br />

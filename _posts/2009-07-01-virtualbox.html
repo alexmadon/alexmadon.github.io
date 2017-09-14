@@ -1,0 +1,280 @@
+---
+layout: post
+title: virtualbox
+date: '2009-07-01T03:10:00.000-07:00'
+author: atpic
+tags: unix 
+modified_time: '2009-07-01T03:15:29.574-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-8634679340003521845
+blogger_orig_url: http://tuxunix.blogspot.com/2009/07/virtualbox.html
+---
+
+<div class="wikipage">
+    <div id="searchable"><h1 id="AdvancedNetworksettingsforLinux">Advanced Network settings for Linux </h1>
+<p>
+Contributed by Jean-Jacques Sarton, 2007/03/21
+</p>
+<p>
+The virtual machine may be fully integrated into the network and you may have access between all virtual machine and the host if you do a little bit more.
+</p>
+<p>
+A bridge can contain only one physical/virtual device. So you can create your bridge as follow:
+</p>
+<pre class="wiki">#!/bin/sh
+# set PATH for the case we are called via sudo or su root
+
+PATH=/sbin:/usr/bin:/bin:/usr/bin
+
+# create a tap
+tunctl -t tap1 -u &lt;user&gt;
+ip link set up dev tap1
+f
+# create the bridge
+brctl addbr br0
+brctl addif br0 tap1
+
+# set the IP address and routing
+ip link set up dev br0
+ip addr add 10.1.1.1/24 dev br0
+ip route add 10.1.1.0/24 dev br0
+</pre><p>
+With this code you will be able to contact the virtual machine attached to the Host Interface tap1 from the host and the host from the virtual machine.
+The IP adress should not conflict with the main IP address of your PC which will probably been within the range 192.168.0.0/16.
+</p>
+<p>
+With these settings we will not have an access to the external world from the virtual machine. How to do this will be explained later.
+</p>
+<p>
+If we plan to use more as one virtual machine we can add further tap devices to the bridge. The script can be modified as follow:
+</p>
+<pre class="wiki">#!/bin/sh
+# set PATH for the case we are called via sudo or su root
+
+PATH=/sbin:/usr/bin:/bin:/usr/bin
+USER=&lt;name of the vm user&gt;
+
+NUMBER_OF_VM
+# create the bridge
+brctl addbr br0
+
+# create the taps and insert them into the bridge
+
+NB=1
+while [ $NB -lt $NUMBER_OF_VM
+do
+   tunctl -t tap$NB -u $USER
+   ip link set up dev tap$NB
+   brctl addif br0 tap$NB
+   let NB=$NB+1
+done
+
+# set the IP address and routing
+ip link set up dev br0
+ip addr add 10.1.1.1/24 dev br0
+ip route add 10.1.1.0/24 dev br0
+</pre><p>
+Now we will be able to start the virtual machines 1 to n, the virtual machine
+are to be attached to tap1, tap2, ...tapn.
+</p>
+<p>
+Settings within the virtual machines. You may use the tools provided by the guest system in order to configure the device used for the network connection or set the ip address manually or via a script. On linux the commands which are to be called manually are:
+</p>
+<pre class="wiki">ip link set up dev eth0
+ip addr add 10.1.1.2/24 dev eth0
+ip route add default via 10.1.1.1 dev eth0
+</pre><p>
+You must also edit the file /etc/resolv.conf in order to be able to resolve network names such as www.virtualbox.org or local names. The content of this file can be the same as for the resolv.conf file on your computer.
+</p>
+<p>
+You may also assign the address via DHCP, in this case the dhcpd daemon must work on the host machine.
+A simple configuration shall look as follow:
+</p>
+<pre class="wiki">ddns-update-style interim;
+ignore client-updates;
+
+subnet 10.1.1.0 netmask 255.255.255.0 {
+
+# --- default gateway
+ option routers   10.1.1.1;
+ option subnet-mask  255.255.255.0;
+
+ option domain-name  "domain.org";
+ option domain-name-servers 10.1.1.1;
+
+# option ntp-servers  10.1.1.1;
+
+ range dynamic-bootp 10.1.1.2 10.1.1.254;
+ default-lease-time 21600;
+ max-lease-time 43200;
+}
+</pre><p>
+If you want to use zeroConf rendez-vous/Bonjour for automatic setting of the IP address for the guests you shout use an addres in the range 169.254.0.0/16 for the host eg 169.254.0.1.
+</p>
+<p>
+<h4>Connecting the internal network to the world.</h4>
+</p>
+<p>
+With the above scenario we don't have access to the wide world and will not
+ne able to update a guest system or download anythings. In order ot get this working we must configure the main system so that it do NAT.
+</p>
+<p>
+The simplest way should be to insert the interface used for the connection to the internet and using the dhcp server provided by the router (if you are attached to the internet via a DSL router). I we do so, all systems can reach the web and you may surf or download files within your virtual machine.
+</p>
+<p>
+If you want that the machine are not normally connected to the wide world
+you can set you host machine (and unset it) for a temporary connection
+to the world.
+</p>
+<p>
+Setting NAT can be do with the following code
+</p>
+<pre class="wiki">INTIF="br0"
+EXTIF="eth0"
+echo 1 &gt; /proc/sys/net/ipv4/ip_forward
+
+# clear existing iptable rules, set a default policy
+iptables -P INPUT ACCEPT
+iptables -F INPUT 
+iptables -P OUTPUT ACCEPT
+iptables -F OUTPUT 
+iptables -P FORWARD DROP
+iptables -F FORWARD 
+iptables -t nat -F
+
+# set forwarding and nat rules
+iptables -A FORWARD -i $EXTIF -o $INTIF -j ACCEPT
+iptables -A FORWARD -i $INTIF -o $EXTIF -j ACCEPT
+iptables -t nat -A POSTROUTING -o $EXTIF -j MASQUERADE
+
+Setting will be do with
+
+# clear existing iptable rules, set a default policy
+iptables -P INPUT ACCEPT
+iptables -F INPUT 
+iptables -P OUTPUT ACCEPT
+iptables -F OUTPUT 
+iptables -P FORWARD DROP
+iptables -F FORWARD 
+iptables -t nat -F
+
+# disable forwarding
+echo 0 &gt; /proc/sys/net/ipv4/ip_forward
+echo 1 &gt; /proc/sys/net/ipv4/ip_dynaddr
+</pre><p>
+If a firewall is already installed you may also enable/disable the access to the internet calling:
+</p>
+<pre class="wiki"># insert NAT rule
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+# enable forwarding
+echo 1 &gt; /proc/sys/net/ipv4/ip_forward
+</pre><p>
+and disabling the internet access with:
+</p>
+<pre class="wiki"># remove NAT rule
+iptables -t nat -F
+# disable forwarding
+echo 0 &gt; /proc/sys/net/ipv4/ip_forward
+</pre><p>
+<h4>Connection via Ipv6</h4>
+</p>
+<p>
+Since the Ipv6 Address range is limited to approximately 3.5<sup>9</sup> addresses and most of them are already used, the next generation of the Internet protocol was developed. A major advantage of Ipv6 is that there are enough room for providing all systems with unique and  world wide valid without the need of special thinks as NAT or STUN. With the advance of technology and use of IP based services for computers, IP-based telephones and so on the need of an extended range of IP address increase considerably.
+</p>
+<p>
+With IPv6 the full connectivity to the net will become real and  the communication between different systems will be easier.
+</p>
+<p>
+All major OS (BSD, Linux Mac OS X and other UNIX like systems support actually IPv6. This is also the case for Windows Vista and Windows XP (on XP you may need some supplements from Microsoft).
+</p>
+<p>
+If you have a connection to the IPv6 world via a provider as SIXXS.NET or
+use 6to4 (Protocol 41) you will get an IPv6 main Address and have the possibility to use own segments for your local network. Each of the systems will be connected to the IPv6 network without the need of NAT and so on.
+</p>
+<p>
+For this case we assume that you will try IPv6 on a virtual machine and
+get your first experiences with IPv6 based network.
+</p>
+<p>
+A further assumption is that you have a fix IPv6 address from sixxs.net or an other supplier and also the ability to configure your own segment.
+</p>
+<p>
+The address you will get may look as 2001:XXXX:YYYY:ZZZZ::2 (XXXX, YYYY ans ZZZZ are hexadecimal coded values). This will be the main address for connection to IPv6 via a tunnel. If your supplier provide you with the ability to use segments you will get the main part of the IPv6 Address you may use (Prefix) and this should be 2001:XXXX:SSSS::/48 XXXX. You can with this use the prefixes 2001:XXXX:SSSS:0000::/64 up to 2001:XXXX:SSSS:ffff::/64 within your IPv6 network.
+</p>
+<p>
+For the bridge you will need an own interface or tap device, it shall not be connected to your main interface port.
+</p>
+<p>
+A script for setting the bridge look as for the example above, there are only a fews differences.
+</p>
+<pre class="wiki">#!/bin/sh
+# set PATH for the case we are called via sudo or su root
+
+PATH=/sbin:/usr/bin:/bin:/usr/bin
+
+# create a tap
+tunctl -t tap1 -u &lt;user&gt;
+ip link set up dev tap1
+
+# create the bridge
+brctl addbr br0
+brctl addif br0 tap1
+
+# set the IP address and routing
+ip link set up dev br0
+ip -6 addr add 2001:XXXX:SSSS:1::1/64 dev br0
+ip -6 route add 2001:XXXX:SSSS:1:/64 dev br0
+</pre><p>
+On the virtual machine you can use the automatic router and ip setting feature  provided by IPv6. In this case you should install radvd (provided by most Linux distributions) and modify the file /etc/radvd.conf:
+</p>
+<pre class="wiki">interface br0
+{
+       AdvSendAdvert on;
+       MinRtrAdvInterval 30;
+       MaxRtrAdvInterval 100;
+       prefix 2001:XXXX:SSSS:1::/64
+       {
+            AdvOnLink on;
+            AdvAutonomous on;
+            AdvRouterAddr on;
+       };
+};
+</pre><p>
+The interface (br0) and the IPv6 prefix must be modified, the other values are normally OK.
+</p>
+<p>
+On the virtual host you must not do anythings, the IPv6 Address and the routing will be set automatically. The only problem is that DNS will not work.
+You may reach other host within the IPv6 net if you use the IPv6 Address directly.
+On Linux and UNIX like systems you can solve the DNS problem if you put into the file /etc/resolv.conf the IPv6 address of the name server. Your DNS server will probably not have an IPv6 Address and your virtual host will not
+deal with Ipv4 Addresses.
+In order to solve this problem you can download ptrtd and totd. After compiling, configuring then and starting them you must only edit the /etc/resolv.conf file and put there the line nameserver 2001:XXXX:SSSS:1::1
+to this file and you will have full connection to the Ipv4 and Ipv6 worlds.
+Totd (Trick or Treat Daemon)  <a class="ext-link" href="ftp://ftp.pasta.cs.uit.no/pub/Vermicelli"><span class="icon">ftp://ftp.pasta.cs.uit.no/pub/Vermicelli</span></a> is a caching nameserver which look first fo IPv6 addresses and if there is  no such
+address look for the IPv4 address and build an IPv6 address which will have the configured prefix.
+Ptrtd (Portable Transport Relay Translator Daemon) hear recponize such address and translate the IPv6 ethernet frames to IPv4 Frames and for frames returned from the outside convert them to IPv6.
+</p>
+<p>
+Compiling Totd may fail, but you can fix this if you edit the file Makefile and delete the option -Werror.
+Totd is normally installed under /usr/local/sbin and expect the configurations file totd.conf under the directory /usr/local/etc.
+This file shall contain the following:
+</p>
+<pre class="wiki">forwarder YOUR_IPv4_ADDRESS
+prefix 2001:XXX:SSS:N::
+pidfile /var/run/totd.pid
+</pre><p>
+YOUR_IPv4_ADDRESS and 2001:XXX:SSS:N:: are to be replaced with proper values, N is the segment number for translated IPv4 addresses and may be for example 4.
+</p>
+<p>
+For ptrtd there is no configuration file, so you must start it as follow:
+</p>
+<pre class="wiki">ptrtd -p 2001:XXX:SSS:N:: 
+</pre><p>
+Name resolution for you IPv6 Network
+</p>
+<p>
+The easiest way is to run avahi on your host and on the guest systems the corresponding service. Avahi is the Zeroconf implementation on Linux and is available on the most recent distributions. <a class="missing wiki" href="/wiki/ZeroConf" rel="nofollow">ZeroConf?</a> was originally developed by Apple and is available under Mac OSX. 
+Under Linux you shall edit the file /etc/nsswitch.conf and modify the hosts line according the following:
+hosts:        files dns mdns6
+This shall be done for the host system and the Linux virtual machine. Please refer also to the avahi documentation.
+</p>
+</div>
+   </div>

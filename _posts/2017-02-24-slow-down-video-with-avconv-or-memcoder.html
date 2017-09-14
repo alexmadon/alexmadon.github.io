@@ -1,0 +1,113 @@
+---
+layout: post
+title: slow down a video with avconv or memcoder
+date: '2017-02-24T11:45:00.001-08:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2017-02-24T11:46:01.681-08:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-449836816564193618
+blogger_orig_url: http://tuxunix.blogspot.com/2017/02/slow-down-video-with-avconv-or-memcoder.html
+---
+
+ Slow motion a video with preserved sound pitch and save to file <br />
+<br />
+<br />
+http://jorgenmodin.net/index_html/archive/2009/12/06/slow-motion-a-video-and-save-to-file<br />
+<br />
+<br />
+First to slow down the video to half speed, use mencoder, part of mplayer:<br />
+<br />
+mencoder -ovc copy -oac mp3lame -speed 0.5  normal.mp4 -o slow.mp4<br />
+<br />
+***************************<br />
+<br />
+Slow motion a video with preserved sound pitch and save to file<br />
+published Dec 06, 2009 05:20   by admin ( last modified Nov 09, 2012 11:57 )<br />
+<br />
+This guide shows you, on Linux,  how to make a slow motion video of an mp4 video (in this case downloaded from Youtube), with the pitch of the sound intact. There is probably a one-line command to do this in mencoder, ffmpeg or vlc, if so please enlighten me. This guide starts with a terse summary, and then continues with a more verbose explanation.<br />
+Summary<br />
+<br />
+You need:<br />
+<br />
+mencoder (part of mplayer)<br />
+<br />
+ffmpeg<br />
+sox<br />
+<br />
+All are open source and freely downloadable.<br />
+<br />
+Assume the video is called "normal.mp4", that should be made into a slow motion video called "slomo.mp4", with the pitch intact so we do not get those grovelling noises.<br />
+<br />
+First to slow down the video to half speed, use mencoder, part of mplayer:<br />
+<br />
+mencoder -ovc copy -oac mp3lame -speed 0.5  normal.mp4 -o slow.mp4<br />
+<br />
+Extract the sound with ffmpeg:<br />
+<br />
+ffmpeg -vn  -i slow.mp4 slow.wav<br />
+<br />
+You may now discard the slow.mp4 file.<br />
+<br />
+Pitch it up:<br />
+<br />
+sox slow.wav slow_but_pitched_up.wav pitch 1200<br />
+<br />
+Make a slow version of normal.mp4 with no sound:<br />
+<br />
+mencoder -ovc copy -nosound -speed 0.5  normal.mp4 -o slow_no_sound.mp4<br />
+<br />
+You can put sound and video together with with mencoder:<br />
+<br />
+mencoder -ovc copy -audiofile slow_but_pitched_up.wav -oac faac slownosound.mp4 -o slomo.mp4<br />
+<br />
+or use ffmpeg:<br />
+<br />
+ffmpeg -i slownosound.mp4 -i slow_but_pitched_up.wav -map 0.0 -map 1.0 slomo.asf<br />
+<br />
+(the sound needs to be compressed above, methinks)<br />
+<br />
+If you can make an mp4 file instead of an asf file, so much better. On my machine it complained about not having the correct codec for sound; I am still looking into that<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+https://trac.ffmpeg.org/wiki/How%20to%20speed%20up%20/%20slow%20down%20a%20video<br />
+<br />
+<br />
+Speeding up/slowing down video<br />
+<br />
+You can change the speed of a video stream using the ​setpts video filter. Note that in the following examples, the audio stream is not changed, so it should ideally be disabled with -an.<br />
+<br />
+To double the speed of the video, you can use:<br />
+<br />
+ffmpeg -i input.mkv -filter:v "setpts=0.5*PTS" output.mkv<br />
+<br />
+The filter works by changing the presentation timestamp (PTS) of each video frame. For example, if there are two succesive frames shown at timestamps 1 and 2, and you want to speed up the video, those timestamps need to become 0.5 and 1, respectively. Thus, we have to multiply them by 0.5.<br />
+<br />
+Note that this method will drop frames to achieve the desired speed. You can avoid dropped frames by specifying a higher output frame rate than the input. For example, to go from an input of 4 FPS to one that is sped up to 4x that (16 FPS):<br />
+<br />
+ffmpeg -i input.mkv -r 16 -filter:v "setpts=0.25*PTS" output.mkv<br />
+<br />
+To slow down your video, you have to use a multiplier greater than 1:<br />
+<br />
+ffmpeg -i input.mkv -filter:v "setpts=2.0*PTS" output.mkv<br />
+<br />
+Speeding up/slowing down audio<br />
+<br />
+You can speed up or slow down audio with the ​atempo audio filter. To double the speed of audio:<br />
+<br />
+ffmpeg -i input.mkv -filter:a "atempo=2.0" -vn output.mkv<br />
+<br />
+The atempo filter is limited to using values between 0.5 and 2.0 (so it can slow it down to no less than half the original speed, and speed up to no more than double the input). If you need to, you can get around this limitation by stringing multiple atempo filters together. The following with quadruple the audio speed:<br />
+<br />
+ffmpeg -i input.mkv -filter:a "atempo=2.0,atempo=2.0" -vn output.mkv<br />
+<br />
+Using a complex filtergraph, you can speed up video and audio at the same time:<br />
+<br />
+ffmpeg -i input.mkv -filter_complex "[0:v]setpts=0.5*PTS[v];[0:a]atempo=2.0[a]" -map "[v]" -map "[a]" output.mkv<br />
+<br />
+<br />
+<br />

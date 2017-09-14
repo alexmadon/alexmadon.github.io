@@ -1,0 +1,27 @@
+---
+layout: post
+title: comand line pasing with getopt
+date: '2008-08-14T02:50:00.000-07:00'
+author: atpic
+tags: python 
+modified_time: '2008-08-14T02:54:12.220-07:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-4865922578166428404
+blogger_orig_url: http://tuxpython.blogspot.com/2008/08/comand-line-pasing-with-getopt.html
+---
+
+<pre>import sys, getopt
+
+optlist, list = getopt.getopt(sys.argv[1:], 'v:k:hcdnolwa')
+print "optlist =", optlist
+print "list =", list
+for option in optlist:
+    print option
+    if option[0] == '-h':
+        Usage()
+    if option[0] == '-v':
+        version=option[1]
+        print "version found "+version
+    if option[0] == '-k':
+        key=option[1]
+        print "key found "+key
+</pre>

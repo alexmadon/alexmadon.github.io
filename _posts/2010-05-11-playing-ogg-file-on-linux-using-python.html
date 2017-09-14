@@ -1,0 +1,43 @@
+---
+layout: post
+title: Playing an ogg file on linux using python
+date: '2010-05-11T07:17:00.001-07:00'
+author: atpic
+tags: python 
+modified_time: '2010-05-11T07:17:33.153-07:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-3086137509155294232
+blogger_orig_url: http://tuxpython.blogspot.com/2010/05/playing-ogg-file-on-linux-using-python.html
+---
+
+The following code allows one to repeatedly a sound sample using python on linux. There may well be better ways of doing this – in particular I’m not sure how much this will cause one to talk to the disk.
+
+This depends of python-ogg, python-pyvorbis and python-pyao.
+
+<pre>
+import ogg.vorbis
+import ao
+
+filename = 'test.ogg'
+
+class OggSample(object):
+ def __init__(self, filename):
+  id = ao.driver_id('esd')
+  self.vf = ogg.vorbis.VorbisFile(filename)
+  self.device = ao.AudioDevice(id)
+
+ def play(self):
+  while 1:
+   buff, bytes, _ = self.vf.read(4096)
+   if bytes != 0:
+    self.device.play(buff, bytes)
+   else:
+    self.vf.time_seek(0)
+    return
+
+sample = OggSample(filename)
+sample.play()
+sample.play()
+
+</pre>
+
+see http://argandgahandapandpa.wordpress.com/2010/03/11/playing-and-ogg-file-on-linux-using-python/

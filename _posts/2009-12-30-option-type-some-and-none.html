@@ -1,0 +1,47 @@
+---
+layout: post
+title: Option type, Some and None
+date: '2009-12-30T02:34:00.000-08:00'
+author: atpic
+tags: scala 
+modified_time: '2009-12-30T02:36:13.994-08:00'
+blogger_id: tag:blogger.com,1999:blog-6398118045441905973.post-5744291896845024479
+blogger_orig_url: http://tuxscala.blogspot.com/2009/12/option-type-some-and-none.html
+---
+
+http://scaladudes.com/node/25
+
+Option type, Some and None
+
+The Option type is a very convenient way to avoid checking null pointers.
+Here is a classical "null pointer checking" situation:
+
+
+<pre>
+def getString : String = {
+  ...
+  "a string"
+  ...
+  null
+}
+ 
+val str = getString
+val str2 = if (str == null) "[null]" else str
+</pre>
+
+
+This code can be replaced by the following one:
+
+<pre>
+def getString : Option[String] = {
+  ...
+  Some("a string")
+  ...
+  None
+}
+ 
+val str = getString.getOrElse("[null]")
+</pre>
+
+
+It's using the Option type together with the Some case class and the None object (from Option.scala):

@@ -1,0 +1,15 @@
+---
+layout: post
+title: avconv for dvd rip
+date: '2013-04-17T08:23:00.002-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2013-04-17T08:23:41.684-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-3899623701402231066
+blogger_orig_url: http://tuxunix.blogspot.com/2013/04/avconv-for-dvd-rip.html
+---
+
+cat /media/cdrom0/VIDEO_TS/VTS_02_[1-8].VOB | avconv -y -i - -sn -s<br />
+hd480 -b:v 600k -b:a 128k Desktop/Kaamelott-livre3_tome1.mkv<br />
+<br />
+-

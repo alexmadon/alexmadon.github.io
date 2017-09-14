@@ -1,0 +1,17 @@
+---
+layout: post
+title: convert a OGV file created with gtk-record my desktop
+date: '2012-05-21T08:05:00.000-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2012-05-21T08:05:04.774-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-6132613465131400060
+blogger_orig_url: http://tuxunix.blogspot.com/2012/05/convert-ogv-file-created-with-gtk.html
+---
+
+avconv -i video_ssl_may_2012.ogv video_ssl_may_2012.avi<br />
+<br />
+<br />
+Stream mapping:<br />
+  Stream #0:1 -> #0:0 (theora -> mpeg4)<br />
+  Stream #0:2 -> #0:1 (vorbis -> libmp3lame)<br />

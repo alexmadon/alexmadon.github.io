@@ -1,0 +1,66 @@
+---
+layout: post
+title: bibtx files parsing with python bibtex
+date: '2009-05-28T14:01:00.001-07:00'
+author: atpic
+tags: python 
+modified_time: '2009-05-28T14:01:33.821-07:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-4479222246911192370
+blogger_orig_url: http://tuxpython.blogspot.com/2009/05/bibtx-files-parsing-with-python-bibtex.html
+---
+
+<pre>
+# see https://haspe.homeip.net/projekte/ddi/browser/python/pyblosxom/BIB2BLOG.py
+
+
+import _bibtex
+data_pybdir = "/usr/share/pybliographer"
+localedir   = "/usr/share/locale"
+
+import sys
+
+sys.path.insert (0, data_pybdir)
+sys.path.insert (0, '.')
+
+
+import Pyblio
+import Pyblio.Open
+
+myfile="/home/madon/perso/resuengl/source/physicsresuengl.bib"
+daten= _bibtex.open_file(myfile,1)
+
+
+def parsedEntries(file):
+    """the main routine from pybliographer"""
+    def expand (file, entry):
+        items = entry [4]
+        for k in items.keys ():
+            items [k] = _bibtex.expand (file, items [k], -1)
+            
+
+        return
+ 
+    results = []
+    while 1:
+        try:
+            entry = _bibtex.next (file)
+            if entry is None: break
+            expand (file, entry)
+            results.append(entry)
+        except IOError, msg:
+            obtained = 'ParserError'
+    return results
+      
+
+mydata=parsedEntries(daten)
+print mydata
+
+
+for elem in mydata:
+    # print "ITEM %s" % item
+    print "*****************"
+
+    print elem[0]
+    print elem[1]
+    print elem[4]
+</pre>

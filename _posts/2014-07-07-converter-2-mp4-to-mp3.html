@@ -1,0 +1,19 @@
+---
+layout: post
+title: converter (2) MP4 to MP3
+date: '2014-07-07T03:30:00.000-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2014-07-07T03:30:09.808-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-4722693057718533700
+blogger_orig_url: http://tuxunix.blogspot.com/2014/07/converter-2-mp4-to-mp3.html
+---
+
+create a bash script "avconv_mp4_mp3"<br />
+<pre># apt-get install libav-tools libavcodec-extra
+for file in $*
+do
+echoing converting $file to MP3
+avconv -i $file -map 0:1 $file.mp3
+done
+</pre>

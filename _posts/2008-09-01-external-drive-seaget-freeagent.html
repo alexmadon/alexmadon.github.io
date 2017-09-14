@@ -1,0 +1,69 @@
+---
+layout: post
+title: external drive seaget freeagent
+date: '2008-09-01T07:04:00.001-07:00'
+author: atpic
+tags: unix 
+modified_time: '2009-01-25T09:30:56.804-08:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-1919105477194381865
+blogger_orig_url: http://tuxunix.blogspot.com/2008/09/external-drive-seaget-freeagent.html
+---
+
+sdparm can disable the spindown on the seagate freeagent go drive if it is still spinning
+my drive shows as sda the next line is to check it is the right drive and the line after is to set it to "never"
+sudo sdparm -a /dev/sda
+sudo sdparm --clear STANDBY -6 /dev/sda
+
+I checked this with the windows freeagent utility and it had changed to never
+
+
+root@amadon:/opt# sdparm -a /dev/sdc
+    /dev/sdc: Seagate   FreeAgentDesktop  100F
+Power condition mode page:
+  IDLE        0  [cha: n, def:  0, sav:  0]
+  STANDBY     1  [cha: y, def:  1, sav:  1]
+  ICT         0  [cha: n, def:  0, sav:  0]
+  SCT       9000  [cha: y, def:9000, sav:9000]
+root@amadon:/opt# sdparm --clear STANDBY -6 /dev/sdc
+    /dev/sdc: Seagate   FreeAgentDesktop  100F
+root@amadon:/opt# sdparm -a /dev/sdc
+    /dev/sdc: Seagate   FreeAgentDesktop  100F
+Power condition mode page:
+  IDLE        0  [cha: n, def:  0, sav:  0]
+  STANDBY     0  [cha: n, def:  1, sav:  0]
+  ICT         0  [cha: n, def:  0, sav:  0]
+  SCT         0  [cha: n, def:9000, sav:  0]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+root@amadon:~# sdparm -a /dev/sdc
+    /dev/sdc: Maxtor    OneTouch          0125
+Power condition mode page:
+  IDLE        0  [cha: n, def:  0, sav:  0]
+  STANDBY     1  [cha: y, def:  1, sav:  1]
+  ICT         0  [cha: n, def:  0, sav:  0]
+  SCT       9000  [cha: y, def:9000, sav:9000]
+
+
+root@amadon:~# sdparm --clear STANDBY -6 /dev/sdc
+    /dev/sdc: Maxtor    OneTouch          0125
+root@amadon:~# sdparm -a /dev/sdc
+    /dev/sdc: Maxtor    OneTouch          0125
+Power condition mode page:
+  IDLE        0  [cha: n, def:  0, sav:  0]
+  STANDBY     0  [cha: y, def:  1, sav:  1]
+  ICT         0  [cha: n, def:  0, sav:  0]
+  SCT       4294967286  [cha: y, def:9000, sav:9000]

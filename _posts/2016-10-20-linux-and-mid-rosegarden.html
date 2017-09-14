@@ -1,0 +1,42 @@
+---
+layout: post
+title: linux and midi (rosegarden)
+date: '2016-10-20T23:46:00.002-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2016-10-21T02:01:37.355-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-1486367310969317909
+blogger_orig_url: http://tuxunix.blogspot.com/2016/10/linux-and-mid-rosegarden.html
+---
+
+https://wiki.archlinux.org/index.php/Rosegarden<br />
+<br />
+Launch Timidity as a daemon before launching Rosegarden :<br />
+<br />
+$ timidity -iA<br />
+<br />
+or fluidsynth that support pulse audio<br />
+<br />
+freepats<br />
+<br />
+<br />
+<br />
+Does it have to be timidity? I've made pretty good experiences with fluidsynth personally which has a native pulse backend, only thing you have to make sure is to modprobe snd_seq somewhere beforehand, and either set up the systemd service as an user service or simply start it manually with normal user rights, worked pretty flawlessly when I tried in wine but I don't have that game anymore I used to play with so I can't really test<br />
+<br />
+<br />
+fluidsynth has native pulse audio support<br />
+<br />
+<br />
+http://ariamaestosa.sourceforge.net/synth.html<br />
+<br />
+<br />
+fluidsynth -a alsa -l --server -i /usr/share/sounds/sf2/FluidR3_GM.sf2<br />
+<br />
+http://linuxmao.org/SoundFont<br />
+<br />
+LilyPond<br />
+musescore<br />
+<br />
+<br />
+musicxml<br />
+<br />

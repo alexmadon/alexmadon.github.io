@@ -1,0 +1,298 @@
+---
+layout: post
+title: debian on HP pavilion dv9000
+date: '2008-10-11T02:54:00.000-07:00'
+author: atpic
+tags: unix 
+modified_time: '2008-10-11T10:42:08.321-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-8292886350786181266
+blogger_orig_url: http://tuxunix.blogspot.com/2008/10/debian-on-hp-pavilion-dv9000.html
+---
+
+install using testing network images as stable did not recognize the network adapter.
+
+
+NIKON D40 USB
+
+
+http://forums.debian.net/viewtopic.php?p=96224&sid=79035964ab222046e027a5790b084ffc
+
+
+change the boot order in vmware bios: press ESC at vmware image boot
+
+http://www.seandeasy.com/expanding-a-drive-within-a-vmware-image/
+
+
+knopix and vmware-vdiskmanager
+
+
+
+http://linuxwacom.sourceforge.net/index.php/doc
+I resolved that by appending the --skip-raid option to all occurrences of vol_id in the udev scripts under /etc/udeV/rules.d/
+
+
+
+
+
+   16  apt-get update
+   17  apt-get install linux-headers-`uname -r`
+   18  cd /var/vm/
+   19  ls
+   20  cd vmware-server-distrib
+   21  ./vmware-install.pl 
+   22  export CC=/usr/bin/gcc-4.1
+   23  ./vmware-install.pl 
+
+
+
+
+
+  148  wget http://ftp.uk.debian.org/debian/pool/main/i/ia32-libs/ia32-libs_1.19_amd64.deb
+  149  mkdir /usr/lib/vmware/lib/libX11.so.6 
+  150  ar -x ia32-libs_1.19_amd64.deb 
+  151  ls
+  152  ar -xv ia32-libs_1.19_amd64.deb 
+  153  ls debian-binary 
+  154  cd debian-binary 
+  155  more debian-binary 
+  156  tar -tzvf control.tar.gz 
+  157  tar -tzvf data.tar.gz 
+  158  tar -xzvf data.tar.gz 
+  159  cp ./emul/ia32-linux/usr/lib/libX11.so* /usr/lib/vmware/lib/libX11.so.6/ 
+
+
+
+  161  vmware-server-console 
+  162  vmware-config-server-console.pl 
+
+
+
+
+emacs /usr/lib/vmware-server-console/lib/wrapper-gtk24.sh &
+put
+   vm_append_lib 'libX11.so.6' 
+
+ vi /var/vm/serial_vmwareserver.txt
+
+Install of vmware:
+
+
+
+
+$ vmware
+Locking assertion failure.  Backtrace:
+#0 /usr/lib32/libxcb-xlib.so.0 [0xf6fe1767]
+#1 /usr/lib32/libxcb-xlib.so.0(xcb_xlib_unlock+0x31) [0xf6fe18b1]
+#2 /usr/lib32/libX11.so.6(_XReply+0x244) [0xf7e69c14]
+#3
+/usr/lib/vmware/lib/libXrender.so.1/libXrender.so.1(XRenderQueryFormats+0x109)
+[0xf7d54969]
+#4
+/usr/lib/vmware/lib/libXrender.so.1/libXrender.so.1(XRenderFindFormat+0x4c)
+[0xf7d54f4c]
+#5 /usr/lib/vmware/lib/libgdk-x11-2.0.so.0/libgdk-x11-2.0.so.0 [0xf7b9a180]
+#6 /usr/lib/vmware/lib/libgdk-x11-2.0.so.0/libgdk-x11-2.0.so.0 [0xf7b9ad2c]
+#7
+/usr/lib/vmware/lib/libgdk-x11-2.0.so.0/libgdk-x11-2.0.so.0(gdk_draw_pixbuf+0x270)
+[0xf7b6ac14]
+#8 /usr/lib/vmware/lib/libgdk-x11-2.0.so.0/libgdk-x11-2.0.so.0 [0xf7b7724f]
+#9
+/usr/lib/vmware/lib/libgdk-x11-2.0.so.0/libgdk-x11-2.0.so.0(gdk_draw_pixbuf+0x270)
+[0xf7b6ac14]
+#10
+/usr/lib/vmware/lib/libgdk-x11-2.0.so.0/libgdk-x11-2.0.so.0(gdk_pixbuf_render_pixmap_and_mask_for_colormap+0x255)
+[0xf7b76b34]
+#11 /usr/lib/vmware/lib/libgtk-x11-2.0.so.0/libgtk-x11-2.0.so.0 [0xf7a7b298]
+#12 /usr/lib/vmware/lib/libgtk-x11-2.0.so.0/libgtk-x11-2.0.so.0 [0xf7a7b586]
+#13 /usr/lib/vmware/lib/libgtk-x11-2.0.so.0/libgtk-x11-2.0.so.0 [0xf7a7d77e]
+#14
+/usr/lib/vmware/lib/libgobject-2.0.so.0/libgobject-2.0.so.0(g_cclosure_marshal_VOID__VOID+0xd1)
+[0xf7c91459]
+#15 /usr/lib/vmware/lib/libgobject-2.0.so.0/libgobject-2.0.so.0 [0xf7c793a1]
+#16
+/usr/lib/vmware/lib/libgobject-2.0.so.0/libgobject-2.0.so.0(g_closure_invoke+0x1b1)
+[0xf7c79076]
+#17 /usr/lib/vmware/lib/libgobject-2.0.so.0/libgobject-2.0.so.0 [0xf7c906eb]
+#18
+/usr/lib/vmware/lib/libgobject-2.0.so.0/libgobject-2.0.so.0(g_signal_emit_valist+0x91e)
+[0xf7c8fd46]
+#19
+/usr/lib/vmware/lib/libgobject-2.0.so.0/libgobject-2.0.so.0(g_signal_emit+0x38)
+[0xf7c900b8]
+Locking assertion failure.  Backtrace:
+#0 /usr/lib32/libxcb-xlib.so.0 [0xf6fe1767]
+#1 /usr/lib32/libxcb-xlib.so.0(xcb_xlib_lock+0x2e) [0xf6fe181e]
+#2 /usr/lib32/libX11.so.6 [0xf7e68dc9]
+#3 /usr/lib32/libX11.so.6(XAddExtension+0x2c) [0xf7e4b23c]
+#4 /usr/lib/vmware/lib/libXft.so.2/libXft.so.2(_XftDisplayInfoGet+0x77)
+[0xf7d4ced7]
+#5 /usr/lib/vmware/lib/libXft.so.2/libXft.so.2 [0xf7d4b8b1]
+#6 /usr/lib/vmware/lib/libXft.so.2/libXft.so.2 [0xf7d4bd39]
+#7 /usr/lib/vmware/lib/libXft.so.2/libXft.so.2(XftDrawPicture+0x10)
+[0xf7d4bec0]
+#8 /usr/lib/vmware/lib/libgdk-x11-2.0.so.0/libgdk-x11-2.0.so.0 [0xf7b989b6]
+#9 /usr/lib/vmware/lib/libgdk-x11-2.0.so.0/libgdk-x11-2.0.so.0 [0xf7b9ad75]
+#10
+/usr/lib/vmware/lib/libgdk-x11-2.0.so.0/libgdk-x11-2.0.so.0(gdk_draw_pixbuf+0x270)
+[0xf7b6ac14]
+#11 /usr/lib/vmware/lib/libgdk-x11-2.0.so.0/libgdk-x11-2.0.so.0 [0xf7b7724f]
+#12
+/usr/lib/vmware/lib/libgdk-x11-2.0.so.0/libgdk-x11-2.0.so.0(gdk_draw_pixbuf+0x270)
+[0xf7b6ac14]
+#13
+/usr/lib/vmware/lib/libgdk-x11-2.0.so.0/libgdk-x11-2.0.so.0(gdk_pixbuf_render_pixmap_and_mask_for_colormap+0x255)
+[0xf7b76b34]
+#14 /usr/lib/vmware/lib/libgtk-x11-2.0.so.0/libgtk-x11-2.0.so.0 [0xf7a7b298]
+#15 /usr/lib/vmware/lib/libgtk-x11-2.0.so.0/libgtk-x11-2.0.so.0 [0xf7a7b586]
+#16 /usr/lib/vmware/lib/libgtk-x11-2.0.so.0/libgtk-x11-2.0.so.0 [0xf7a7d77e]
+#17
+/usr/lib/vmware/lib/libgobject-2.0.so.0/libgobject-2.0.so.0(g_cclosure_marshal_VOID__VOID+0xd1)
+[0xf7c91459]
+#18 /usr/lib/vmware/lib/libgobject-2.0.so.0/libgobject-2.0.so.0 [0xf7c793a1]
+#19
+/usr/lib/vmware/lib/libgobject-2.0.so.0/libgobject-2.0.so.0(g_closure_invoke+0x1b1)
+[0xf7c79076]
+vmware: ../../src/xcb_lock.c:77: _XGetXCBBuffer: Assertion `((int)
+((xcb_req) - (dpy->request)) >= 0)' failed.
+
+-- 
+To UNSUBSCRIBE, email to debian-user-REQU...@lists.debian.org
+with a subject of "unsubscribe". Trouble? Contact listmas...@lists.debian.org
+
+    Reply    Reply to author    Forward       Rate this post: Text for clearing space
+  
+  
+  
+You must Sign in before you can post messages.
+To post a message you must first join this group.
+Please update your nickname on the subscription settings page before posting.
+You do not have the permission required to post.
+ 
+  
+michael    
+View profile
+  More options Sep 3, 9:40 pm
+Newsgroups: linux.debian.user
+From: michael <c...@networkingnewsletter.org.uk>
+Date: Wed, 03 Sep 2008 22:40:08 +0200
+Local: Wed, Sep 3 2008 9:40 pm
+Subject: Re: ia32-libs and vmware-server
+Reply | Reply to author | Forward | Print | Individual message | Show original | Report this message | Find messages by this author
+
+- Hide quoted text -
+- Show quoted text -
+On Fri, 2008-08-29 at 18:22 +0100, kj wrote:
+> Hi guys,
+
+> Running the vmware server client on Lenny-64bit comes up with an error
+> (I'll put it at the bottom).   The only suggestion I've found so far
+> that solves this is to downgrade ia32-libs from 2.6 to 1.19.
+
+> Unfortunately ia32-libs 2.6 is a dependency for ia32-libs-gtk 2.6, which
+> in turn is necessary for nspluginwrapper, which in turn I need for flash
+> (I actually have to use flash applications in my work, but I'm also
+> dependent on vmware)
+
+> Has anyone found a way to get past the vmware problem?
+
+> Thanks
+> --kj
+
+I've got vmplayer working fine on Etch/64bit...
+
+-- 
+To UNSUBSCRIBE, email to debian-user-REQU...@lists.debian.org
+with a subject of "unsubscribe". Trouble? Contact listmas...@lists.debian.org
+
+    Reply    Reply to author    Forward       Rate this post: Text for clearing space
+  
+  
+  
+You must Sign in before you can post messages.
+To post a message you must first join this group.
+Please update your nickname on the subscription settings page before posting.
+You do not have the permission required to post.
+ 
+  
+Discussion subject changed to "ia32-libs and vmware-server [solved]" by kj
+  
+ 
+  
+kj    
+View profile
+  More options Sep 5, 10:00 am
+Newsgroups: linux.debian.user
+From: kj <koffiejunkielistlur...@koffiejunkie.za.net>
+Date: Fri, 05 Sep 2008 11:00:27 +0200
+Local: Fri, Sep 5 2008 10:00 am
+Subject: Re: ia32-libs and vmware-server [solved]
+Reply | Reply to author | Forward | Print | Individual message | Show original | Report this message | Find messages by this author
+
+- Hide quoted text -
+- Show quoted text -
+kj wrote:
+> Hi guys,
+
+> Running the vmware server client on Lenny-64bit comes up with an error
+> (I'll put it at the bottom).   The only suggestion I've found so far
+> that solves this is to downgrade ia32-libs from 2.6 to 1.19.
+
+> Unfortunately ia32-libs 2.6 is a dependency for ia32-libs-gtk 2.6,
+> which in turn is necessary for nspluginwrapper, which in turn I need
+> for flash (I actually have to use flash applications in my work, but
+> I'm also dependent on vmware)
+
+> Has anyone found a way to get past the vmware problem?
+
+> Thanks
+> --kj
+
+Well, I managed to fix this, somehow.
+
+1.  Download the old package and unpack it somewhere:
+cd /tmp
+http://ftp.uk.debian.org/debian/pool/main/i/ia32-libs/ia32-libs_1.19_...
+ar -x ia32-libs_1.19_amd64.deb
+
+2.  Copy some libs over to vmware:
+
+mkdir /usr/lib/vmware/lib/libX11.so.6
+cp /tmp/emul/ia32-linux/usr/lib/libX11.so.6*
+/usr/lib/vmware/lib/libX11.so.6/
+
+3.  Edit the startup script:
+
+cp /usr/lib/vmware/lib/wrapper-gtk24.sh
+/usr/lib/vmware/lib/wrapper-gtk24.sh-old
+
+vi /usr/lib/vmware/lib/wrapper-gtk24.sh
+
+under the line:
+
+   vm_append_lib 'libXrender.so.1'
+
+add:
+
+   vm_append_lib 'libX11.so.6'
+
+You are now able tu use the latest ia32-libs and ia32-libs-gtk and
+VMware will work on its own.
+
+--kj
+
+
+
+
+
+
+
+
+  266  emacs /etc/samba/smb.conf &
+
+  292  apt-get install wacom-tools xserver-xorg-input-wacom wacom-kernel-source
+
+
+
+
+  309  grep -i wacom /var/log/Xorg.0.log
+  310  emacs /etc/X11/xorg.conf&

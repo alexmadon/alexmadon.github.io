@@ -1,0 +1,15 @@
+---
+layout: post
+title: recordmydesktop avconv screencast
+date: '2012-08-16T08:17:00.001-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2012-08-16T08:17:17.015-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-370632711130968417
+blogger_orig_url: http://tuxunix.blogspot.com/2012/08/recordmydesktop-avconv-screencast.html
+---
+
+recordmydesktop --device hw:1,0 -x 1600 -y 0 --width 1024 --height 768<br />
+<br />
+avconv -f alsa -ac 1 -i hw:1,0 -f x11grab -r 30 -s 600x400 -i :0.0+0,0 -strict experimental out23.mp4<br />
+<br />

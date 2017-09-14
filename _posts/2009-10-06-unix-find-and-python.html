@@ -1,0 +1,14 @@
+---
+layout: post
+title: unix find and python
+date: '2009-10-06T08:00:00.000-07:00'
+author: atpic
+tags: python 
+modified_time: '2009-10-06T08:01:06.288-07:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-1951199614439805312
+blogger_orig_url: http://tuxpython.blogspot.com/2009/10/unix-find-and-python.html
+---
+
+import subprocess
+output = subprocess.Popen(["find", '%s' % zip,'-iname','*jpg'], stdout=subprocess.PIPE).communicate()[0]
+print stdout

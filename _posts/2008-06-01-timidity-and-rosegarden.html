@@ -1,0 +1,54 @@
+---
+layout: post
+title: timidity and rosegarden
+date: '2008-06-01T08:58:00.000-07:00'
+author: atpic
+tags: unix 
+modified_time: '2008-06-01T09:05:51.752-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-6545680112595497107
+blogger_orig_url: http://tuxunix.blogspot.com/2008/06/timidity-and-rosegarden.html
+---
+
+pmidi -l
+ Port     Client name                       Port name
+ 14:0     Midi Through                      Midi Through Port-0
+128:0     TiMidity                          TiMidity port 0
+128:1     TiMidity                          TiMidity port 1
+128:2     TiMidity                          TiMidity port 2
+128:3     TiMidity                          TiMidity port 3
+
+
+
+
+/etc/init.d/timidity status
+Timidity is not yet configured.
+Enable Alsa Sequencer first by editing /etc/default/timidity.
+
+
+
+
+ /etc/init.d/timidity start
+Starting TiMidity++ ALSA midi emulation...ALSA lib seq_hw.c:457:(snd_seq_hw_open) open /dev/snd/seq failed: No such file or directory
+error in snd_seq_open
+.
+
+
+
+
+root@amadon:~# modprobe snd_seq_midi
+root@amadon:~# /etc/init.d/timidity start
+Starting TiMidity++ ALSA midi emulation....
+root@amadon:~# pmidi -l
+ Port     Client name                       Port name
+ 14:0     Midi Through                      Midi Through Port-0
+128:0     TiMidity                          TiMidity port 0
+128:1     TiMidity                          TiMidity port 1
+128:2     TiMidity                          TiMidity port 2
+128:3     TiMidity                          TiMidity port 3
+root@amadon:~# lsmod|grep midi
+snd_seq_midi            8160  0 
+snd_rawmidi            22752  1 snd_seq_midi
+snd_seq_midi_event      6944  2 snd_seq_oss,snd_seq_midi
+snd_seq                46992  7 snd_seq_dummy,snd_seq_oss,snd_seq_midi,snd_seq_midi_event
+snd_seq_device          7948  5 snd_seq_dummy,snd_seq_oss,snd_seq_midi,snd_rawmidi,snd_seq
+snd                    49668  19 snd_rtctimer,snd_seq_dummy,snd_seq_oss,snd_rawmidi,snd_seq,snd_seq_device,snd_hda_intel,snd_pcm_oss,snd_mixer_oss,snd_pcm,snd_timer,snd_hwdep

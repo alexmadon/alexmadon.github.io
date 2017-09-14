@@ -1,0 +1,94 @@
+---
+layout: post
+title: python routes
+date: '2008-12-04T07:18:00.000-08:00'
+author: atpic
+tags: python 
+modified_time: '2008-12-04T07:19:22.599-08:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-3505255734781598604
+blogger_orig_url: http://tuxpython.blogspot.com/2008/12/python-routes.html
+---
+
+http://appengine-cookbook.appspot.com/recipe/match-webapp-urls-using-routes/
+
+
+<div id="recipe-container">
+
+	<div class="recipe-title">Match webapp URL&#39;s using Routes</div>
+
+	<div class="recipe-meta">Posted by <span class="description"><font color="#008000">rodrigo.moraes</font></span> on <span class="description">Sat 22 Nov 2008</span> in <span class="description"><a href="/cat/?id=ahJhcHBlbmdpbmUtY29va2Jvb2tyHgsSCENhdGVnb3J5IhBXZWJhcHAgRnJhbWV3b3JrDA">Webapp Framework</a>
+
+
+
+<br />User ratings: <img src="/static/img/stars-0.gif" />
+
+  </div>
+
+  <div class="recipe-content">
+
+    This recipe is a implementation of Routes (http://routes.groovie.org/) for webapp. Routes adds some flexibility and tools to match and generate url's, and I think more people would want to use it with webapp.
+<br />
+<br />1. Download and add the Routes library from http://routes.groovie.org/. We added it to a "routes" directory in our app root dir.
+<br />
+<br />2. Somewhere in your main.py, import and start the Mapper:
+<br /><div class="source_code_container"><div class="source_code"><pre><span class="c"># Start the routes mapper.</span><br /><span class="k">from</span> <span class="nn">routes.mapper</span> <span class="k">import</span> <span class="n">Mapper</span><br /><span class="nb">map</span> <span class="o">=</span> <span class="n">Mapper</span><span class="p">(</span><span class="n">explicit</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span><br /></pre></div><br /></div>
+<br />The option 'explicit' is set to True to avoid Routes setting 'index' as default action name. We only want explicit action names in our defined routes, otherwise we'll use the request method as the action name (as in webapp). For other initialization options, see Routes documentation.
+<br />
+<br />3. Add some routes. Notice that we use the form "my.module.name:MyControllerName" to tell Routes which module to load when a route matches:
+<br /><div class="source_code_container"><div class="source_code"><pre><span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;my-first-route&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">controller</span> <span class="o">=</span> <span class="s">&#39;app.handler:MyHandler&#39;</span><span class="p">)</span><br /><span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;my-second-route&#39;</span><span class="p">,</span> <span class="s">&#39;testing-route/:somepath&#39;</span><span class="p">,</span> <span class="n">controller</span> <span class="o">=</span> <span class="s">&#39;app.handler:MyOtherHandler&#39;</span><span class="p">,</span> <span class="n">somepath</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span><br /></pre></div><br /></div>
+<br />Refer to Routes documentation for details about connect() parameters. There are quite some tricks you can do in route definitions.
+<br />
+<br />This route rules can also be stored somewhere else, for example, a routing.py file for your application. In this case, you'd call add_routes(map) from routing.py:
+<br />
+<br />In main.py:
+<br /><div class="source_code_container"><div class="source_code"><pre><span class="k">from</span> <span class="nn">routing</span> <span class="k">import</span> <span class="n">add_routes</span><br /><span class="n">add_routes</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span><br /></pre></div><br /></div>
+<br />
+<br />In routing.py:
+<br /><div class="source_code_container"><div class="source_code"><pre><span class="k">def</span> <span class="nf">add_routes</span><span class="p">(</span><span class="nb">map</span><span class="p">):</span><br />    <span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;my-first-route&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">controller</span> <span class="o">=</span> <span class="s">&#39;app.handler:MyHandler&#39;</span><span class="p">)</span><br />    <span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;my-second-route&#39;</span><span class="p">,</span> <span class="s">&#39;testing-route/:somepath&#39;</span><span class="p">,</span> <span class="n">controller</span> <span class="o">=</span> <span class="s">&#39;app.handler:MyOtherHandler&#39;</span><span class="p">,</span> <span class="n">somepath</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span><br /></pre></div><br /></div>
+<br />
+<br />4. Almost done! Now we have to match our routes and for this, we will replace the default WSGIApplication from webapp. This is where all the magic happens. Here's wsgi.py:
+<br /><div class="source_code_container"><div class="source_code"><pre><span class="c">#!/usr/bin/env python</span><br /><span class="c"># -*- coding: utf-8 -*-</span><br /><span class="c">#</span><br /><span class="c"># http://www.apache.org/licenses/LICENSE-2.0</span><br /><span class="c">#</span><br /><span class="k">import</span> <span class="nn">sys</span><br /><span class="k">from</span> <span class="nn">google.appengine.ext.webapp</span> <span class="k">import</span> <span class="n">Request</span><br /><span class="k">from</span> <span class="nn">google.appengine.ext.webapp</span> <span class="k">import</span> <span class="n">Response</span><br /><span class="k">class</span> <span class="nc">WSGIApplication</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span><br />    <span class="sd">&quot;&quot;&quot;Wraps a set of webapp RequestHandlers in a WSGI-compatible application.</span><br /><span class="sd">    This is based on webapp&#39;s WSGIApplication by Google, but uses Routes library</span><br /><span class="sd">    (http://routes.groovie.org/) to match url&#39;s.</span><br /><span class="sd">    &quot;&quot;&quot;</span><br />    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">,</span> <span class="n">debug</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span><br />        <span class="sd">&quot;&quot;&quot;Initializes this application with the given URL mapping.</span><br /><span class="sd">        Args:</span><br /><span class="sd">          mapper: a routes.mapper.Mapper instance</span><br /><span class="sd">          debug: if true, we send Python stack traces to the browser on errors</span><br /><span class="sd">        &quot;&quot;&quot;</span><br />        <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="o">=</span> <span class="n">mapper</span><br />        <span class="bp">self</span><span class="o">.</span><span class="n">__debug</span> <span class="o">=</span> <span class="n">debug</span><br />        <span class="n">WSGIApplication</span><span class="o">.</span><span class="n">active_instance</span> <span class="o">=</span> <span class="bp">self</span><br />        <span class="bp">self</span><span class="o">.</span><span class="n">current_request_args</span> <span class="o">=</span> <span class="p">()</span><br />    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span><br />        <span class="sd">&quot;&quot;&quot;Called by WSGI when a request comes in.&quot;&quot;&quot;</span><br />        <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span><br />        <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">()</span><br />        <span class="n">WSGIApplication</span><span class="o">.</span><span class="n">active_instance</span> <span class="o">=</span> <span class="bp">self</span><br />        <span class="c"># Match the path against registered routes.</span><br />        <span class="n">kargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><br />        <span class="k">if</span> <span class="n">kargs</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span><br />            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;No routes match. Provide a fallback to avoid this.&#39;</span><span class="p">)</span><br />        <span class="c"># Extract the module and controller names from the route.</span><br />        <span class="k">try</span><span class="p">:</span><br />            <span class="n">module_name</span><span class="p">,</span> <span class="n">class_name</span> <span class="o">=</span> <span class="n">kargs</span><span class="p">[</span><span class="s">&#39;controller&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">,</span> <span class="mf">1</span><span class="p">)</span><br />            <span class="k">del</span> <span class="n">kargs</span><span class="p">[</span><span class="s">&#39;controller&#39;</span><span class="p">]</span><br />        <span class="k">except</span><span class="p">:</span><br />            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Controller is not set, or not formatted in the form &quot;my.module.name:MyControllerName&quot;.&#39;</span><span class="p">)</span><br />        <span class="c"># Initialize matched controller from given module.</span><br />        <span class="k">try</span><span class="p">:</span><br />            <span class="nb">__import__</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span><br />            <span class="n">module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span><br />            <span class="n">controller</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">class_name</span><span class="p">)()</span><br />            <span class="n">controller</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span><br />        <span class="k">except</span><span class="p">:</span><br />            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s">&#39;Controller </span><span class="si">%s</span><span class="s"> from module </span><span class="si">%s</span><span class="s"> could not be initialized.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">class_name</span><span class="p">,</span> <span class="n">module_name</span><span class="p">))</span><br />        <span class="c"># Use the action set in the route, or the HTTP method.</span><br />        <span class="k">if</span> <span class="s">&#39;action&#39;</span> <span class="ow">in</span> <span class="n">kargs</span><span class="p">:</span><br />            <span class="n">action</span> <span class="o">=</span> <span class="n">kargs</span><span class="p">[</span><span class="s">&#39;action&#39;</span><span class="p">]</span><br />            <span class="k">del</span> <span class="n">kargs</span><span class="p">[</span><span class="s">&#39;action&#39;</span><span class="p">]</span><br />        <span class="k">else</span><span class="p">:</span><br />            <span class="n">action</span> <span class="o">=</span> <span class="n">environ</span><span class="p">[</span><span class="s">&#39;REQUEST_METHOD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><br />            <span class="k">if</span> <span class="n">action</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;get&#39;</span><span class="p">,</span> <span class="s">&#39;post&#39;</span><span class="p">,</span> <span class="s">&#39;head&#39;</span><span class="p">,</span> <span class="s">&#39;options&#39;</span><span class="p">,</span> <span class="s">&#39;put&#39;</span><span class="p">,</span> <span class="s">&#39;delete&#39;</span><span class="p">,</span> <span class="s">&#39;trace&#39;</span><span class="p">]:</span><br />                <span class="n">action</span> <span class="o">=</span> <span class="bp">None</span><br />        <span class="k">if</span> <span class="n">controller</span> <span class="ow">and</span> <span class="n">action</span><span class="p">:</span><br />            <span class="k">try</span><span class="p">:</span><br />                <span class="c"># Execute the requested action, passing the route dictionary as</span><br />                <span class="c"># named parameters.</span><br />                <span class="nb">getattr</span><span class="p">(</span><span class="n">controller</span><span class="p">,</span> <span class="n">action</span><span class="p">)(</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span><br />            <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span><br />                <span class="n">controller</span><span class="o">.</span><span class="n">handle_exception</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__debug</span><span class="p">)</span><br />            <span class="n">response</span><span class="o">.</span><span class="n">wsgi_write</span><span class="p">(</span><span class="n">start_response</span><span class="p">)</span><br />            <span class="k">return</span> <span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">]</span><br />        <span class="k">else</span><span class="p">:</span><br />            <span class="n">response</span><span class="o">.</span><span class="n">set_status</span><span class="p">(</span><span class="mf">404</span><span class="p">)</span><br /></pre></div><br /></div>
+<br /> 
+<br />5. Now, in main.py use this WSGIApplication instead of webapp's one, and pass the map we created to it:
+<br /><div class="source_code_container"><div class="source_code"><pre><span class="k">from</span> <span class="nn">wsgi</span> <span class="k">import</span> <span class="n">WSGIApplication</span><br /><span class="n">app</span> <span class="o">=</span> <span class="n">WSGIApplication</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">debug</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span><br /><span class="o">...</span><br /><span class="k">def</span> <span class="nf">main</span><span class="p">():</span><br />    <span class="n">run_wsgi_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><br /></pre></div><br /></div>
+<br />
+<br />Done! Routes is up and running. 
+<br />
+<br />Notice that now your handlers will receive named parameters - the dictionary values from the matched route.
+<br />
+<br />PS: the cookbook removed all blank lines from my code, making it more difficult to follow than usual. :-P sorry about that.
+
+  </div>
+
+  
+
+
+
+  <div class="recipe-sub">
+
+    <h2>Comments (0) </h2>
+
+    <div class="single-comment"><a href="https://www.google.com/accounts/ServiceLogin?service=ah&continue=http://appengine-cookbook.appspot.com/_ah/login%3Fcontinue%3Dhttp://appengine-cookbook.appspot.com/recipe/match-webapp-urls-using-routes/&sig=6c5ab5a08b1389e13d06d6f8bd2e126c">Sign in</a> to add comment.</div>
+
+    <div id="user-comments">
+
+      
+
+    </div>
+
+    
+
+  </div>
+
+  
+
+</div>
+
+
+
+    </div>
+
+  </div><!-- end gc-pagecontent -->
+
+</div><!-- end codesite content -->
+

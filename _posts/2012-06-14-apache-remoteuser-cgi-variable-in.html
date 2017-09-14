@@ -1,0 +1,38 @@
+---
+layout: post
+title: apache remote_user cgi variable in a custom header
+date: '2012-06-14T07:15:00.001-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2012-06-14T07:15:16.501-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-7369399041476410813
+blogger_orig_url: http://tuxunix.blogspot.com/2012/06/apache-remoteuser-cgi-variable-in.html
+---
+
+<br />
+<br />
+<VirtualHost 127.0.0.1:80><br />
+ServerName basic.foo<br />
+<br />
+ProxyRequests Off<br />
+ProxyPreserveHost On<br />
+ProxyPass /alfresco http://localhost:8080/alfresco<br />
+ProxyPassReverse /alfresco http://localhost:8080/alfresco<br />
+ProxyPassReverseCookiePath /alfresco /alfresco<br />
+<br />
+ProxyPass /share http://localhost:8080/share<br />
+ProxyPassReverse /share http://localhost:8080/share<br />
+ProxyPassReverseCookiePath /share /share<br />
+<br />
+ <Location / ><br />
+    AuthType Basic<br />
+    AuthName "Test Basic Auth"<br />
+    AuthUserFile /usr/local/apache2/passtest.txt<br />
+    Require valid-user<br />
+<br />
+    RewriteEngine On<br />
+    RewriteCond %{LA-U:REMOTE_USER} ^(.*)$<br />
+    RewriteRule (.*) - [E=RU:%1]<br />
+    RequestHeader set X-Alfresco-Remote-User %{RU}e<br />
+ </Location><br />
+</VirtualHost><br />

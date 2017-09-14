@@ -1,0 +1,40 @@
+---
+layout: post
+title: 'download f4f video '
+date: '2016-07-17T14:18:00.002-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2016-07-17T14:18:57.103-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-1299939831966928431
+blogger_orig_url: http://tuxunix.blogspot.com/2016/07/download-f4f-video.html
+---
+
+sample pages with f4f :<br />
+<br />
+http://education.francetv.fr/matiere/actualite/premiere/video/<br />
+<br />
+download AdobeHDS.php – https://github.com/K-S-V/Scripts/blob/master/AdobeHDS.php<br />
+<br />
+<br />
+install PHP:<br />
+<br />
+apt-get install php-cli<br />
+<br />
+apt-get install php-curl php-bcmath php-xml<br />
+<br />
+dump the traffic to get the manifest<br />
+<br />
+<br />
+<br />
+php AdobeHDS.php --manifest "http://ftvingest-vh.akamaihd.net/z/ingest/streaming-adaptatif/2016/S16/J3/ftve_1076000110-h264-web-,398k,632k,934k,1500k,.mp4.csmil/manifest.f4m?audiotrack=0:fra:Francais&hdnea=exp=1468790376~acl=/z/ingest/streaming-adaptatif/2016/S16/J3/ftve_1076000110-h264-web-,398k,632k,934k,1500k,.mp4.csmil*~hmac=21b454ebd457bc18cc012ff4eb59e51dbd780c8d90db1800f76b651ad67fd44b&hdcore=3.9.1&plugin=aasp-3.9.1.1.1"<br />
+<br />
+                            KSV Adobe HDS Downloader<br />
+<br />
+Processing manifest info....                                                   <br />
+Quality Selection:                                                             <br />
+ Available: 1376 787 556 304<br />
+ Selected : 1376                                                               <br />
+Fragments Total: 30, First: 1, Start: 1, Parallel: 8                           <br />
+Downloading 30/30 fragments                                                    <br />
+Found 30 fragments                                                             <br />
+Finished                          

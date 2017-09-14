@@ -1,0 +1,34 @@
+---
+layout: post
+title: dvd rip
+date: '2008-10-16T08:58:00.001-07:00'
+author: atpic
+tags: unix 
+modified_time: '2010-02-09T03:26:42.236-08:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-2867682247403122638
+blogger_orig_url: http://tuxunix.blogspot.com/2008/10/dvd-rip.html
+---
+
+<pre>
+mencoder  dvd:// \
+-passlogfile totoa1.log \
+-o /dev/null \
+-oac copy \
+-ovc lavc \
+-lavcopts vcodec=mpeg4:vbitrate=863:vhq:turbo:vpass=1 \
+-vf scale=640:-2 
+
+
+#-endpos 8:00 \
+
+mencoder dvd:// \
+-passlogfile totoa1.log \
+-o output_file_high2.avi \
+-oac copy \
+-ovc lavc \
+-lavcopts vcodec=mpeg4:vbitrate=863:vhq:vpass=2 \
+-vf scale=640:-2 
+
+
+#-endpos 8:00 \
+</pre>

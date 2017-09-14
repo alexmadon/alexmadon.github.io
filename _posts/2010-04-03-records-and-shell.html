@@ -1,0 +1,12 @@
+---
+layout: post
+title: records and shell
+date: '2010-04-03T01:27:00.000-07:00'
+author: atpic
+tags: erlang 
+modified_time: '2010-04-03T01:28:12.172-07:00'
+blogger_id: tag:blogger.com,1999:blog-3269405417287820799.post-3163879197985163993
+blogger_orig_url: http://tuxerl.blogspot.com/2010/04/records-and-shell.html
+---
+
+see cesarini p161<br /><pre><br />14> rr(dns1).<br />[dns_header,dns_query,dns_rec]<br />15> P = #dns_rec{header=#dns_header{},qdlist=[#dns_query{domain=Domain,type=ptr,class=in}]}.<br />* 1: variable 'Domain' is unbound<br />16> P = #dns_rec{header=#dns_header{},qdlist=[#dns_query{domain="atpic.com",type=ptr,class=in}]}.<br />#dns_rec{header = #dns_header{id = 0,qr = 0,opcode = 0,<br />                              aa = 0,tc = 0,rd = 0,ra = 0,pr = 0,rcode = 0},<br />         qdlist = [#dns_query{domain = "atpic.com",type = ptr,<br />                              class = in}],<br />         anlist = [],nslist = [],arlist = []}<br /></pre>

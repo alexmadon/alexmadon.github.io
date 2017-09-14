@@ -1,0 +1,56 @@
+---
+layout: post
+title: rtmpsrv and m6replay
+date: '2010-08-06T07:40:00.000-07:00'
+author: atpic
+tags: unix 
+modified_time: '2010-08-06T07:41:57.481-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-600453571155275467
+blogger_orig_url: http://tuxunix.blogspot.com/2010/08/rtmpsrv-and-m6replay.html
+---
+
+<pre>
+http://forum.ubuntu-fr.org/viewtopic.php?pid=3309369#p3309369
+En fait c'est très simple:
+1) Lancez rtmpsrv dans un terminal (il devrait se lancer sur le port 1935)
+2) Ouvrez un autre terminal et se logger en root pour rediriger le flux internet vers le port 1935
+a) iptables -t nat -A OUTPUT -p tcp --dport 1935 -j REDIRECT
+b) sysctl net.netfilter.nf_conntrack_acct=1
+3) Avec votre navigateur, commencez à lire l'émission (et pas seulement les pubs !)
+4) Surveillez le terminal avec rtmpsrv, dès qu'il a suffisamment de données, vous allez voir des lignes avec "rtmpdump" apparaître. A ce moment-là interrompez rtmpsrv par Control-C
+5) Revenez dans le terminal root (où vous avez fait les manips avec iptables) et annuler la règle:
+a) iptables -t nat -X
+b) iptables -t nat -F
+6) Revenez dans le terminal de "rtmpsrv" et copier la ligne commençant par rtmpdump
+7) Coller la ligne et c'est joué !
+
+</pre>
+
+http://stream-recorder.com/forum/m6replay-fr-rtmpdump-error-rtmp-readpacket-failed-t6114.html?goto=lastpost
+rtmpsrv
+This started as a copy of streams.c and then I ripped out all the HTTP code 
+and added in all the RTMP server side handling. I had originally planned to 
+write a complete transparent proxy, but I'm not sure that's really necessary 
+at this point.
+
+All you need to do is redirect your Flash clients to the machine running this 
+server and it will dump out all the connect / play parameters that the Flash 
+client sent. The simplest way to cause the redirect is by editing /etc/hosts 
+when you know the hostname of the RTMP server, and point it to localhost while 
+running rtmpsrv on your machine.
+
+The other way on Linux is to use iptables to redirect all outbound RTMP 
+connections. You can do this as root:
+
+iptables -t nat -A OUTPUT -p tcp --dport 1935 -j REDIRECT
+
+In my original plan I would have the transparent proxy running as a special 
+user (e.g. user "proxy"), and regular flash clients running as any other user. 
+In that case the proxy would make the connection to the real RTMP server. The 
+iptables rule would look like this:
+
+iptables -t nat -A OUTPUT -p tcp --dport 1935 -m owner \! --uid-owner proxy -j 
+REDIRECT
+
+That should give you some idea of where to go from here.
+   -- hyc

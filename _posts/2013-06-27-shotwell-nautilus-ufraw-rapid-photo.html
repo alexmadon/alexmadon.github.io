@@ -1,0 +1,27 @@
+---
+layout: post
+title: 'shotwell, nautilus, ufraw, rapid-photo-downloader '
+date: '2013-06-27T09:48:00.001-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2013-06-27T09:48:47.766-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-8988648774384298503
+blogger_orig_url: http://tuxunix.blogspot.com/2013/06/shotwell-nautilus-ufraw-rapid-photo.html
+---
+
+after problems with shotwell that finds false duplicats, I now use:<br />
+<br />
+rapid-photo-downloader <br />
+<br />
+an dthen view in nautilus;<br />
+<br />
+to get the thumbnails in nautilus:<br />
+<br />
+<pre>sudo apt-get install ufraw
+</pre>And maybe you would need to add a thumbnailer file in /usr/share/thumbnailers, create a file ufraw.thumbnailer with content :<br />
+<br />
+<pre>[Thumbnailer Entry]
+Exec=/usr/bin/ufraw-batch --embedded-image --out-type=png --size=%s %u --overwrite --silent --output=%o
+MimeType=image/x-3fr;image/x-adobe-dng;image/x-arw;image/x-bay;image/x-canon-cr2;image/x-canon-crw;image/x-cap;image/x-cr2;image/x-crw;image/x-dcr;image/x-dcraw;image/x-dcs;image/x-dng;image/x-drf;image/x-eip;image/x-erf;image/x-fff;image/x-fuji-raf;image/x-iiq;image/x-k25;image/x-kdc;image/x-mef;image/x-minolta-mrw;image/x-mos;image/x-mrw;image/x-nef;image/x-nikon-nef;image/x-nrw;image/x-olympus-orf;image/x-orf;image/x-panasonic-raw;image/x-pef;image/x-pentax-pef;image/x-ptx;image/x-pxn;image/x-r3d;image/x-raf;image/x-raw;image/x-rw2;image/x-rwl;image/x-rwz;image/x-sigma-x3f;image/x-sony-arw;image/x-sony-sr2;image/x-sony-srf;image/x-sr2;image/x-srf;image/x-x3f;
+</pre><br />
+This file basically say to exec ufraw-batch (with the good parameter) on any file with the specified mimetypes (including image/x-nef).

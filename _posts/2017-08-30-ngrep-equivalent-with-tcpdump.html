@@ -1,0 +1,20 @@
+---
+layout: post
+title: ngrep equivalent with tcpdump
+date: '2017-08-30T07:19:00.003-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2017-08-30T07:19:52.604-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-239007845509209245
+blogger_orig_url: http://tuxunix.blogspot.com/2017/08/ngrep-equivalent-with-tcpdump.html
+---
+
+tcpdump -nnvvAi lo -s0 port 8080 | grep XXX<br />
+<br />
+<br />
+-nn This option disables name resolution for IP addresses and port numbers.  Some versions of tcpdump do this with a single "-n", but the double "-nn" option should work on all of them.<br />
+vv This option enables Very Verbose output.  It wasn't strictly needed for the purposes of this command, but I'm in a habit of using it.<br />
+A This option prints just the ASCII text in the packets.  This is useful when looking for strings like "XXX".<br />
+i This option allows you to specify the Interface (in this case eth1).  eth1 on my Security Onion box at home is connected to a Dualcomm Switch Tap that monitors all ingress/egress of my home network.  Doesn't everybody do full packet capture at home?<br />
+-s0 This option sets the snaplen. By default, tcpdump only captures 68 bytes and would therefore not see the entire payload of the HTTP connection.  Setting snaplen to 0 forces tcpdump to capture the entire packet regardless of its size.<br />
+grep Since we had tcpdump output in ASCII, we can easily use the standard grep command to look for interesting text strings.

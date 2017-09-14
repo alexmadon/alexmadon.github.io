@@ -1,0 +1,24 @@
+---
+layout: post
+title: flatten, flatmap
+date: '2010-01-18T02:41:00.000-08:00'
+author: atpic
+tags: scala 
+modified_time: '2010-01-18T02:45:41.884-08:00'
+blogger_id: tag:blogger.com,1999:blog-6398118045441905973.post-7826204708805045454
+blogger_orig_url: http://tuxscala.blogspot.com/2010/01/flatten-flatmap.html
+---
+
+Use flatten from the List singleton object, which doesn't require that implicit parameter:
+
+<pre>
+scala> val foo = List(List(1), List("a","b","c"), List(2.3))
+foo: List[List[Any]] = List(List(1), List(a, b, c), List(2.3))
+
+scala> List.flatten(foo)
+res7: List[Any] = List(1, a, b, c, 2.3)
+</pre>
+
+http://blog.tmorris.net/youd-naturally-write-flatmap-yourself-if-asked-the-question/
+
+flatten(list) is equivalent to list flatMap (x => x). Furthermore, this should hold for more than just list, but for other type constructors too (sadly, Option is missing a flatten function: Option[Option[A]] => Option[A]). This is a special relationship that all monads have (join is a synonym for flatten and bind is a synonym for flatMap):

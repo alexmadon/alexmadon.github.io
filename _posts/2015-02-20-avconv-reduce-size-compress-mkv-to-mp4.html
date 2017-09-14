@@ -1,0 +1,22 @@
+---
+layout: post
+title: avconv reduce size, compress mkv to mp4
+date: '2015-02-20T08:29:00.002-08:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2015-06-07T22:37:12.190-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-6274203513307374894
+blogger_orig_url: http://tuxunix.blogspot.com/2015/02/avconv-reduce-size-compress-mkv-to-mp4.html
+---
+
+<pre>avconv -i book_latino.mkv -vcodec libx264 -map 0:0 -acodec libmp3lame -map 0:2 book_latino_small.mp4
+</pre><br />
+mkv to mkv reducing size and keeping subtitles:<br />
+<br />
+<br />
+<br />
+<pre>avconv -i ice_age2.mkv -vcodec libx264 -map 0:0 -acodec libmp3lame -map 0:1 -acodec libmp3lame -map 0:2 -scodec copy -map 0:3 -map 0:4 -map 0:5 -map 0:6 -map 0:7 ice_age2b.mkv
+</pre><br />
+forcing bitrate of 512k<br />
+<pre>avconv -i ice_age2.mkv  -vcodec libx264 -b 512k -map 0:0 -acodec libmp3lame -map 0:1 -acodec libmp3lame -map 0:2 -scodec copy -map 0:3 -map 0:4 -map 0:5 -map 0:6 -map 0:7  ice_age2b.mkv 
+</pre>

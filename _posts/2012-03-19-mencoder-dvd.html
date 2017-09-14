@@ -1,0 +1,18 @@
+---
+layout: post
+title: mencoder dvd
+date: '2012-03-19T05:42:00.002-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2012-03-19T05:43:48.224-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-2162333044900904822
+blogger_orig_url: http://tuxunix.blogspot.com/2012/03/mencoder-dvd.html
+---
+
+<pre>mplayer dvd://1 -chapter 3 -vf cropdetect</pre> <pre>mencoder dvd://1 -vf crop=720:416:0:80,scale=704:304 -ovc xvid -xvidencopts bvhq=1:chroma_opt:quant_type=mpeg:bitrate=658:pass=1
+-oac copy -o /dev/null
+</pre> <pre>mencoder dvd://1 -vf crop=720:416:0:80,scale=704:304 -ovc xvid -xvidencopts bvhq=1:chroma_opt:quant_type=mpeg:bitrate=658:pass=2
+-alang en -oac mp3lame -lameopts br=96:cbr:vol=6 -o X-Men-2.avi
+
+<a href="http://www.axllent.org/docs/video/mencoder_dvd_to_mpeg4">http://www.axllent.org/docs/video/mencoder_dvd_to_mpeg4</a>
+</pre>

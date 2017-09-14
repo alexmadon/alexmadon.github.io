@@ -1,0 +1,45 @@
+---
+layout: post
+title: create a windows bootable usb stick from ISO in linux
+date: '2013-08-19T09:14:00.002-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2013-08-19T09:14:36.770-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-7699254031777004931
+blogger_orig_url: http://tuxunix.blogspot.com/2013/08/create-windows-bootable-usb-stick-from.html
+---
+
+OK, after unsuccessfully trying all methods mentioned here, I finally got it working. Basically, the missing step was to write a proper boot sector to the USB stick, which can be done from Linux with ms-sys or lilo -M. This works with the Windows 7 retail version.<br />
+<br />
+Here is the complete rundown again:<br />
+<br />
+Install ms-sys - if it is not in your repositories, get it here. Or alternatively, make sure lilo is installed (but do not run the liloconfig step on your local box if e.g. Grub is installed there!)<br />
+<br />
+Check what device your USB media is assigned - here we will assume it is /dev/sdb. Delete all partitions, create a new one taking up all the space, set type to NTFS (7), and remember to set it bootable:<br />
+<br />
+# cfdisk /dev/sdb   or   fdisk /dev/sdb (partition type 7, and bootable flag)<br />
+<br />
+Create an NTFS filesystem:<br />
+<br />
+# mkfs.ntfs -f /dev/sdb1<br />
+<br />
+Write Windows 7 MBR on the USB stick (also works for windows 8):<br />
+<br />
+# ms-sys -7 /dev/sdb   or (e.g. on newer Ubuntu installs)   sudo lilo -M /dev/sdb mbr (info)<br />
+<br />
+Mount ISO and USB media:<br />
+<br />
+# mount -o loop win7.iso /mnt/iso<br />
+# mount /dev/sdb1 /mnt/usb<br />
+<br />
+Copy over all files:<br />
+<br />
+# cp -r /mnt/iso/* /mnt/usb/   ...or use the standard GUI file-browser of your system<br />
+<br />
+...and you're done.<br />
+<br />
+After all that, you probably want to back up your USB media for further installations and get rid of the ISO file... Just use dd: # dd if=/dev/sdb of=/win7.img<br />
+<br />
+and reverse if/of next time you want to put the Windows 7 installer onto USB.<br />
+<br />
+As always, double check the device names very carefully when working with dd.<br />

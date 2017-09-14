@@ -1,0 +1,62 @@
+---
+layout: post
+title: map, filter and foldr
+date: '2010-02-03T02:24:00.000-08:00'
+author: atpic
+tags: scala 
+modified_time: '2010-02-03T02:30:29.976-08:00'
+blogger_id: tag:blogger.com,1999:blog-6398118045441905973.post-3697556897698287984
+blogger_orig_url: http://tuxscala.blogspot.com/2010/02/map-filter-and-foldr.html
+---
+
+see functional_programming_course_fokker.pdf
+
+3.1.3 Higher order functions on lists
+Functions can be made more flexible by giving them a function as a parameter. A lot of functions
+on lists have a function as an parameter. Therefore they are higher order functions.
+<h4>map, filter and foldr</h4>
+Previously map, filter and foldr were discussed. These function do something, depending on
+their function parameter, with every element of a list.
+
+<br/>
+
+The function <b>map</b> applies its function
+parameter to each element of the list:
+<pre>
+           xs = [ 1 , 2 , 3 , 4 , 5 ]
+                  |   |   |   |    |
+map square xs = [ 1 , 4 , 9 , 16 , 25 ]
+</pre>
+The <b>filter</b> function eliminates elements from a list that do not satisfy a certain Boolean predicate:
+<pre>
+            xs = [ 1 , 2 , 3 , 4 , 5 ]
+                   ×   |   ×   |   ×
+filter even xs = [     2 ,     4     ]
+</pre>
+The <b>foldr</b> function inserts an operator between all elements of a list starting at the right hand
+with a given value:
+<pre>
+            xs = [ 1 , 2 , 3 , 4 , 5 ]
+foldr (+) 0 xs = (1 + (2 + (3 + (4 + (5 + 0 )))))
+</pre>
+
+<hr/>
+
+These three standard functions are defined recursively in the prelude. They were discussed earlier
+in section 2.3.1. page 26
+<pre>
+map :: (a->b) -> [a] -> [b]
+map f [] = []
+map f (x:xs) = f x : map f xs
+
+filter :: (a->Bool) -> [a] -> [a]
+filter p [] = []
+filter p (x:xs)
+       | p x = x : filter p xs
+       | otherwise = filter p xs
+
+foldr :: (a->b->b) -> b -> [a] -> b
+foldr op e [] = e
+foldr op e (x:xs) = x ‘op‘ foldr op e xs
+</pre>
+By using these standard functions extensively the recursion in other functions can be hidden

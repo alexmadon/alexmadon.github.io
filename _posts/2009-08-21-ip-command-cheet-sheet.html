@@ -1,0 +1,53 @@
+---
+layout: post
+title: ip command cheet sheet
+date: '2009-08-21T07:21:00.001-07:00'
+author: atpic
+tags: unix 
+modified_time: '2009-08-21T07:22:12.342-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-588970971267460456
+blogger_orig_url: http://tuxunix.blogspot.com/2009/08/ip-command-cheet-sheet.html
+---
+
+<p><strong>link</strong></p>
+<ul>
+<li><code>ip link</code> - show link info for all interfaces</li>
+<li><code>ip link show up</code> - show link info for interfaces that are &#8220;up&#8221;</li>
+<li><code>ip link show eth0</code> show link info for eth0</li>
+<li><code>ip link set eth0 up</code> - use instead of ifup (though not entirely equivalent)</li>
+<li><code>ip link set eth0 down</code> - use instead of ifdown (though not entirely equivalent)</li>
+<li><code>ip link set eth0 promisc on</code> - turn on promiscuous mode</li>
+<li><code>ip link set eth0 promisc off</code> - turn off promiscuous mode</li>
+<li><code>ip link set eth0 txqlen 1000</code> - set txqueuelen (can also use &#8220;txqueuelen&#8221;)</li>
+<li><code>ip link set eth0 mtu 1500</code> - set mtu</li>
+</ul>
+<p><strong>addr</strong></p>
+<ul>
+<li><code>ip addr</code> - show addr info for all interfaces</li>
+<li><code>ip addr show up</code> - show addr info for interfaces that are &#8220;up&#8221;</li>
+<li><code>ip addr show eth0</code> show addr info for eth0</li>
+<li><code>ip addr add 10.10.10.10/32 dev eth0</code> - add ip address and subnet to eth0
+<ul>
+<li>also works: <code>ip addr add dev eth0 10.10.10.10/32</code></li>
+</ul>
+</li>
+<li><code>ip addr del 10.10.10.10/32 dev eth0</code> - remove ip address and subnet from eth0
+<ul>
+<li>also works: <code>ip addr del dev eth0 10.10.10.10/32</code></li>
+</ul>
+</li>
+<li><code>ip addr flush dev eth0</code> - remove all addresses from eth0</li>
+</ul>
+<p><strong>route</strong></p>
+<ul>
+<li><code>ip route</code> - list all routes</li>
+<li><code>ip route flush</code> - clear routing table</li>
+<li>The rest of the route commands are outside the scope of this page.  But here are the basic commands for managing routes without the required parameters.
+<ul>
+<li><code>ip route add</code> - add a new route</li>
+<li><code>ip route change</code> - change an existing route</li>
+<li><code>ip route replace</code> - change route if it exists, add if it does not</li>
+<li><code>ip route del</code> - delete route (without parameters this will delete the default route)</li>
+</ul>
+</li>
+</ul>

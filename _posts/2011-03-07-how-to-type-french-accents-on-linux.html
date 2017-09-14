@@ -1,0 +1,75 @@
+---
+layout: post
+title: how to type french accents on Linux with a uS/UK keyboard?
+date: '2011-03-07T07:29:00.000-08:00'
+author: atpic
+tags: unix 
+modified_time: '2011-03-07T07:30:16.959-08:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-7843725167498264079
+blogger_orig_url: http://tuxunix.blogspot.com/2011/03/how-to-type-french-accents-on-linux.html
+---
+
+<pre>
+
+the old method of setting:
+
+ Option      "XkbOptions"  "compose:rwin"
+
+
+does not work any more on evdev managed keyboards.
+
+Here is what you need to do:
+
+
+1) you need the 
+en_US.UTF-8
+dpkg-reconfigure locales
+
+
+madon@madona:~$ locale
+LANG=en_US.UTF-8
+LANGUAGE=en_GB:en
+LC_CTYPE="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+LC_COLLATE="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_PAPER="en_US.UTF-8"
+LC_NAME="en_US.UTF-8"
+LC_ADDRESS="en_US.UTF-8"
+LC_TELEPHONE="en_US.UTF-8"
+LC_MEASUREMENT="en_US.UTF-8"
+LC_IDENTIFICATION="en_US.UTF-8"
+LC_ALL=
+
+2) set the compse keys:
+
+madon@madona:~$ setxkbmap -print
+xkb_keymap {
+        xkb_keycodes  { include "evdev+aliases(qwerty)" };
+        xkb_types     { include "complete"      };
+        xkb_compat    { include "complete"      };
+        xkb_symbols   { include "pc+us+inet(evdev)"     };
+        xkb_geometry  { include "pc(pc105)"     };
+};
+madon@madona:~$ setxkbmap -option "compose:rwin,compose:lwin"
+madon@madona:~$ setxkbmap -print
+xkb_keymap {
+        xkb_keycodes  { include "evdev+aliases(qwerty)" };
+        xkb_types     { include "complete"      };
+        xkb_compat    { include "complete"      };
+        xkb_symbols   { include "pc+us+inet(evdev)+compose(lwin)+compose(rwin)" };
+        xkb_geometry  { include "pc(pc105)"     };
+};
+
+test it work with xterm, xedit
+
+
+3) set the input method for gtk and qt applications:
+
+export QT_IM_MODULE=xim
+export GTK_IM_MODULE=xim
+
+GTK_IM_MODULE=xim firefox
+</pre>

@@ -1,0 +1,177 @@
+---
+layout: post
+title: wifi
+date: '2011-01-26T07:50:00.001-08:00'
+author: atpic
+tags: unix 
+modified_time: '2011-01-26T07:51:16.201-08:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-8512947135690647208
+blogger_orig_url: http://tuxunix.blogspot.com/2011/01/wifi.html
+---
+
+<pre>
+dell d630 latitude
+lspci
+0c:00.0 Network controller: Intel Corporation PRO/Wireless 3945ABG [Golan] Network Connection (rev 02)
+
+http://wiki.debian.org/iwlwifi
+
+
+oot@amadon:/etc/modprobe.d# iwconfig
+lo        no wireless extensions.
+
+eth3      no wireless extensions.
+
+wmaster0  no wireless extensions.
+
+wlan0     IEEE 802.11abg  ESSID:""  
+          Mode:Managed  Frequency:2.412 GHz  Access Point: Not-Associated   
+          Tx-Power=0 dBm   
+          Retry min limit:7   RTS thr:off   Fragment thr:off
+          Encryption key:off
+          Power Management:off
+          Link Quality:0  Signal level:0  Noise level:0
+          Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:0  Invalid misc:0   Missed beacon:0
+
+vboxnet0  no wireless extensions.
+
+pan0      no wireless extensions.
+
+
+
+------------------------------
+
+root@amadon:~# iwlist wlan0 scan
+wlan0     Interface doesn't support scanning : Network is down
+
+
+---------------------------------
+ifconfig wlan0 up
+"SIOCSIFFLAGS:No such file or directory"
+
+-------------------------------------
+dmesg
+
+[ 8491.842721] iwl3945 0000:0c:00.0: firmware: requesting iwlwifi-3945-2.ucode
+[ 8491.857453] iwl3945 0000:0c:00.0: iwlwifi-3945-2.ucode firmware file req failed: -2
+[ 8491.857461] iwl3945 0000:0c:00.0: firmware: requesting iwlwifi-3945-1.ucode
+[ 8491.865986] iwl3945 0000:0c:00.0: iwlwifi-3945-1.ucode firmware file req failed: -2
+[ 8491.865992] iwl3945 0000:0c:00.0: Could not read microcode: -2
+
+==========================
+
+apt-get install firmware-iwlwifi 
+
+
+===========================
+
+wicd-gtk -n &
+
+
+====================
+
+
+iwlist wlan0 channel 
+wlan0     32 channels in total; available frequencies :
+          Channel 01 : 2.412 GHz
+          Channel 02 : 2.417 GHz
+          Channel 03 : 2.422 GHz
+          Channel 04 : 2.427 GHz
+          Channel 05 : 2.432 GHz
+          Channel 06 : 2.437 GHz
+          Channel 07 : 2.442 GHz
+          Channel 08 : 2.447 GHz
+          Channel 09 : 2.452 GHz
+          Channel 10 : 2.457 GHz
+          Channel 11 : 2.462 GHz
+          Channel 12 : 2.467 GHz
+          Channel 13 : 2.472 GHz
+          Channel 34 : 5.17 GHz
+          Channel 36 : 5.18 GHz
+          Channel 38 : 5.19 GHz
+          Channel 40 : 5.2 GHz
+          Channel 42 : 5.21 GHz
+          Channel 44 : 5.22 GHz
+          Channel 46 : 5.23 GHz
+          Channel 48 : 5.24 GHz
+          Channel 52 : 5.26 GHz
+          Channel 56 : 5.28 GHz
+          Channel 60 : 5.3 GHz
+          Channel 64 : 5.32 GHz
+          Channel 100 : 5.5 GHz
+          Channel 104 : 5.52 GHz
+          Channel 108 : 5.54 GHz
+          Channel 112 : 5.56 GHz
+          Channel 116 : 5.58 GHz
+          Channel 120 : 5.6 GHz
+          Channel 124 : 5.62 GHz
+          Current Frequency=2.442 GHz (Channel 7)
+
+
+
+=======================
+
+oot@amadon:/etc/wpa_supplicant# dmesg|grep country
+[   10.381089] cfg80211: Calling CRDA for country: US
+
+
+apt-get install iw
+root@amadon:/etc/wpa_supplicant# iw reg set GB
+root@amadon:/etc/wpa_supplicant# iw reg get
+country US:
+ (2402 - 2472 @ 40), (6, 27)
+ (5170 - 5190 @ 40), (6, 23)
+ (5190 - 5210 @ 40), (6, 23)
+ (5210 - 5230 @ 40), (6, 23)
+ (5230 - 5330 @ 40), (6, 23)
+ (5735 - 5835 @ 40), (6, 30)
+
+
+=============================================
+
+root@amadon:~# iwlist wlan0 scan
+wlan0     Scan completed :
+          Cell 01 - Address: 00:90:D0:DE:C8:E5
+                    Channel:1
+                    Frequency:2.412 GHz (Channel 1)
+                    Quality=54/70  Signal level=-56 dBm  
+                    Encryption key:on
+                    ESSID:"BeBoxAlex"
+                    Bit Rates:1 Mb/s; 2 Mb/s; 5.5 Mb/s; 11 Mb/s; 18 Mb/s
+                              24 Mb/s; 36 Mb/s; 54 Mb/s
+                    Bit Rates:6 Mb/s; 9 Mb/s; 12 Mb/s; 48 Mb/s
+                    Mode:Master
+                    Extra:tsf=0000000b3e106187
+                    Extra: Last beacon: 2620ms ago
+                    IE: Unknown: 00094265426F78416C6578
+                    IE: Unknown: 010882848B962430486C
+                    IE: Unknown: 030101
+                    IE: Unknown: 2A0100
+                    IE: Unknown: 2F0100
+                    IE: Unknown: 32040C121860
+                    IE: Unknown: DD06001018020000
+                    IE: Unknown: DD180050F2020101080003A4000027A4000042435E0062322F00
+ 
+=================================
+http://www.linux-france.org/prj/inetdoc/cours/config.interface.wlan/config.interface.wlan.wireless-tools.html
+
+root@amadon:~# iwconfig wlan0
+wlan0     IEEE 802.11abg  ESSID:""  
+          Mode:Managed  Frequency:2.462 GHz  Access Point: Not-Associated   
+          Tx-Power=15 dBm   
+          Retry min limit:7   RTS thr:off   Fragment thr:off
+          Encryption key:off
+          Power Management:off
+          Link Quality:0  Signal level:0  Noise level:0
+          Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:0  Invalid misc:0   Missed beacon:0
+
+
+=========================
+http://wiki.debian.org/WiFi/AdHoc
+
+root@amadon:~# ifconfig wlan0 down
+root@amadon:~# iwconfig wlan0 channel 1
+root@amadon:~# ifconfig wlan0 up
+</pre>

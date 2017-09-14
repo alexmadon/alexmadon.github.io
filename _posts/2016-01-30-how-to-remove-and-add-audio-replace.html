@@ -1,0 +1,51 @@
+---
+layout: post
+title: how to remove and add audio (replace audio), mix a video with avconv
+date: '2016-01-30T01:15:00.002-08:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2016-04-07T10:04:33.679-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-702917191128375601
+blogger_orig_url: http://tuxunix.blogspot.com/2016/01/how-to-remove-and-add-audio-replace.html
+---
+
+remove audio<br />
+avconv -i video_french.mp4 -vcodec copy -an video_nosound.mp4<br />
+<br />
+<br />
+add new audio<br />
+avconv -i video_nosound.mp4 -i audio_english.mp3 -vcodec copy -acodec copy -shortest video_english.mp4<br />
+<br />
+<br />
+<br />
+http://www.hecticgeek.com/2013/11/fix-audio-delays-vlc-mkvtoolnix/<br />
+<br />
+<br />
+<br />
+<br />
+ 1<br />
+down vote<br />
+ <br />
+<br />
+If you need to delay video by 3.84 seconds, use a command like this:<br />
+<br />
+ffmpeg.exe -i "movie.mp4" -itsoffset 3.84 -i "movie.mp4" -map 1:v -map 0:a -vcodec copy -acodec copy "movie-video-delayed.mp4"<br />
+<br />
+If you need to delay audio by 3.84 seconds, use a command like this:<br />
+<br />
+ffmpeg.exe -i "movie.mp4" -itsoffset 3.84 -i "movie.mp4" -map 0:v -map 1:a -vcodec copy -acodec copy "movie-audio-delayed.mp4"<br />
+<br />
+Make sure, that your ffmpeg build is not too old, newer than 2012 will suffice.<br />
+<br />
+Explanation<br />
+<br />
+-itsoffset 3.84 -i "movie.mp4"<br />
+<br />
+Offsets timestamps of all streams by 3.84 seconds in the input file that follows the option (movie.mp4).<br />
+<br />
+-map 1:v -map 0:a<br />
+<br />
+Takes video stream from the second (delayed) input and audio stream from the first input - both inputs may of course be the same file.<br />
+<br />
+A more verbose explanation can be found here:<br />
+http://alien.slackbook.org/blog/fixing-audio-sync-with-ffmpeg/<br />

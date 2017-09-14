@@ -1,0 +1,49 @@
+---
+layout: post
+title: w3c xmlschema validator
+date: '2008-10-02T07:09:00.001-07:00'
+author: atpic
+tags: unix 
+modified_time: '2008-10-02T07:26:46.240-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-7695114954533531332
+blogger_orig_url: http://tuxunix.blogspot.com/2008/10/w3c-xmlschema-validator.html
+---
+
+<pre>
+madon@amadon:~$ cd xmlschema/
+madon@amadon:~/xmlschema$ CVSROOT=:pserver:anonymous@dev.w3.org:/sources/public 
+cvs login
+bash: cvs: command not found
+madon@amadon:~/xmlschema$ CVSROOT=:pserver:anonymous@dev.w3.org:/sources/public 
+cvs login
+Logging in to :pserver:anonymous@dev.w3.org:2401/sources/public
+CVS password: 
+cvs login: CVS password file /home/madon/.cvspass does not exist - creating a ne
+w file
+madon@amadon:~/xmlschema$ CVSROOT=:pserver:anonymous@dev.w3.org:/sources/public 
+cvs checkout xmlschema
+cvs checkout: Updating xmlschema
+U xmlschema/AbInitio.py
+U xmlschema/COPYING
+U xmlschema/COPYRIGHT
+U xmlschema/DISTRIBUTE
+.....
+
+python ./setup.py build
+su 
+python ./setup.py install
+
+ python /usr/lib/python2.5/site-packages/XSV/commandLine.py --help
+Usage: [-ktwilDNend] [-u baseURI] [-T type] [-E elt] [-r [-r [-r]] [ind|alt]] [-s stylesheet] [-o outputFile] [-p profileOut] file [schema1 schema2 . . .]
+
+
+
+
+python /usr/lib/python2.5/site-packages/XSV/commandLine.py newsarticle.xsd
+&lt;?xml version='1.0'?&gt;
+&lt;xsv xmlns="http://www.w3.org/2000/05/xsv"
+     docElt="{http://www.w3.org/2001/XMLSchema}schema" instanceAssessed="true"
+     instanceErrors="0" rootType="[Anonymous]" schemaErrors="0"
+     target="file:///home/madon/training_wcm/newsarticle.xsd"
+     validation="strict" version="XSV 3.1-1 of 2007-12-11 16:20:05"/&gt;
+</pre>

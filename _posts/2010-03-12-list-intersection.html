@@ -1,0 +1,23 @@
+---
+layout: post
+title: list intersection
+date: '2010-03-12T06:47:00.000-08:00'
+author: atpic
+tags: scala 
+modified_time: '2010-03-12T06:48:02.736-08:00'
+blogger_id: tag:blogger.com,1999:blog-6398118045441905973.post-4817214759393236378
+blogger_orig_url: http://tuxscala.blogspot.com/2010/03/list-intersection.html
+---
+
+<pre>
+scala> val a=List(1,2,3,4,5,10,11,12,13,14,15) 
+a: List[Int] = List(1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 15)
+
+scala> val b=List(8,9,10,11,12)
+b: List[Int] = List(8, 9, 10, 11, 12)
+             ^
+
+scala> b.intersect(a)
+res1: List[Int] = List(10, 11, 12)
+
+</pre>

@@ -1,0 +1,130 @@
+---
+layout: post
+title: create a torrent for t411 tutorial
+date: '2017-01-05T08:53:00.001-08:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2017-01-05T08:53:11.911-08:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-335460478062673214
+blogger_orig_url: http://tuxunix.blogspot.com/2017/01/create-torrent-for-t411-tutorial.html
+---
+
+<h1>fichier .nfo</h1><br />
+mediainfo <br />
+<br />
+mediainfo mon_film.mkv<br />
+<br />
+mediainfo mon_film.mkv > mon_film.nfo<br />
+<br />
+<br />
+<br />
+General<br />
+Unique ID                                : xxxxxxxxxxxxxx (0xyyyyyyyyyyyyy)<br />
+Complete name                            : mon_film.mkv<br />
+Format                                   : Matroska<br />
+Format version                           : Version 2<br />
+File size                                : 1.27 GiB<br />
+Duration                                 : 1h 29mn<br />
+Overall bit rate                         : 2 019 Kbps<br />
+Writing application                      : HandBrake 0.10.1 2015050800<br />
+Writing library                          : Lavf56.1.0<br />
+<br />
+Video<br />
+ID                                       : 1<br />
+Format                                   : AVC<br />
+Format/Info                              : Advanced Video Codec<br />
+Format profile                           : Main@L4.0<br />
+Format settings, CABAC                   : Yes<br />
+Format settings, ReFrames                : 4 frames<br />
+Codec ID                                 : V_MPEG4/ISO/AVC<br />
+Duration                                 : 1h 29mn<br />
+Width                                    : 720 pixels<br />
+Height                                   : 576 pixels<br />
+Display aspect ratio                     : 4:3<br />
+Frame rate mode                          : Constant<br />
+Frame rate                               : 25.000 fps<br />
+Standard                                 : PAL<br />
+Color space                              : YUV<br />
+Chroma subsampling                       : 4:2:0<br />
+Bit depth                                : 8 bits<br />
+Scan type                                : Progressive<br />
+Writing library                          : x264 core 142 r2431 a5831aa<br />
+Encoding settings                        : cabac=1 / ref=1 / deblock=1:0:0 / analyse=0x1:0x111 / me=hex / subme=2 / psy=1 / psy_rd=1.00:0.00 / mixed_ref=0 / me_range=16 / chroma_me=1 / trellis=0 / 8x8dct=0 / cqm=0 / deadzone=21,11 / fast_pskip=1 / chroma_qp_offset=0 / threads=12 / lookahead_threads=4 / sliced_threads=0 / nr=0 / decimate=1 / interlaced=0 / bluray_compat=0 / constrained_intra=0 / bframes=3 / b_pyramid=2 / b_adapt=1 / b_bias=0 / direct=1 / weightb=1 / open_gop=0 / weightp=1 / keyint=250 / keyint_min=25 / scenecut=40 / intra_refresh=0 / rc_lookahead=10 / rc=crf / mbtree=1 / crf=20.0 / qcomp=0.60 / qpmin=0 / qpmax=69 / qpstep=4 / vbv_maxrate=20000 / vbv_bufsize=25000 / crf_max=0.0 / nal_hrd=none / filler=0 / ip_ratio=1.40 / aq=1:1.00<br />
+Default                                  : Yes<br />
+Forced                                   : No<br />
+Color primaries                          : BT.601 PAL<br />
+Transfer characteristics                 : BT.709<br />
+Matrix coefficients                      : BT.601<br />
+<br />
+Audio<br />
+ID                                       : 2<br />
+Format                                   : AAC<br />
+Format/Info                              : Advanced Audio Codec<br />
+Format profile                           : LC<br />
+Codec ID                                 : A_AAC<br />
+Duration                                 : 1h 29mn<br />
+Channel(s)                               : 2 channels<br />
+Channel positions                        : Front: L R<br />
+Sampling rate                            : 48.0 KHz<br />
+Compression mode                         : Lossy<br />
+Delay relative to video                  : 1mn 5s<br />
+Title                                    : Stereo<br />
+Language                                 : French<br />
+Default                                  : Yes<br />
+Forced                                   : No<br />
+<br />
+Menu<br />
+00:00:00.000                             : :Chapter 1<br />
+00:13:34.200                             : :Chapter 2<br />
+00:26:20.760                             : :Chapter 3<br />
+00:36:39.040                             : :Chapter 4<br />
+00:38:42.480                             : :Chapter 5<br />
+00:50:04.480                             : :Chapter 6<br />
+01:09:11.360                             : :Chapter 7<br />
+01:16:55.000                             : :Chapter 8<br />
+01:29:41.240                             : :Chapter 9<br />
+<br />
+<br />
+<br />
+<h1>Presentation</h1><br />
+http://prezup.eu/<br />
+<br />
+it is written in bbcode.<br />
+You can test it:<br />
+http://infinite-story.com/tools/bbcode.php<br />
+<br />
+image sur imageshak<br />
+<br />
+<h1>Creation du .torrent</h1><br />
+<br />
+http://askubuntu.com/questions/32024/how-to-create-a-torrent-using-the-command-line<br />
+<br />
+<h4>Find you passkey in your t411 user profile</h4><br />
+http://www.t411.li/users/profile/<br />
+Niveau de Confidentialité:   Normal<br />
+Votre Clé:  e17xxxxxxxxxxxxxxxxxxxxxxxxxx  (passkey)<br />
+<br />
+<br />
+This will give you the URL of the announce server:<br />
+<br />
+<br />
+http://t411.download/e17xxxxxxxxxxxxxxxxxxxxxxxxxx/announce<br />
+<br />
+<br />
+transmission-create \<br />
+-o mon_film.torrent \<br />
+-c "Mon Film" \<br />
+--private \<br />
+-t http://t411.download/e17xxxxxxxxxxxxxxxxxxxxxxxxxx/announce \<br />
+mon_film.mkv<br />
+<br />
+<br />
+<h1>Conclude</h1><br />
+upload in t411 your torren, you nfo, your bbcode description<br />
+download the t411 generated torrent<br />
+<br />
+screen; su - www-data<br />
+place the mkv file in /var/www-data/Dowloads<br />
+place the torrent file in /var/www-data<br />
+cd /var/www-data<br />
+transmission-cli mon_film.mkv.torrent<br />

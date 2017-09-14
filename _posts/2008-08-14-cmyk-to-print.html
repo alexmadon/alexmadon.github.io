@@ -1,0 +1,41 @@
+---
+layout: post
+title: CMYK to print
+date: '2008-08-14T07:09:00.000-07:00'
+author: atpic
+tags: unix 
+modified_time: '2008-08-15T05:08:49.880-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-2777738082520950210
+blogger_orig_url: http://tuxunix.blogspot.com/2008/08/cmyk-to-print.html
+---
+
+gs will (by default) convert things to rgb
+ -dProcessColorModel=/DeviceCMYK
+
+
+$ convert image10.jpg -colorspace CMYK image10a.jpg
+
+Check by jhead:
+
+$ jhead -v image10.jpg
+
+JPEG image is 640w * 480h, 3 color components, 8 bits per sample
+
+$ jhead -v image10a.jpg
+
+JPEG image is 640w * 480h, 4 color components, 8 bits per sample
+
+So it works. But the downside is here:
+
+$ ls -l image10*jpg
+ 203835 02-20 23:50 image10a.jpg
+  54368 02-20 23:05 image10.jpg
+
+Four times the size of the RGB image! No fun.
+
+
+for file in *
+do
+echo doing $file
+convert $file -profile /icc/adobergb1998.icc  -profile /icc/uswebuncoated.icc  ../nikon_good/$file
+done

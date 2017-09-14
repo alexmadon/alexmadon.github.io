@@ -1,0 +1,162 @@
+---
+layout: post
+title: regex
+date: '2010-02-06T03:11:00.000-08:00'
+author: atpic
+tags: scala 
+modified_time: '2010-02-11T01:07:33.486-08:00'
+blogger_id: tag:blogger.com,1999:blog-6398118045441905973.post-3501421451731673931
+blogger_orig_url: http://tuxscala.blogspot.com/2010/02/regex.html
+---
+
+Modifiers:
+i = insensitive (java CASE_INSENSITIVE)
+u= unicode (java UNICODE_CASE)
+
+<pre>
+scala> println("(?ii)спасибо".r.replaceAllIn("СПАСИБО!", ""))
+СПАСИБО!
+
+scala> println("(?iu)спасибо".r.replaceAllIn("СПАСИБО!", ""))
+!
+
+scala> "(?iu)\\w*".r
+res14: scala.util.matching.Regex = (?iu)\w*
+</pre>
+Strings have a method called "r", which will convert it to a Regex object. 
+
+<pre>
+scala> import scala.util.matching.Regex
+import scala.util.matching.Regex
+
+scala> val LogEntry = new Regex("""(\d+)ms""")
+LogEntry: scala.util.matching.Regex = (\d+)ms
+
+scala> val line = "199956ms"
+line: java.lang.String = 199956ms
+
+scala> val LogEntry(thetime)=line
+thetime: String = 199956
+
+scala> val words=new Regex(":(\\w+):")
+words: scala.util.matching.Regex = :(\w+):
+
+scala> val words(aword)=":alex:"
+aword: String = alex
+
+
+scala> val word=new Regex(":(.*):")
+word: scala.util.matching.Regex = :(.*):
+
+scala> val word(aword)=":été:"
+aword: String = été
+
+scala> if ("Hello".matches("[A-Z][a-z]+")) println("ok")
+ok
+
+scala> val text="alex madon"                          
+text: java.lang.String = alex madon
+
+
+scala> """(.)""".r.findAllIn( text ).foreach(println)
+a
+l
+e
+x
+ 
+m
+a
+d
+o
+n
+
+scala> """(.+)""".r.findAllIn( text ).foreach(println)
+alex madon
+
+scala> """(\w)""".r.findAllIn( text ).foreach(println)  
+a
+l
+e
+x
+m
+a
+d
+o
+n
+
+scala> """(\w+)""".r.findAllIn( text ).foreach(println)
+alex
+madon
+
+scala> val text="Cet été là"                                
+text: java.lang.String = Cet été là
+
+scala> """(?iu)(\w+)""".r.findAllIn( text ).foreach(println)
+Cet
+t
+l
+
+
+scala> """([\p{InLatin-1Supplement}]+)""".r.findAllIn( text).foreach(println)                
+é
+é
+à
+
+scala> """([a-zA-Z0-9\p{InLatin-1Supplement}]+)""".r.findAllIn( text).foreach(println)               
+Cet
+été
+là
+
+scala> """([a-zA-Z0-9\p{InLatin-1Supplement}]+)""".r.findAllIn( text.toLowerCase).foreach(println)      
+cet
+été
+là
+
+scala> """(\p{L}+)""".r.findAllIn(text).foreach(println)
+Cet
+été
+là
+
+scala> val text="Γλωσσικά εργαλεία"
+text: java.lang.String = Γλωσσικά εργαλεία
+
+scala> """(\p{InGreek}+)""".r.findAllIn( text ).foreach(println)
+Γλωσσικά
+εργαλεία
+
+
+</pre>
+
+see
+<ol>
+<li>
+<a href=http://java.sun.com/javase/6/docs/api/java/util/regex/Pattern.html>http://java.sun.com/javase/6/docs/api/java/util/regex/Pattern.html</a>
+
+<li>
+<a href=http://java.sun.com/javase/6/docs/api/java/lang/Character.html>http://java.sun.com/javase/6/docs/api/java/lang/Character.html</a>
+
+
+<li>
+<a href=http://java.sun.com/javase/6/docs/api/java/lang/Character.UnicodeBlock.html>http://java.sun.com/javase/6/docs/api/java/lang/Character.UnicodeBlock.html</a>
+</ol>
+
+
+Now if you want to reuse matches:
+
+
+<pre>
+import java.util.regex.Pattern
+import java.util.regex.Matcher
+
+val text="abacadaaf"
+val pattern = Pattern.compile("(a)")
+val matcher = pattern.matcher(text)
+val sb = new StringBuffer
+val callback = (x:String)=>" "+x+" "
+while(matcher.find()) {
+  println(matcher.group(1))
+  matcher.appendReplacement(sb, callback(matcher.group(1))) 
+}
+matcher.appendTail(sb)
+sb.toString
+</pre>

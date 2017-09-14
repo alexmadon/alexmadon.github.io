@@ -1,0 +1,105 @@
+---
+layout: post
+title: scala examples
+date: '2010-01-17T07:25:00.000-08:00'
+author: atpic
+tags: scala 
+modified_time: '2010-01-17T07:41:38.618-08:00'
+blogger_id: tag:blogger.com,1999:blog-6398118045441905973.post-3256588795935387136
+blogger_orig_url: http://tuxscala.blogspot.com/2010/01/scala-examples.html
+---
+
+<pre>
+// P04 (*) Find the number of elements of a list.
+//     Example:
+//     scala> length(List(1, 1, 2, 3, 5, 8))
+//     res0: Int = 6
+
+
+  /*
+  // Builtins.
+  def length[T](l: List[T]): Int = l.length
+  */
+
+  /*
+  // Simple recursive solution.
+  def length[T](l: List[T]): Int = l match {
+    case Nil       => 0
+    case _ :: tail => 1 + length(tail)
+  }
+</pre>
+
+
+
+<b>Pattern matching</b>
+<pre>
+// P02 (*) Find the last but one element of a list.
+//     Example:
+//     scala> penultimate(List(1, 1, 2, 3, 5, 8))
+//     res0: Int = 5
+
+object P02 {
+  /*
+  // Again, with builtins this is easy.
+  def penultimate[T](l: List[T]): T = {
+    if (l.length < 2) throw new NoSuchElementException
+    else l.takeRight(2).head
+  }
+  */
+
+  // But pattern matching also makes it easy.
+  def penultimate[T](l: List[T]): T = l match {
+    case e :: _ :: Nil => e
+    case _ :: tail     => penultimate(tail)
+    case _             => throw new NoSuchElementException
+  }
+</pre>  
+
+
+Recursive Functions
+Recursive functions must always specify their return types:
+<pre>
+scala> def factorial(n: Int) = if (n == 0) 1 else n * factorial(n - 1)
+<console>:5: error: recursive method factorial needs result type
+scala> def factorial(n: Int): Int = if (n == 0) 1 else n * factorial(n - 1)
+factorial: (Int)Int
+</pre>
+
+see
+http://alblue.blogspot.com/2007/10/scala-introduction-to-scala-functions.html :
+
+We can solve the stack overflow by turning the function into a tail-recursive function. This is one in which the last value is a call to itself. In our factorial example, it's not, because if we expand it it looks like this:
+
+<pre>
+    factorial(5)
+    5*(factorial(4))
+    5*(4*(factorial(3)))
+    5*(4*(3*(factorial(2))))
+    5*(4*(3*(2*(factorial(1))))))
+</pre>
+At each call, we end up with more and more *s in the expression, until finally Java gives up and we get the StackOverflowError. The way we fix this problem is to create a second argument to the function (sometimes known as an 'accumulator'); but you can think of it as the 'result':
+<pre>
+    scala> def factorial2(n:BigInt,result:BigInt):BigInt = if (n==0) result else factorial2(n-1,n*result)
+    scala> factorial2(5,1)
+    res7: BigInt = 120
+    scala> factorial2(10000,1)
+    res8: BigInt = 2846.....
+</pre>
+This is important for a couple of reasons. Firstly, what's happening under the covers is something called <b>tail-call-optimisation</b>. That is, if the last call is a call to itself, then instead of creating a new stack, we'll simply replace the current evaluation with a different call, and this optimisation allows us to take constant space. Using our factorial(5) example from earlier:
+<pre>
+    factorial2(5,1)
+    factorial2(4,5)
+    factorial2(3,20)
+    factorial2(2,60)
+    factorial2(1,120)
+</pre>
+At each point the size of the stack space is constant, so we can perform bigger calculations than we would have been able to do otherwise. Secondly, the Scala runtime uses this optimisation in its calls. (Incidentally, there's a proposal to allow tail-call optimisation to be done at the Java bytecode/JVM level in the future, and a whole host of support for other languages including the invokedymanic bytecode.)
+
+Mind you, the solution isn't perfect; you have to supply a starting value as the initial value of result. If you supply a wrong value, the calculation of factorial could end up being wrong. Ideally, we'd like to abstract that away from the caller of the function, whilst still allowing the function to be defined as <b>tail recursive</b>. In order to achieve this, we can create a function that bootstraps the recursive function:
+<pre>
+    scala> def factorial(n:BigInt):BigInt = factorial2(n,1)
+    factorial: (BigInt)BigInt
+    scala> factorial(10000)
+    res9: BigInt = 2846.....
+</pre>
+We've covered some basics of functions in this post, but there's more to come in future posts. However, next up we'll look at the way we can deal with some simple object types. Stay tuned.

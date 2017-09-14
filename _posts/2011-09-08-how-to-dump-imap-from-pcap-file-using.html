@@ -1,0 +1,35 @@
+---
+layout: post
+title: how to dump IMAP from a PCAP file using python pcapy and impacket
+date: '2011-09-08T07:23:00.000-07:00'
+author: atpic
+tags: python 
+modified_time: '2011-09-08T07:24:28.378-07:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-3242855680537229878
+blogger_orig_url: http://tuxpython.blogspot.com/2011/09/how-to-dump-imap-from-pcap-file-using.html
+---
+
+<pre>
+#!/usr/bin/python
+from pcapy import open_offline
+from impacket.ImpactDecoder import EthDecoder
+from impacket.ImpactPacket import IP, TCP, UDP, ICMP
+
+decoder = EthDecoder()
+
+def callback(jdr, data):
+    packet = decoder.decode(data)
+    child = packet.child()
+    if isinstance(child, IP):
+        child = child.child()
+        if isinstance(child, TCP):
+            if child.get_th_dport() == 143:
+                # print 'IMAP'
+                # print dir(child)
+                print child.get_data_as_string()
+                # print child.get_buffer_as_string()
+                # print child.get_bytes()
+
+pcap = open_offline('08092011-1401-DraggingFileIntoALFFromClient.pcap')
+pcap.loop(0, callback)
+</pre>

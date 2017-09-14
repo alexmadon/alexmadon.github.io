@@ -1,0 +1,30 @@
+---
+layout: post
+title: simulating a shell pipe
+date: '2008-08-14T03:21:00.001-07:00'
+author: atpic
+tags: python 
+modified_time: '2008-08-14T04:23:27.933-07:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-697988436988050248
+blogger_orig_url: http://tuxpython.blogspot.com/2008/08/simulating-shell-pipe.html
+---
+
+http://docs.python.org/lib/module-subprocess.html
+subprocess module:
+
+<pre>output=`dmesg | grep hda`
+==>
+p1 = Popen(["dmesg"], stdout=PIPE)
+p2 = Popen(["grep", "hda"], stdin=p1.stdout)
+output = p2.communicate()[0]
+</pre>
+
+which is:
+
+<pre>"""equivalent of output=`dmesg | grep hda`"""
+import subprocess
+p1 = subprocess.Popen(["dmesg"], stdout=subprocess.PIPE)
+p2 = subprocess.Popen(["grep", "hda"], stdin=p1.stdout, stdout=subprocess.PIPE)
+output = p2.communicate()[0]
+print output
+</pre>

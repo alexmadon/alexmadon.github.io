@@ -1,0 +1,110 @@
+---
+layout: post
+title: webcam
+date: '2008-10-24T08:49:00.000-07:00'
+author: atpic
+tags: unix 
+modified_time: '2008-10-24T08:50:12.394-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-1821502464162498560
+blogger_orig_url: http://tuxunix.blogspot.com/2008/10/webcam.html
+---
+
+Oct 23 20:11:36 amadon kernel: usb 4-2: new full speed USB device using uhci_hcd and address 2
+Oct 23 20:11:36 amadon kernel: usb 4-2: configuration #1 chosen from 1 choice
+Oct 23 20:11:36 amadon kernel: Linux video capture interface: v2.00
+Oct 23 20:11:37 amadon kernel: pwc: Philips webcam module version 10.0.13 loaded.
+Oct 23 20:11:37 amadon kernel: pwc: Supports Philips PCA645/646, PCVC675/680/690, PCVC720[40]/730/740/750 & PCVC830/840.
+Oct 23 20:11:37 amadon kernel: pwc: Also supports the Askey VC010, various Logitech Quickcams, Samsung MPC-C10 and MPC-C30,
+Oct 23 20:11:37 amadon kernel: pwc: the Creative WebCam 5 & Pro Ex, SOTEC Afina Eye and Visionite VCS-UC300 and VCS-UM100.
+Oct 23 20:11:37 amadon kernel: pwc: Logitech QuickCam 4000 Pro USB webcam detected.
+Oct 23 20:11:37 amadon kernel: pwc: Registered as /dev/video0.
+Oct 23 20:11:37 amadon kernel: usbcore: registered new interface driver Philips webcam
+Oct 23 20:11:37 amadon kernel: usbcore: registered new interface driver snd-usb-audio
+
+
+
+madon@amadon:~$ xawtv -hwscan
+This is xawtv-3.95.dfsg.1, running on Linux/i686 (2.6.22-3-686)
+looking for available devices
+port 280-311
+    type : Xvideo, image scaler
+    name : NV17 Video Texture
+
+/dev/video0: OK                         [ -device /dev/video0 ]
+    type : v4l2
+    name : Logitech QuickCam Pro 4000
+    flags:  capture  
+
+xawtv -c /dev/video0
+gqcam -v /dev/video0
+camorama
+
+
+http://www.linux.com/feature/126186
+
+mencoder tv:// -tv driver=v4l:width=320:height=240:device=/dev/video0 -nosound -ovc lavc -o wcrecording.avi
+
+
+mencoder tv:// \
+-tv driver=v4l:width=320:height=240:device=/dev/video0 \
+-nosound \
+-ovc lavc \
+-lavcopts vcodec=mpeg4:vbitrate=10 \
+-o wcrecording.avi
+
+
+
+cat /dev/video0 > test.mpg 
+
+
+
+/usr/bin/v4l2-ctl    ivtv-utils
+
+
+madon@amadon:~$ v4l2-ctl -D
+Driver Info:
+        Driver name   : pwc
+        Card type     : Logitech QuickCam Pro 4000
+        Bus info      : usb-0000:00:1d.1-2
+        Driver version: 655372
+        Capabilities  : 0x05000001
+                Video Capture
+                Read/Write
+                Streaming
+
+madon@amadon:~$ v4l2-ctl -V
+Format Video Capture:
+        Width/Height  : 320/240
+        Pixel Format  : YU12
+        Field         : None
+        Bytes per Line: 480
+        Size Image    : 115200
+        Colorspace    : Unknown (00000000)
+
+
+
+
+madon@amadon:~$ xawtv
+This is xawtv-3.95.dfsg.1, running on Linux/i686 (2.6.22-3-686)
+X Error of failed request:  XF86DGANoDirectVideoMode
+  Major opcode of failed request:  138 (XFree86-DGA)
+  Minor opcode of failed request:  1 (XF86DGAGetVideoLL)
+  Serial number of failed request:  14
+  Current serial number in output stream:  14
+v4l-conf had some trouble, trying to continue anyway
+Warning: Cannot convert string "-*-ledfixed-medium-r-*--39-*-*-*-c-*-*-*" to type FontStruct
+
+
+"atrpms.physik.fu-berlin.de/dist/fc3/xawtv/tv-fonts-1.1-0_3.rhfc3.at.noarch.rpm"
+
+
+
+apt-get install tv-fonts 
+
+
+
+for file name
+
+
+
+name000000001.jpg

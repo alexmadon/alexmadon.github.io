@@ -1,0 +1,49 @@
+---
+layout: post
+title: backing up windows partition with linux
+date: '2013-08-20T06:26:00.001-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2013-09-05T08:02:38.185-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-9070299539723004572
+blogger_orig_url: http://tuxunix.blogspot.com/2013/08/backing-up-windows-partition-with-linux.html
+---
+
+1) boot on a linux rescue USB stick:<br />
+http://www.sysresccd.org<br />
+<br />
+2) backup using<br />
+partclone.ntfs<br />
+<br />
+http://serverfault.com/questions/93667/create-image-from-hard-disk-without-free-space-linux<br />
+<br />
+clonezilla<br />
+Partimage <br />
+<br />
+<br />
+fdsisk fileformat 7: NTFS<br />
+<br />
+<br />
+EXAMPLES<br />
+<br />
+clone /dev/hda1 to hda1.img and display debug information.<br />
+partclone.ntfs -c -d -s /dev/hda1 -o hda1.img<br />
+<br />
+restore /dev/hda1 from hda1.img and display debug information.<br />
+partclone.ntfs -r -d -s hda1.img -o /dev/hda1<br />
+<br />
+<br />
+<br />
+install <br />
+photosh, light, sony  arw<br />
+<br />
+<br />
+<br />
+=====<br />
+<br />
+restore on a large rpartition<br />
+<br />
+ntfsresize --info /dev/sda2<br />
+ntfsresize --no-action /dev/sda2<br />
+ntfsresize /dev/sda2<br />
+ntfsresize --info --force /dev/sda2<br />

@@ -1,0 +1,218 @@
+---
+layout: post
+title: wifi debian
+date: '2008-12-18T08:10:00.000-08:00'
+author: atpic
+tags: unix 
+modified_time: '2009-11-07T13:42:03.124-08:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-6853477484216134617
+blogger_orig_url: http://tuxunix.blogspot.com/2008/12/wifi-debian.html
+---
+
+on dell d630
+
+<pre>
+root@amadon:~# lspci -nn
+00:00.0 Host bridge [0600]: Intel Corporation Mobile Memory Controller Hub [8086:2a00] (rev 0c)
+00:01.0 PCI bridge [0604]: Intel Corporation Mobile PCI Express Root Port [8086:2a01] (rev 0c)
+00:1a.0 USB Controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB UHCI #4 [8086:2834] (rev 02)
+00:1a.1 USB Controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB UHCI #5 [8086:2835] (rev 02)
+00:1a.7 USB Controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB2 EHCI #2 [8086:283a] (rev 02)
+00:1b.0 Audio device [0403]: Intel Corporation 82801H (ICH8 Family) HD Audio Controller [8086:284b] (rev 02)
+00:1c.0 PCI bridge [0604]: Intel Corporation 82801H (ICH8 Family) PCI Express Port 1 [8086:283f] (rev 02)
+00:1c.1 PCI bridge [0604]: Intel Corporation 82801H (ICH8 Family) PCI Express Port 2 [8086:2841] (rev 02)
+00:1c.5 PCI bridge [0604]: Intel Corporation 82801H (ICH8 Family) PCI Express Port 6 [8086:2849] (rev 02)
+00:1d.0 USB Controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB UHCI #1 [8086:2830] (rev 02)
+00:1d.1 USB Controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB UHCI #2 [8086:2831] (rev 02)
+00:1d.2 USB Controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB UHCI #3 [8086:2832] (rev 02)
+00:1d.7 USB Controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB2 EHCI #1 [8086:2836] (rev 02)
+00:1e.0 PCI bridge [0604]: Intel Corporation 82801 Mobile PCI Bridge [8086:2448] (rev f2)
+00:1f.0 ISA bridge [0601]: Intel Corporation Mobile LPC Interface Controller [8086:2815] (rev 02)
+00:1f.1 IDE interface [0101]: Intel Corporation Mobile IDE Controller [8086:2850] (rev 02)
+00:1f.2 IDE interface [0101]: Intel Corporation Mobile SATA IDE Controller [8086:2828] (rev 02)
+00:1f.3 SMBus [0c05]: Intel Corporation 82801H (ICH8 Family) SMBus Controller [8086:283e] (rev 02)
+01:00.0 VGA compatible controller [0300]: nVidia Corporation Unknown device [10de:042b] (rev a1)
+03:01.0 CardBus bridge [0607]: O2 Micro, Inc. Cardbus bridge [1217:7135] (rev 21)
+03:01.4 FireWire (IEEE 1394) [0c00]: O2 Micro, Inc. Firewire (IEEE 1394) [1217:00f7] (rev 02)
+09:00.0 Ethernet controller [0200]: Broadcom Corporation NetXtreme BCM5755M Gigabit Ethernet PCI Express [14e4:1673] (rev 02) ++++++++
+0c:00.0 Network controller [0280]: Intel Corporation PRO/Wireless 3945ABG Network Connection [8086:4222] (rev 02) *******
+</pre>
+
+
+
+
+
+
+
+
+
+
+
+on a HP pavilion
+<pre>
+root@damahp:~# lspci -nn
+00:00.0 RAM memory [0500]: nVidia Corporation MCP65 Memory Controller [10de:0444] (rev a3)
+00:01.0 ISA bridge [0601]: nVidia Corporation MCP65 LPC Bridge [10de:0442] (rev a3)
+00:01.1 SMBus [0c05]: nVidia Corporation MCP65 SMBus [10de:0446] (rev a1)
+00:01.3 Co-processor [0b40]: nVidia Corporation MCP65 SMU [10de:0447] (rev a1)
+00:02.0 USB Controller [0c03]: nVidia Corporation MCP65 USB Controller [10de:0454] (rev a3)
+00:02.1 USB Controller [0c03]: nVidia Corporation MCP65 USB Controller [10de:0455] (rev a3)
+00:06.0 Ethernet controller [0200]: nVidia Corporation MCP65 Ethernet [10de:0450] (rev a3)  +++++++++
+00:07.0 Audio device [0403]: nVidia Corporation MCP65 High Definition Audio [10de:044a] (rev a1)
+00:08.0 PCI bridge [0604]: nVidia Corporation MCP65 PCI bridge [10de:0449] (rev a1)
+00:09.0 IDE interface [0101]: nVidia Corporation MCP65 IDE [10de:0448] (rev a1)
+00:0a.0 IDE interface [0101]: nVidia Corporation MCP65 SATA Controller [10de:045d] (rev a3)
+00:0b.0 PCI bridge [0604]: nVidia Corporation Device [10de:045b] (rev a1)
+00:0c.0 PCI bridge [0604]: nVidia Corporation MCP65 PCI Express bridge [10de:045a] (rev a1)
+00:0d.0 PCI bridge [0604]: nVidia Corporation MCP65 PCI Express bridge [10de:0458] (rev a1)
+00:0e.0 PCI bridge [0604]: nVidia Corporation MCP65 PCI Express bridge [10de:0459] (rev a1)
+00:18.0 Host bridge [0600]: Advanced Micro Devices [AMD] K8 [Athlon64/Opteron] HyperTransport Technology Configuration [1022:1100]
+00:18.1 Host bridge [0600]: Advanced Micro Devices [AMD] K8 [Athlon64/Opteron] Address Map [1022:1101]
+00:18.2 Host bridge [0600]: Advanced Micro Devices [AMD] K8 [Athlon64/Opteron] DRAM Controller [1022:1102]
+00:18.3 Host bridge [0600]: Advanced Micro Devices [AMD] K8 [Athlon64/Opteron] Miscellaneous Control [1022:1103]
+03:00.0 Network controller [0280]: Broadcom Corporation BCM4328 802.11a/b/g/n [14e4:4328] (rev 03)  *********
+05:00.0 VGA compatible controller [0300]: nVidia Corporation GeForce 8400M GS [10de:0427] (rev a1)
+07:05.0 FireWire (IEEE 1394) [0c00]: Ricoh Co Ltd R5C832 IEEE 1394 Controller [1180:0832] (rev 05)
+07:05.1 SD Host controller [0805]: Ricoh Co Ltd R5C822 SD/SDIO/MMC/MS/MSPro Host Adapter [1180:0822] (rev 22)
+07:05.2 System peripheral [0880]: Ricoh Co Ltd R5C843 MMC Host Controller [1180:0843] (rev 12)
+07:05.3 System peripheral [0880]: Ricoh Co Ltd R5C592 Memory Stick Bus Host Adapter [1180:0592] (rev 12)
+07:05.4 System peripheral [0880]: Ricoh Co Ltd xD-Picture Card Controller [1180:0852] (rev ff)
+
+
+
+
+
+
+
+root@damahp:~# lspci -nn|grep -i net
+00:06.0 Ethernet controller [0200]: nVidia Corporation MCP65 Ethernet [10de:0450] (rev a3)
+03:00.0 Network controller [0280]: Broadcom Corporation BCM4328 802.11a/b/g/n [14e4:4328] (rev 03)
+
+lshw |grep -C 9 -i broadc
+
+
+rmmod ssb
+rmmod b43
+rmmod bcm43xx
+
+
+http://www.broadcom.com/support/802.11/linux_sta.php
+
+
+
+[ 1260.188240] ieee80211_crypt: unregistered algorithm 'TKIP'
+[ 1265.120330] ieee80211_crypt: registered algorithm 'TKIP'
+[ 1280.581805] PCI: Setting latency timer of device 0000:03:00.0 to 64
+[ 1280.581876] eth%d: 5.10.27.11 driver failed with code 11
+
+make -C /lib/modules/`uname -r`/build M=`pwd` clean
+make -C /lib/modules/`uname -r`/build M=`pwd`
+Installing the Module
+
+modprobe ieee80211_crypt_tkip
+insmod wl.ko
+
+
+
+
+
+
+
+
+
+
+
+  508  cp wl.ko /lib/modules/2.6.26-1-amd64/misc/
+ 
+  509  depmod -a
+  510  modprobe ieee80211_crypt_tkip 
+  511  modprobe wl
+  512  dmesg
+ 
+
+[  533.345143] ieee80211_crypt: registered algorithm 'NULL'
+[  533.348718] ieee80211_crypt: registered algorithm 'TKIP'
+[  540.521517] wl: module license 'unspecified' taints kernel.
+[  540.523797] PCI: Setting latency timer of device 0000:03:00.0 to 64
+[  540.538229] eth1: Broadcom BCM4328 802.11 Wireless Controller 5.10.27.11
+
+root@damahp:~/hybrid_wl# iwconfig 
+lo        no wireless extensions.
+
+eth0      no wireless extensions.
+
+vmnet1    no wireless extensions.
+
+vmnet8    no wireless extensions.
+
+eth1      IEEE 802.11abgn  ESSID:""  Nickname:""
+          Mode:Managed  Frequency:2.412 GHz  Access Point: Not-Associated   
+          Bit Rate:14 Mb/s   Tx-Power:off   
+          Retry min limit:7   RTS thr:off   Fragment thr:off
+          Power Managementmode:All packets received
+          Link Quality=5/5  Signal level=0 dBm  Noise level=0 dBm
+          Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:0  Invalid misc:0   Missed beacon:0
+
+
+BUG:
+https://bugs.launchpad.net/ubuntu/+source/linux/+bug/227158
+
+update-initramfs -u
+
+
+
+ lshw -C network
+
+
+
+
+
+
+
+
+
+
+
+
+
+eth1      IEEE 802.11g  ESSID:"BeBox"  
+          Mode:Managed  Frequency:2.462 GHz  Access Point: 00:90:D0:DE:C8:E5   
+          Bit Rate=36 Mb/s   Tx-Power:32 dBm   
+          RTS thr:2347 B   Fragment thr:2346 B   
+          Encryption key:2697-CXXX-XX   Security mode:restricted
+          Power Management:off
+          Link Quality:85/100  Signal level:-41 dBm  Noise level:-96 dBm
+          Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:195  Invalid misc:5955   Missed beacon:0
+
+
+
+
+
+Wireless Access Point - BeBox 
+
+ Configuration
+   
+Interface Enabled: Yes
+Physical Address: 00:90:D0:DE:C8:E5
+Network Name (SSID): BeBox
+Interface Type: 802.11b/g
+Actual Speed: 54 Mbps
+Channel Selection: Auto
+Region: Europe
+Channel: 11
+Allow multicast from Broadband Network: Yes
+WMM: enabled
+
+ Security
+   
+Broadcast Network Name: Yes
+Allow New Devices: New stations are allowed (automatically)
+Security Mode: WEP
+WEP Encryption Key: 2697CXXXXX
+
+
+
+acpi=off noapic
+</pre>

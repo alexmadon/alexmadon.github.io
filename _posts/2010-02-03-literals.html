@@ -1,0 +1,37 @@
+---
+layout: post
+title: literals
+date: '2010-02-03T06:29:00.000-08:00'
+author: atpic
+tags: scala 
+modified_time: '2010-02-03T06:42:59.113-08:00'
+blogger_id: tag:blogger.com,1999:blog-6398118045441905973.post-5228193029090273608
+blogger_orig_url: http://tuxscala.blogspot.com/2010/02/literals.html
+---
+
+<pre>
+ function  parameters     right        function
+    in parentheses        arrow         body
+    (x: Int, y: Int)        =>         x + y
+</pre>
+The syntax of a function literal in Scala (step 6 p69)
+
+Examples:
+<ol>
+<li>
+Identity:
+
+<pre>
+scala> val g = (i:Int) => i
+g: (Int) => Int = &lt;function>
+</pre>
+
+<li> Is even literal:
+<pre>
+scala> val g = (i:Int) => (i % 2) == 0
+g: (Int) => Boolean = &lt;function>
+scala> g(1)
+res8: Boolean = false
+</pre>
+
+</ol>

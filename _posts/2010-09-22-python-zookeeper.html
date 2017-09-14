@@ -1,0 +1,34 @@
+---
+layout: post
+title: python zookeeper
+date: '2010-09-22T14:19:00.000-07:00'
+author: atpic
+tags: python 
+modified_time: '2010-09-22T14:20:21.552-07:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-5907543433989069754
+blogger_orig_url: http://tuxpython.blogspot.com/2010/09/python-zookeeper.html
+---
+
+<pre>
+#!/usr/bin/env python
+# https://issues.apache.org/jira/browse/ZOOKEEPER-676
+import zookeeper
+zkserver='localhost:2181'
+zk = zookeeper.init(zkserver)
+acl = {"perms":0x1f, "scheme":"world", "id" :"anyone"}
+
+node = "/foo"
+value = "bar"
+
+if not zookeeper.exists(zk, node):
+  zookeeper.create(zk, node, value, [acl])
+  print "created: %s with value: %s" % (node, value)
+else:
+  zookeeper.set(zk, node, value)
+  print "updated: %s with value: %s" % (node, value)
+
+# example fo ACLS:
+# see /usr/local/zookeeper-3.3.1/src/contrib/zkpython/src/test/test.py
+# ZOO_OPEN_ACL_UNSAFE = {"perms":zookeeper.PERM_ALL, "scheme":"world", "id" :"anyone"}
+# ZOO_ACL_READ = {"perms":zookeeper.PERM_READ, "scheme": "world", "id":"anyone"}
+</pre>

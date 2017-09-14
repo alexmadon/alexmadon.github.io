@@ -1,0 +1,12 @@
+---
+layout: post
+title: unicode and erlang
+date: '2010-03-29T12:30:00.000-07:00'
+author: atpic
+tags: erlang 
+modified_time: '2010-03-29T12:57:15.407-07:00'
+blogger_id: tag:blogger.com,1999:blog-3269405417287820799.post-7242842144488420692
+blogger_orig_url: http://tuxerl.blogspot.com/2010/03/unicode-and-erlang.html
+---
+
+<pre><br />1> lists:keyfind(encoding,1,io:getopts()).<br />{encoding,unicode}<br />4> "言語ツール".<br />[35328,35486,12484,12540,12523]<br /><br />6> Bin="alex madon".<br />"alex madon"<br />7> re:replace( Bin, "[a]+", "A", [ global ] ).     <br />[<<"A">>,<<"lex m">>,<<"A">>|<<"don">>]<br /><br /><br />2> re:split("Erlang","[lg]",[{return,list},{parts,4}]).<br />["Er","an",[]]<br /><br />6> re:replace("alex madon", "d", "DD", [{return, list}]).<br />"alex maDDon"<br /><br />7> re:replace("alex madon", "d", "DD", [global]).        <br />[<<"alex ma">>,<<"DD">>|<<"on">>]<br /><br />9> re:replace("alex madon", "a", "AA").<br />[<<"AA">>|<<"lex madon">>]<br /><br />10> re:replace("alex madon", "a", "AA",[global]).<br />[<<"AA">>,<<"lex m">>,<<"AA">>|<<"don">>]<br /><br />11> re:replace("alex madon", "a", "AA",[global,{return, list}]).<br />"AAlex mAAdon"<br /><br /></pre>

@@ -1,0 +1,53 @@
+---
+layout: post
+title: docker install in a Virtual machine, docker behind a proxy
+date: '2017-09-05T06:08:00.000-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2017-09-05T06:08:41.923-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-2532314753737856564
+blogger_orig_url: http://tuxunix.blogspot.com/2017/09/docker-install-in-virtual-machine.html
+---
+
+needs amd64<br />
+<br />
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -<br />
+cat /home/madon/Téléchargements/gpg | apt-key add -<br />
+add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/debian \<br />
+   $(lsb_release -cs) \<br />
+   stable"<br />
+<br />
+apt-get update<br />
+apt-get install docker-ce<br />
+docker run hello-world<br />
+<br />
+===docker through proxy====<br />
+<br />
+https://stackoverflow.com/questions/23111631/cannot-download-docker-images-behind-a-proxy<br />
+<br />
+<br />
+mkdir /etc/systemd/system/docker.service.d<br />
+<br />
+Now create a file called /etc/systemd/system/docker.service.d/http-proxy.conf that adds the HTTP_PROXY environment variable:<br />
+<br />
+[Service]<br />
+Environment="HTTP_PROXY=http://proxy.example.com:80/"<br />
+<br />
+If you have internal Docker registries that you need to contact without proxying you can specify them via the NO_PROXY environment variable:<br />
+<br />
+Environment="HTTP_PROXY=http://proxy.example.com:80/"<br />
+Environment="NO_PROXY=localhost,127.0.0.0/8,docker-registry.somecorporation.com"<br />
+<br />
+Flush changes:<br />
+<br />
+$ sudo systemctl daemon-reload<br />
+<br />
+Verify that the configuration has been loaded:<br />
+<br />
+$ sudo systemctl show --property Environment docker<br />
+Environment=HTTP_PROXY=http://proxy.example.com:80/<br />
+<br />
+Restart Docker:<br />
+<br />
+$ sudo systemctl restart docker<br />
+<br />

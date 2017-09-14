@@ -1,0 +1,27 @@
+---
+layout: post
+title: reduce, fold
+date: '2010-02-03T02:08:00.001-08:00'
+author: atpic
+tags: scala 
+modified_time: '2010-02-03T02:09:25.064-08:00'
+blogger_id: tag:blogger.com,1999:blog-6398118045441905973.post-4055801430544646329
+blogger_orig_url: http://tuxscala.blogspot.com/2010/02/reduce-fold.html
+---
+
+My fold/reduce 'cheat sheet' is something like:
+
+For the list (a,b,c,d) fold/reduce is:
+<pre>
+reduceLeft(f) => f(f(f(a,b),c),d)
+foldLeft(Z)(f) => f(f(f(f(Z,a),b),c),d)
+</pre>
+("applies the function from the left")
+
+<pre>
+reduceRight(f) => f(a,f(b,f(c,d)))
+foldRight(Z)(f) => f(a,f(b,f(c,f(d,Z))))
+</pre>
+("applies the function from the right")
+
+[EDIT: as you see, fold and reduce are essentially the same, but fold starts with an outside element ]

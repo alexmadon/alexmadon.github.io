@@ -1,0 +1,53 @@
+---
+layout: post
+title: amuled
+date: '2009-08-12T06:40:00.001-07:00'
+author: atpic
+tags: unix 
+modified_time: '2009-08-12T06:45:55.534-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-7920905981642472037
+blogger_orig_url: http://tuxunix.blogspot.com/2009/08/amuled.html
+---
+
+amule@user2:~$ /usr/bin/amuled   
+amuled: OnInit - starting timer
+Initialising aMule
+Checking if there is an instance already running...
+No other instances are running.
+Loading temp files from /home/amule/.aMule/Temp.
+
+All PartFiles Loaded.
+ListenSocket: Ok.
+
+External connections disabled in config file
+*** Server UDP socket (TCP+3) at 0.0.0.0:4665
+*** TCP socket (TCP) listening on 0.0.0.0:4662
+*** Client UDP socket (extended eMule) at 0.0.0.0:4672
+Empty dir /home/amule/.aMule/Incoming/ shared
+
+ERROR: aMule daemon cannot be used when external connections are disabled. To enable External Connections, use either a normal aMule or set the key"AcceptExternalConnections" to 1 in the file ~/.aMule/amule.conf
+
+Now, exiting main app...
+aMule OnExit: Terminating core.
+aMule shutdown completed.
+
+
+==================
+
+/home/amule/.aMule/amule.conf and change the /root/ pathes to the user path at /home/amule/... and change this:
+[WebServer]
+Enabled=1
+Password=sdsdgfsgddsggsdgdgdgsdg
+PasswordLow=
+Port=12346
+UseGzip=1
+UseLowRightsUser=0
+PageRefreshTime=120
+Template=php-default
+[ExternalConnect]
+AcceptExternalConnections=1
+ECAddress=0.0.0.0
+ECPort=12345
+ECPassword=jasdkjaksdjkasjdkasljd
+you create the password with md5 like that:
+echo -n "yourplaintextpass" | md5sum | cut -d " " -f 1

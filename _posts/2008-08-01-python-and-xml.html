@@ -1,0 +1,46 @@
+---
+layout: post
+title: python and XML
+date: '2008-08-01T11:03:00.000-07:00'
+author: atpic
+tags: python 
+modified_time: '2008-08-01T11:24:25.160-07:00'
+blogger_id: tag:blogger.com,1999:blog-3924744343383394971.post-8371948696114148947
+blogger_orig_url: http://tuxpython.blogspot.com/2008/08/python-and-xml.html
+---
+
+The sample code retrieved from the internet shows how to modify the nodes of an XML document.
+
+<pre>import xml.dom.minidom
+ 
+ 
+def cull_children(nodelist,inset,parent):
+    for subnode in nodelist:
+        if (subnode.nodeType == subnode.ELEMENT_NODE):
+            which = subnode.tagName
+            called = "" # in case it's not an img or title
+            if (which == "img"):
+                called = subnode.getAttribute("name")
+                if (len(called) < 6):
+                    parent.removeChild(subnode)
+            cull_children(subnode.childNodes," "+inset,subnode)
+ 
+def explore_children(nodelist,inset):
+    for subnode in nodelist:
+        if (subnode.nodeType == subnode.ELEMENT_NODE):
+            which = subnode.tagName
+            called = "" # in case it's not an img or title
+            if (which == "img"): called = subnode.getAttribute("name")
+            if (which == "title"): called = subnode.getAttribute("text")
+            print inset + which + " " + called
+            explore_children(subnode.childNodes," "+inset)
+ 
+fh = open("images.xml","r")
+doc = xml.dom.minidom.parse(fh)
+# get rid of all images with short names
+cull_children(doc.childNodes,"",doc)
+# report on what's left
+explore_children(doc.childNodes,"")
+ 
+# PrettyPrint(doc) # 4DOM only
+</pre>

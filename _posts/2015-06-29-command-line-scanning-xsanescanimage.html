@@ -1,0 +1,39 @@
+---
+layout: post
+title: command line scanning xsane/scanimage
+date: '2015-06-29T12:09:00.002-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2015-06-29T12:09:59.225-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-3381096998224625634
+blogger_orig_url: http://tuxunix.blogspot.com/2015/06/command-line-scanning-xsanescanimage.html
+---
+
+<pre>command line scanning
+
+sane-find-scanner
+
+  # sane-find-scanner will now attempt to detect your scanner. If the
+  # result is different from what you expected, first make sure your
+  # scanner is powered up and properly connected to your computer.
+
+  # No SCSI scanners found. If you expected something different, make sure that
+  # you have loaded a kernel SCSI driver for your SCSI adapter.
+
+found USB scanner (vendor=0x04b8 [EPSON], product=0x0110 [EPSON Scanner]) at libusb:003:014
+
+MAY NEED XSANE to dectect
+
+/dev/bus/usb/003/014
+scanimage -d epson2:libusb:003:019 > 001.pnm
+or simpler
+scanimage -d epson2 > 002.pnm
+
+
+scanimage -d epson2 --mode Color
+
+scanimage -h -d epson2
+
+
+scanimage -d epson2 --mode Color --resolution 200 
+</pre>

@@ -1,0 +1,71 @@
+---
+layout: post
+title: 'headless linux virtualization: kvm, xen, virtual box'
+date: '2012-08-09T08:33:00.001-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2013-11-24T02:01:08.719-08:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-659329455376409212
+blogger_orig_url: http://tuxunix.blogspot.com/2012/08/headless-linux-virtualization-kvm-xen.html
+---
+
+check the CPU has virtualization support:<br />
+<br />
+grep -E "(vmx|svm)" --color=always /proc/cpuinfo<br />
+<br />
+apt-get install qemu-kvm<br />
+<br />
+modprobe kvm<br />
+modprobe kvm_amd<br />
+<br />
+installation:<br />
+-------------<br />
+dd if=/dev/zero of=/var/lib/libvirt/images/guest.img bs=1M count=4096<br />
+<br />
+kvm -hda /vm/guest.img -cdrom /root/debian-wheezy-DI-b1-amd64-netinst.iso -vnc 127.0.0.1:1 <br />
+<br />
+<br />
+kvm -hda /vm/guest.img -redir tcp:2222::22 -vnc 127.0.0.1:1 <br />
+<br />
+Then later:<br />
+<br />
+ssh -L 5901:127.0.0.1:5901 w.x.y.z<br />
+<br />
+where w.x.y.z is the host address running the vm<br />
+<br />
+and start a vncviewer session through the tunnel<br />
+<br />
+vncviewer localhost:1<br />
+<br />
+<br />
+===========<br />
+<br />
+<br />
+==========networking======<br />
+there is a built in nat<br />
+but you can use a bridge, on the host main nic (may not work on wifi nics) or create a new virtual bridge<br />
+you can thus isolate completely the nework.<br />
+<br />
+<br />
+===========shared filesystem==========<br />
+VirtFS<br />
+<br />
+VirtFS is a new paravirtualized filesystem interface designed for improving passthrough technologies in the KVM environment. It is based on the VirtIO framework and uses the 9P protocol.<br />
+<br />
+Example Sharing Host files with the Guest<br />
+<br />
+There are a nice set of details on the QEMU wiki describing this, so this section will be quite short. To share host files w/ the guest, we use 9p over virtio in conjunction w/ a filesystem device exporting the portion of the host filesystem that we'd like to share with the guest.<br />
+<br />
+# /usr/bin/qemu-kvm -m 1024 -name f15 -drive file=/images/f15.img,if=virtio<br />
+-fsdev local,security_model=passthrough,id=fsdev0,path=/tmp/share -device virtio-9p-pci,id=fs0,fsdev=fsdev0,mount_tag=hostshare<br />
+<br />
+<br />
+This tells qemu to create a 9pvirtio device exposing the mount_tag hostshare (just a name to identify the mount point). That device is coupled to an fsdev named fsdev0, which specifies which portion of the host filesystem we are sharing, and in which mode (see QEMU wiki for details on the security models).<br />
+<br />
+Now, in the guest we need to mount the 9p filesystem from the host using the virtio transport. The mount_tag is used to identify the host's share.<br />
+<br />
+# mkdir /tmp/host_files<br />
+# mount -t 9p -o trans=virtio,version=9p2000.L hostshare /tmp/host_files<br />
+That's it...now we can read/write files in that directory from either the host or the guest.<br />
+<br />
+<br />

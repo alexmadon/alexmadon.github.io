@@ -1,0 +1,27 @@
+---
+layout: post
+title: convert pdf to epub (kobo aura HD ereader / tablet)
+date: '2013-08-06T13:17:00.001-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2013-08-06T13:17:17.832-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-472050894779312295
+blogger_orig_url: http://tuxunix.blogspot.com/2013/08/convert-pdf-to-epub-kobo-aura-hd.html
+---
+
+down vote<br />
+ <br />
+<br />
+We know you don't like Calibre... but have you tried it's CLI conversion tool?<br />
+<br />
+The Calbire install provides the command "ebook-convert" that will handle what you want, and there's no need to run Calibre.<br />
+<br />
+ebook-convert file.pdf file.epub<br />
+<br />
+is all that's required.<br />
+<br />
+If the output looks a little wrong - try this<br />
+<br />
+ebook-convert file.pdf file.epub --enable-heuristics<br />
+<br />
+It will try a "smart" way to convert. Not perfect, but can work well in most conversions.<br />

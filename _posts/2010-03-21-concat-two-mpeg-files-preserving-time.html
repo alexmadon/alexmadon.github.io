@@ -1,0 +1,28 @@
+---
+layout: post
+title: concat two mpeg files preserving the time
+date: '2010-03-21T13:04:00.000-07:00'
+author: atpic
+tags: unix 
+modified_time: '2010-03-22T05:34:55.349-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-3841595383190057533
+blogger_orig_url: http://tuxunix.blogspot.com/2010/03/concat-two-mpeg-files-preserving-time.html
+---
+
+<pre>
+cat video1.mpg video2.mpg | ffmpeg -y -i - -fflags genpts -vcodec copy -acodec copy video1+2.mpg
+</pre>
+
+See <a href=http://lists.mplayerhq.hu/pipermail/ffmpeg-user/2006-October/004619.html>http://lists.mplayerhq.hu/pipermail/ffmpeg-user/2006-October/004619.html</a>
+
+For wmv files:
+
+<pre>
+for file in *wmv
+do
+    mencoder -idx $file -ovc copy -ovc lavc -lavcopts vcodec=msmpeg4v2 -o tmp/$file.mp4
+done
+
+mencoder -noidx -ovc copy -oac copy -o total.mp4 tmp/*mp4
+</pre>
+All video files must have identical fps, resolution, and codec for -ovc copy.

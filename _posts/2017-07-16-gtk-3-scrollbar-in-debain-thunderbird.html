@@ -1,0 +1,50 @@
+---
+layout: post
+title: gtk 3 scrollbar in debian (thunderbird, icedove)
+date: '2017-07-16T01:16:00.004-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2017-07-21T01:03:35.152-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-5362716547549608009
+blogger_orig_url: http://tuxunix.blogspot.com/2017/07/gtk-3-scrollbar-in-debain-thunderbird.html
+---
+
+To get the scrollbar arrows back:<br />
+<br />
+.config/gtk-3.0/gtk.css<br />
+<br />
+* {<br />
+-GtkRange-slider-width: 18px;<br />
+-GtkScrollbar-has-forward-stepper: 1;<br />
+-GtkScrollbar-has-backward-stepper: 1;<br />
+-GtkScrollbar-has-secondary-forward-stepper: 1;<br />
+-GtkScrollbar-has-secondary-backward-stepper: 1;<br />
+-GtkScrollbar-min-slider-length: 30px;<br />
+}<br />
+.scrollbar.slider.vertical,<br />
+.scrollbar.button.vertical {<br />
+border-radius: 4px;<br />
+}<br />
+<br />
+<br />
+<br />
+also if you want to page down/up when right clicking in the scrollbar, have:<br />
+<br />
+~/.config/gtk-3.0# cat settings.ini <br />
+[Settings]<br />
+gtk-primary-button-warps-slider = false<br />
+<br />
+<br />
+<br />
+see also<br />
+<br />
+https://wiki.gnome.org/Projects/GTK+/Inspector<br />
+The debugger is disabled by default. To enable it run in a terminal:<br />
+<br />
+gsettings set org.gtk.Settings.Debug enable-inspector-keybinding true<br />
+<br />
+And launch it pressing on the keyboard Control-Shift-I or Control-Shift-D.<br />
+<br />
+If you don't want to use the shortcuts, you can also run it temporarily directly when running your app with:<br />
+<br />
+GTK_DEBUG=interactive your-app

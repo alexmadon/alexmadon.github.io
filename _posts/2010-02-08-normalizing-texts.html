@@ -1,0 +1,31 @@
+---
+layout: post
+title: normalizing texts
+date: '2010-02-08T03:21:00.000-08:00'
+author: atpic
+tags: scala 
+modified_time: '2010-02-08T03:29:59.926-08:00'
+blogger_id: tag:blogger.com,1999:blog-6398118045441905973.post-4922474283409260261
+blogger_orig_url: http://tuxscala.blogspot.com/2010/02/normalizing-texts.html
+---
+
+how to remove the accents (to get unaccented characters)
+
+<pre>
+scala> import java.text.Normalizer
+import java.text.Normalizer
+
+scala> val s="garçon"
+s: java.lang.String = garçon
+
+scala> val n=Normalizer.normalize(s, Normalizer.Form.NFD)
+n: java.lang.String = garçon
+
+scala> n.replaceAll("\\p{InCombiningDiacriticalMarks}+", "") 
+res3: java.lang.String = garcon
+</pre>
+see 
+<ol>
+<li><a href=http://blog.smartkey.co.uk/2009/10/how-to-strip-accents-from-strings-using-java-6/>http://blog.smartkey.co.uk/2009/10/how-to-strip-accents-from-strings-using-java-6/</a>
+<li><a href=http://java.sun.com/docs/books/tutorial/i18n/text/normalizerapi.html>http://java.sun.com/docs/books/tutorial/i18n/text/normalizerapi.html</a>
+</ol>

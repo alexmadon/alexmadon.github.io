@@ -1,0 +1,58 @@
+---
+layout: post
+title: dell e6410 wifi blinking and gamma
+date: '2011-02-08T11:22:00.000-08:00'
+author: atpic
+tags: unix 
+modified_time: '2011-02-08T11:24:00.173-08:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-2167162173376399880
+blogger_orig_url: http://tuxunix.blogspot.com/2011/02/dell-e6410-wifi-blinking-and-gamma.html
+---
+
+<pre>
+cat /etc/network/if-up.d/stopblink 
+#!/bin/sh
+echo none > /sys/bus/pci/drivers/iwlagn/0000:02:00.0/leds/iwl-phy0::assoc/trigger
+echo none > /sys/bus/pci/drivers/iwlagn/0000:02:00.0/leds/iwl-phy0::radio/trigger
+echo none > /sys/bus/pci/drivers/iwlagn/0000:02:00.0/leds/iwl-phy0::RX/trigger
+echo none > /sys/bus/pci/drivers/iwlagn/0000:02:00.0/leds/iwl-phy0::TX/trigger
+
+echo none > /sys/class/leds/iwl-phy0::RX/trigger
+echo none > /sys/class/leds/iwl-phy0::TX/trigger
+echo none > /sys/class/leds/iwl-phy0::radio/trigger
+echo none > /sys/class/leds/iwl-phy0::assoc/trigger 
+
+
+
+
+root@madona:/sys/class/backlight# ls
+acpi_video0
+root@madona:/sys/class/backlight# ls -alh
+total 0
+drwxr-xr-x  2 root root 0 Feb  8 11:21 .
+drwxr-xr-x 40 root root 0 Feb  8 11:21 ..
+lrwxrwxrwx  1 root root 0 Feb  8 11:21 acpi_video0 -> ../../devices/virtual/backlight/acpi_video0
+root@madona:/sys/class/backlight# cat ../../devices/virtual/backlight/acpi_video0
+cat: ../../devices/virtual/backlight/acpi_video0: Is a directory
+root@madona:/sys/class/backlight# cd ../../devices/virtual/backlight/acpi_video0
+root@madona:/sys/devices/virtual/backlight/acpi_video0# ls
+actual_brightness  bl_power  brightness  device  max_brightness  power  subsystem  uevent
+root@madona:/sys/devices/virtual/backlight/acpi_video0# cat actual_brightness 
+3
+root@madona:/sys/devices/virtual/backlight/acpi_video0# cat actual_brightness 
+4
+
+
+===============
+
+contrast:
+
+madon@madona:~$ xgamma -gamma 0.8
+-> Red  0.500, Green  0.500, Blue  0.500
+<- Red  0.800, Green  0.800, Blue  0.800
+
+
+to the Monitor section of /etc/X11/xorg.conf the line
+
+Gamma 0.6
+</pre>

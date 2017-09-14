@@ -1,0 +1,74 @@
+---
+layout: post
+title: skype on debian and the /msnp24 command
+date: '2016-06-28T07:14:00.002-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2016-06-28T07:14:22.142-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-2758533868505059777
+blogger_orig_url: http://tuxunix.blogspot.com/2016/06/skype-on-debian-and-msnp24-command.html
+---
+
+<br />
+Skype - Unable to receive group chat messages<br />
+up vote<br />
+12<br />
+down vote<br />
+favorite<br />
+12<br />
+ <br />
+<br />
+My Skype is working almost completely. I can send files, make and receive calls and chats normally. However, I don't receive messages from chat groups that have been created recently.<br />
+<br />
+What I have tried:<br />
+<br />
+    remove my ~/.Skype folder;<br />
+    reinstall another version from ubuntu repositories (32 and 64 bits);<br />
+    firewall rules;<br />
+    proxy is fine as other users are successfully talking.<br />
+<br />
+I am on Ubuntu 14.04 64 bits and Skype 4.3.0.37-1 32 bits but this problem seems to happen even on Windows (here and here)<br />
+<br />
+It seems to be related to cloud group chats.<br />
+<br />
+I don't receive messages from groups whose name starts with "19:xxxx". However I receive from groups whose name starts with $ or something else.<br />
+<br />
+The following command returns the group name:<br />
+<br />
+/get name<br />
+<br />
+<br />
+ ---------<br />
+ <br />
+<br />
+I will answer my own question... I hope this will help someone! :)<br />
+<br />
+After struggling a bit, I found some useful commands:<br />
+<br />
+    /dumpmsnp - show details about your connection<br />
+    /showplaces - show where you are currently connected<br />
+<br />
+You can execute them in any chat window.<br />
+<br />
+/dumpmsnp command was showing "LoggedOut", but I was online and talking almost normally (except group chats).<br />
+<br />
+System: MSNP: Connection Data:<br />
+ * Status: LoggedOut<br />
+<br />
+A lot of people are/were suffering from this problem (here).<br />
+<br />
+To solve this "LoggedOut" issue, try this on any chat window:<br />
+<br />
+/msnp24<br />
+<br />
+and restart your Skype.<br />
+<br />
+After restarting, /dumpmsnp output shows the following status:<br />
+<br />
+System: MSNP: Connection Data (MSNP24):<br />
+ * Status: LoggedIn<br />
+<br />
+I don't know exactly why, but the /msnp24 command kinds of converted my account to this protocol and now everything works perfectly.<br />
+<br />
+I've found the solution here.<br />
+shareimprove this answer

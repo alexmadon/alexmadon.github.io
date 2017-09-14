@@ -1,0 +1,28 @@
+---
+layout: post
+title: 'vnc: novnc'
+date: '2013-03-12T10:44:00.001-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2013-03-12T10:44:08.863-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-1461527478575750760
+blogger_orig_url: http://tuxunix.blogspot.com/2013/03/vnc-novnc.html
+---
+
+https://github.com/kanaka/noVNC<br />
+<br />
+tightvncserver -alwaysshared -geometry 1440x800  -depth 24 -compatiblekbd<br />
+tightvncserver -kill  :1<br />
+xtightvncviewer localhost:1<br />
+<br />
+<br />
+====================or piloting from laptop:<br />
+on laptop:<br />
+cd /usr/local/noVNC-master<br />
+./utils/launch.sh --vnc localhost:5901 --listen 9998<br />
+ssh -C -f www-data@yourserver.net -R 46.4.24.136:9999:localhost:9998 -N<br />
+<br />
+(need in /etc/ssh/sshd_config:GatewayPorts clientspecified)<br />
+<br />
+======= webcam =====<br />
+mplayer -fps 30 -tv driver=v4l2:width=640:height=480:device=/dev/video0 tv:// <br />

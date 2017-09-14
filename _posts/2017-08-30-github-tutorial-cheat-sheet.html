@@ -1,0 +1,111 @@
+---
+layout: post
+title: github tutorial cheat sheet
+date: '2017-08-30T14:16:00.000-07:00'
+author: Alex Madon
+tags: unix 
+modified_time: '2017-08-30T14:16:16.625-07:00'
+blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-8978478370043032416
+blogger_orig_url: http://tuxunix.blogspot.com/2017/08/github-tutorial-cheat-sheet.html
+---
+
+https://help.github.com/articles/setting-your-username-in-git/<br />
+<br />
+<br />
+git config --global user.name "Alex Madon"<br />
+git config --global user.email "alex.madon@gmail.com"<br />
+<br />
+git config --global core.editor vi<br />
+<br />
+git config --list<br />
+<br />
+<br />
+https://git-scm.com/book/fr/v1/D%C3%A9marrage-rapide-Param%C3%A9trage-%C3%A0-la-premi%C3%A8re-utilisation-de-Git<br />
+<br />
+<br />
+07_copying_a_github_repository_to_your_local_computer_o72fwneo_xy.mp4<br />
+<br />
+<br />
+git clone https://github.com/alexmadon/saml_wsgi.git<br />
+<br />
+<br />
+madon@madona:~/saml/saml_wsgi$ git remote -v<br />
+origin https://github.com/alexmadon/saml_wsgi.git (fetch)<br />
+origin https://github.com/alexmadon/saml_wsgi.git (push)<br />
+<br />
+<br />
+find .git<br />
+git status<br />
+git add [file]<br />
+git commit -m "message"<br />
+git log<br />
+<br />
+git push origin master<br />
+<br />
+<br />
+<br />
+============<br />
+<br />
+madon@madona:~/ajpclient$ git push origin master<br />
+Username for 'https://github.com': alexmadon<br />
+Password for 'https://alexmadon@github.com': <br />
+Counting objects: 3, done.<br />
+Delta compression using up to 8 threads.<br />
+Compressing objects: 100% (3/3), done.<br />
+Writing objects: 100% (3/3), 303 bytes | 0 bytes/s, done.<br />
+Total 3 (delta 2), reused 0 (delta 0)<br />
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.<br />
+remote: error: GH007: Your push would publish a private email address.<br />
+remote: You can make your email public or disable this protection by visiting:<br />
+remote: http://github.com/settings/emails<br />
+To https://github.com/alexmadon/ajpclient.git<br />
+! [remote rejected] master -> master (push declined due to email privacy restrictions)<br />
+error: failed to push some refs to 'https://github.com/alexmadon/ajpclient.git'<br />
+<br />
+-----------<br />
+<br />
+see<br />
+<br />
+https://stackoverflow.com/questions/43378060/meaning-of-the-github-message-push-declined-due-to-email-privacy-restrictions<br />
+https://github.com/blog/2346-private-emails-now-more-private<br />
+<br />
+<br />
+<br />
+<br />
+===================pull request============<br />
+see<br />
+http://thelia-school.com/faire-une-pull-request-sur-un-projet-thelia/faire-une-pull-request.html<br />
+<br />
+<br />
+<br />
+<br />
+git clone git@github.com:username/thelia.git<br />
+git checkout -b backoffice master<br />
+<br />
+<br />
+DO YOUR CHANGES AND COMMITS (but do not push yet)<br />
+<br />
+<br />
+<br />
+git remote add upstream https://github.com/thelia/thelia.git<br />
+git pull --ff-only upstream master<br />
+git checkout backoffice<br />
+git rebase master<br />
+git push origin backoffice<br />
+<br />
+(or with -f if conflicts<br />
+git push -f origin backoffice<br />
+)<br />
+<br />
+<br />
+Vos modifications partent donc sur votre compte github en ligne mais pour le moment, le dépôt d'origine n'est pas impacté. Il faut maintenant demander la fusion de vos modifications sur le projet.<br />
+<br />
+Pour ce faire, rendez-vous sur votre compte github en ligne et sélectionnez votre branche backoffice :<br />
+<br />
+Ici, un bouton vert devrait apparaitre pour vous proposer de faire votre pull-request tant attendue :<br />
+<br />
+Vous pouvez y aller ! Cliquez dessus !<br />
+<br />
+Et voilà il ne vous reste plus qu'à commenter votre demande, à la valider et à patienter jusqu'à ce qu'elle soit prise en compte ;-)<br />
+<br />
+<br />
