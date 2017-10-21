@@ -5,9 +5,12 @@ tags: linux screencast
 
 to do shell screen cast, you can use asciinema
 
-  asciinema play asciicast-98639.json 
-
+```sh
+asciinema play asciicast-98639.json 
+```
 
 jq will dump the session:
 
-  jq -r '.stdout[][1]' asciicast-98639.json 
+```sh
+jq -r '[.stdout[][1]]|add ' asciicast-98639.json  > tt
+```
