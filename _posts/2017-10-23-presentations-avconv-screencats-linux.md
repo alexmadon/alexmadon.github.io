@@ -21,11 +21,7 @@ xtightvncviewer 10.245.50.94:1
 xtightvncviewer -display :0.1 10.240.8.235:1 
 ```
 
-
-
-# xrandr -q
-
-recordmydesktop --device hw:1,0 -x 1600 -y 0 --width 1024 --height 768
+avconv gives good results:
 
 
 ```bash
@@ -40,6 +36,11 @@ avconv -f pulse -i 2 -f x11grab -r 30 -s 1920x1080 -i :0.0+0,0 -strict experimen
 Other things I tried:
 
 ```bash
+
+# xrandr -q
+
+recordmydesktop --device hw:1,0 -x 1600 -y 0 --width 1024 --height 768
+
 recordmydesktop --device hw:1,0
 
 
