@@ -7,6 +7,11 @@ defaults:
     values:
       layout: "post"
 
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  
 # Site configurations
 gems:
 - jekyll-paginate
@@ -15,3 +20,5 @@ paginate: 30
 paginate_path: '/page:num'
 
 tag_page: '/tags'
+
+
