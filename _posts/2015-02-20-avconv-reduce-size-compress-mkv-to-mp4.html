@@ -20,3 +20,8 @@ mkv to mkv reducing size and keeping subtitles:<br />
 forcing bitrate of 512k<br />
 <pre>avconv -i ice_age2.mkv  -vcodec libx264 -b 512k -map 0:0 -acodec libmp3lame -map 0:1 -acodec libmp3lame -map 0:2 -scodec copy -map 0:3 -map 0:4 -map 0:5 -map 0:6 -map 0:7  ice_age2b.mkv 
 </pre>
+
+Reduce the picture size by 2
+<pre>
+  avconv  -i let_s_get_functional_with_elixir__wvrnoxnbots.mp4 -vf scale=iw/2:-1 -strict -2 let_s_get_functional_with_elixir__wvrnoxnbots_small.mp4 
+</pre>
