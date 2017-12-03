@@ -124,4 +124,4 @@ iex(5)> alist |>
 ```
 
 
-Examples inspired from https://www.youtube.com/watch?v=wVrnoxNbOts
+Examples inspired from "Let's Get Functional With Elixir!" by Nate Taylor https://www.youtube.com/watch?v=wVrnoxNbOts
