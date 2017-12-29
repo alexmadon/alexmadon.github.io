@@ -9,6 +9,14 @@ blogger_id: tag:blogger.com,1999:blog-7521237649117347170.post-55827500653443063
 blogger_orig_url: http://tuxunix.blogspot.com/2014/03/remove-tilde-files-in-emacs-backup-by.html
 ---
 
-<pre>(defun make-backup-file-name (file)
+# How to avoid getting backup files in your working directory, changing the location of emacs backup files
+
+* create a direcctory `~/.emacs_backups/`
+* add to your `~/.emacs`
+
+```
+(defun make-backup-file-name (file)
 (concat "~/.emacs_backups/" (file-name-nondirectory file) "~"))
-</pre>
+```
+
+* that's it: now the backup files will be stored in that `~/.emacs_backups/` folder.
