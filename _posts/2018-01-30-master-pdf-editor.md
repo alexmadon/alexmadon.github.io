@@ -1,0 +1,19 @@
+---
+date: '2018-01-30T03:10:00.001-0700'
+tags: linux pdf
+---
+
+on deboian strech 9.3
+
+wget http://get.code-industry.net/public/master-pdf-editor-4.3.82_qt5.amd64.deb
+
+
+dpkg -i master-pdf-editor-4.3.82_qt5.amd64.deb
+Selecting previously unselected package master-pdf-editor.
+(Reading database ... 138592 files and directories currently installed.)
+Preparing to unpack master-pdf-editor-4.3.82_qt5.amd64.deb ...
+Unpacking master-pdf-editor (4.3.82) ...
+Setting up master-pdf-editor (4.3.82) ...
+Processing triggers for hicolor-icon-theme (0.15-1) ...
+Processing triggers for desktop-file-utils (0.23-1) ...
+Processing triggers for mime-support (3.60) ...
