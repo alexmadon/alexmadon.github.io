@@ -88,3 +88,8 @@ use Test::Nginx::Socket::Lua;
 https://github.com/openresty/test-nginx
 
 https://openresty.gitbooks.io/programming-openresty/content/testing/preparing-tests.html
+
+
+
+
+https://blog.cloudflare.com/cloudflares-new-waf-compiling-to-lua/
