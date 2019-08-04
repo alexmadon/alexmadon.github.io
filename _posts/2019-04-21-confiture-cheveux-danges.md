@@ -7,7 +7,7 @@ Confiture de cheveux d'anges
 
 1 courge de Siam
 
-Surcre roux ou miel
+Sucre roux ou miel
 
 1 bâton de canellle
 
