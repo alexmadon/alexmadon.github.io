@@ -87,3 +87,15 @@ Les autres champs restent vides ou avec les valeurs par défaut.
 Enregistrez cet APN puis éteignez et rallumez votre téléphone.
 
 N'oubliez pas de vérifier que les données mobiles sont bien activées et que vous avez sélectionné au moins le réseau 2G/3G dans les Préférences réseau (ou Mode réseau). Ensuite, désactivez le Wifi puis ouvrez votre navigateur web pour voir si Internet fonctionne et testez l'envoi et la réception de MMS.
+
+
+
+
+
+
+# APB NFR prixtel
+
+
+sl2sfr
+Nom : SFR webphone
+APN : sl2sfr
