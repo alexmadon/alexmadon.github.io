@@ -1,6 +1,6 @@
 # tarte citron
 
-Pour deux btarte de 31cm
+Pour deux tartes de 31cm
 
 2 boules de pate brisée ou sablée
 
