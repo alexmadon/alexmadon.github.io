@@ -7,3 +7,5 @@ ffmpeg -i input.mp4 -vcodec libx265 -crf 28 output.mp4
 or
 
 libx264
+
+ffmpeg -i input.avi -filter:v scale=1080:-1 -c:a copy output.mkv

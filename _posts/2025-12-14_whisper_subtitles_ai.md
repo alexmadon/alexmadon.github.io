@@ -535,17 +535,23 @@ madon@msi:~/whisper$ uname -a
 Linux msi 6.1.0-11-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.38-4 (2023-08-08) x86_64 GNU/Linux
 
 
+```
 root@msi:~# apt install linux-headers-amd64
-
+```
 
 
 https://askubuntu.com/questions/23238/how-can-i-find-what-video-driver-is-in-use-on-my-system
+
+```
 madon@msi:~/whisper$ lspci -nnk | grep -E -i --color 'vga|3d|2d' -A3 | grep 'in use'
 	Kernel driver in use: nouveau
+```
 
 
- apt install nvidia-driver firmware-misc-nonfree
 
+```
+apt install nvidia-driver firmware-misc-nonfree
+```
 
 
 root@msi:~# dmesg | grep -i nvidi
@@ -555,6 +561,10 @@ root@msi:~# dmesg | grep -i nvidi
 [    2.370526] input: HDA NVidia HDMI/DP,pcm=9 as /devices/pci0000:00/0000:00:01.0/0000:01:00.1/sound/card1/input7
 [    2.886537] audit: type=1400 audit(1765706336.911:7): apparmor="STATUS" operation="profile_load" profile="unconfined" name="nvidia_modprobe" pid=453 comm="apparmor_parser"
 [    2.886540] audit: type=1400 audit(1765706336.911:8): apparmor="STATUS" operation="profile_load" profile="unconfined" name="nvidia_modprobe//kmod" pid=453 comm="apparmor_parser"
+
+
+
+
 root@msi:~# dmesg | grep -i nvidi -C8
 [    2.284509] mei_me 0000:00:16.0: enabling device (0000 -> 0002)
 [    2.296956] iTCO_vendor_support: vendor-support=0
@@ -595,6 +605,9 @@ root@msi:~# dmesg | grep -i nvidi -C8
 [    2.954361] RAPL PMU: hw unit of domain package 2^-14 Joules
 [    2.958816] cryptd: max_cpu_qlen set to 1000
 [    2.977243] AVX2 version of gcm_enc/dec engaged.
+
+
+
 root@msi:~# dmesg | grep -i nvidi -C20
 [    1.875459] systemd[1]: Finished systemd-random-seed.service - Load/Save Random Seed.
 [    1.875588] systemd[1]: first-boot-complete.target - First Boot Complete was skipped because of an unmet condition check (ConditionFirstBoot=yes).
@@ -934,7 +947,8 @@ break-system-packages = true
 
 pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
 
-   ━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  3/29 [triton]  WARNING: The scripts proton and proton-viewer are installed in '/home/madon/.local/bin' which is not on PATH.
+   ━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  3/29 [triton]  WARNING: The scripts
+   proton and proton-viewer are installed in '/home/madon/.local/bin' which is not on PATH.
 
 modify PATH to include the folder above:
 
