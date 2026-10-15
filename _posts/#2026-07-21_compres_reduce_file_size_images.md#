@@ -1,0 +1,16 @@
+# reduce image file size
+
+
+https://www.digitalocean.com/community/tutorials/reduce-file-size-of-images-linux
+
+
+
+Key Takeaways
+
+    jpegoptim --max=85 --strip-all applies lossy JPEG compression and removes EXIF, IPTC, and ICC metadata in one pass, which often shrinks files sharply for web use.
+    jpegoptim --size=100k targets an approximate output size in kilobytes (for example 50k for about 50KB), useful when a upload or API enforces a hard limit and you accept more quality loss.
+    optipng -o5 performs lossless PNG optimization and does not change pixel values, which makes it safe for icons, screenshots, and brand assets.
+    pngcrush -brute input.png output.png tries many filter/compression combinations and writes the smallest output; it is slower than optipng but can squeeze extra space from stubborn PNGs.
+    mogrify -quality 85 *.jpg batch-rewrites JPEGs in place in the current directory, so copies or version control are mandatory before you run it.
+    cwebp -q 80 converts JPEG or PNG input to WebP; lossy WebP often beats JPEG size at similar appearance, and -lossless preserves PNG-like fidelity.
+    GIMP’s File → Export As path combines editing and export in one place; Script-Fu batch mode works but dedicated CLI optimizers such as jpegoptim and optipng are usually faster for bulk JPEG or PNG jobs.
